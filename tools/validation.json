@@ -1,0 +1,228 @@
+{
+  "checked_at_utc": "2026-11-03T11:37:14.4487667Z",
+  "passed": true,
+  "pure_csharp": {
+    "executed": true,
+    "test_count": 8,
+    "assertion_count": 518.0,
+    "tests": [
+      {
+        "name": "BrewTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 293,
+        "output": "BREW_TESTS_PASSED 293"
+      },
+      {
+        "name": "DockSnapTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 7,
+        "output": "DOCK_SNAP_TESTS_PASSED 7"
+      },
+      {
+        "name": "EasyLatteTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 188,
+        "output": "EASY_LATTE_TESTS_PASSED 188"
+      },
+      {
+        "name": "HandCameraTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 7,
+        "output": "HAND_CAMERA_TESTS_PASSED 7"
+      },
+      {
+        "name": "HandCursorTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 5,
+        "output": "HAND_CURSOR_TESTS_PASSED 5"
+      },
+      {
+        "name": "LattePointerTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 5,
+        "output": "LATTE_POINTER_TESTS_PASSED 5"
+      },
+      {
+        "name": "PrepPlacementTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 4,
+        "output": "PREP_PLACEMENT_TESTS_PASSED 4"
+      },
+      {
+        "name": "PrepTests",
+        "compiled": true,
+        "executed": true,
+        "passed": true,
+        "assertion_count": 9,
+        "output": "PUCK_PREP_TESTS_PASSED 9"
+      }
+    ]
+  },
+  "source_syntax": {
+    "passed": true,
+    "file_count": 39,
+    "errors": [],
+    "validation_type": "Roslyn syntax only; UnityEngine/editor API binding was not executed"
+  },
+  "asset_registration": {
+    "passed": true,
+    "registered_count": 18,
+    "catalog_guid": "f08b241d8661833b0775a39727502133",
+    "project_meta_count": 200,
+    "native_sprite_and_catalog_references_verified": true,
+    "source_png_sha256_match": true,
+    "required_origins_present": [
+      "Yirgacheffe",
+      "Antioquia",
+      "Kilimanjaro"
+    ],
+    "beans": [
+      {
+        "id": "bourbon",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "ab0357300f8d4dbd9051ca3550fbe321",
+        "bean_guid": "38cd12955dfe85a2be4c706c71f07f17"
+      },
+      {
+        "id": "typica",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "34f5713c70510980012903dcdd8526f5",
+        "bean_guid": "c168397513766704998b63bc0e90d9c8"
+      },
+      {
+        "id": "caturra",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "c79077f629b4ab7023a58e73aa48bb6d",
+        "bean_guid": "38cb525ea849b4b78febdcfd21124480"
+      },
+      {
+        "id": "catuai",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "bc9a6915ad82afe6be11c17e81996021",
+        "bean_guid": "271d8967975d4fd8e03dcca0ef35c977"
+      },
+      {
+        "id": "mundo_novo",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "04fd35246d0a80ce4674d723ef4e3170",
+        "bean_guid": "48c32d89aa32ed85e110f1d17f7e527d"
+      },
+      {
+        "id": "pacamara",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "7d832225dbed32941ef70a38d8787b6c",
+        "bean_guid": "3fc32000fc2b0cfaf7c64c3b4ee6e586"
+      },
+      {
+        "id": "maragogipe",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "322e49c2e7f1cbf0e50641a3cfb62ea4",
+        "bean_guid": "d5b838d4d406ea42e282283aa435d573"
+      },
+      {
+        "id": "pache",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "e2fe5f112eb1c666cd96d9acf9ec1de7",
+        "bean_guid": "4d02d72b1ca9e1b9e78fdb7d152e94e8"
+      },
+      {
+        "id": "sl28",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "4c838fca8e069edf61ff1a384a587ce1",
+        "bean_guid": "8f4c9a222c077f5c09246557fcfdc27e"
+      },
+      {
+        "id": "sl34",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "82208020628eac6ee802c49bfe8210e3",
+        "bean_guid": "59687281f62f04afec81091b2921742f"
+      },
+      {
+        "id": "ruiru_11",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "4202681df8ee085b9dd348bc11690682",
+        "bean_guid": "319ee8a611887cee36c6d491bf85f52e"
+      },
+      {
+        "id": "batian",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "792e3f90636029e89237b3d63c46dfdc",
+        "bean_guid": "bdb33bd912e62d6fee9acee9707a7fe0"
+      },
+      {
+        "id": "gesha",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "177c1a58f4cdd93519c640f4480e0557",
+        "bean_guid": "80b1736c39925740d4cad137d655e53b"
+      },
+      {
+        "id": "villa_sarchi",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "ddd7132f647684337989f52b75b5da48",
+        "bean_guid": "f80a0d10b596e0eeef90887439b5379c"
+      },
+      {
+        "id": "marsellesa",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "3ac51556069ad5aeb92e109f75b8163e",
+        "bean_guid": "4e33b19691bf73fc1131f52d3ec5c269"
+      },
+      {
+        "id": "parainema",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "3f7a97b1b3694875c4df3f2f299db68d",
+        "bean_guid": "65ac1149cfba9a35e6d9d12f8597a34f"
+      },
+      {
+        "id": "yirgacheffe_kurume",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "264f047c157b3131dd4d37ec4066abae",
+        "bean_guid": "1ca55bd8a3c6a1398d0fdf042fca338d"
+      },
+      {
+        "id": "kilimanjaro_bourbon",
+        "native_asset_linked": true,
+        "original_pixels_preserved": true,
+        "sprite_guid": "9cf0b5b5f13e21def0b972ac049d3220",
+        "bean_guid": "1788c12331b43e1191f202a901ac5dc3"
+      }
+    ],
+    "errors": []
+  },
+  "unity_editor": {
+    "executed": false,
+    "required_version": "6000.6.5f1",
+    "note": "Unity Editor import, engine API compilation, gameplay and player build were not run by this validation script."
+  }
+}

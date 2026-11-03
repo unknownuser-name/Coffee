@@ -1,0 +1,38 @@
+{
+  "yirgacheffe_kurume": {
+    "tool": "built-in image_gen",
+    "output_hint": "Generated images are saved to C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636 as C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636\\exec-87858053-cdba-4c76-af51-09f3c6e6d3cc.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "prompt": "prompts/yirgacheffe_kurume.txt",
+    "original": true
+  },
+  "caturra": {
+    "tool": "built-in image_gen",
+    "output_hint": "Generated images are saved to C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636 as C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636\\exec-8ed69279-a65c-4f51-aa5c-6603dbe7144a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "prompt": "prompts/caturra.txt",
+    "original": true
+  },
+  "kilimanjaro_bourbon": {
+    "tool": "built-in image_gen",
+    "output_hint": "Generated images are saved to C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636 as C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636\\exec-0ae1a4f9-6c39-4959-95dc-7a9e0fde7c58.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "prompt": "prompts/kilimanjaro_bourbon.txt",
+    "original": true
+  },
+  "gesha": {
+    "tool": "built-in image_gen",
+    "output_hint": "Generated images are saved to C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636 as C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636\\exec-5f84b14e-89ba-4c35-be50-08affbd03db5.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "prompt": "prompts/gesha.txt",
+    "original": true
+  },
+  "bourbon": {
+    "tool": "built-in image_gen",
+    "output_hint": "Generated images are saved to C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636 as C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636\\exec-0f9dc47e-7f4b-4ad2-9d31-ab03d2d945f9.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "prompt": "prompts/bourbon.txt",
+    "original": true
+  },
+  "typica": {
+    "tool": "built-in image_gen",
+    "output_hint": "Generated images are saved to C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636 as C:\\Users\\User\\.codex\\generated_images\\01a1a0f2-f8a4-7ab0-bd54-89e0b78ea636\\exec-63cd8805-fd37-49f6-9518-822b92778d78.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "prompt": "prompts/typica.txt",
+    "original": true
+  }
+}

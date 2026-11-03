@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583da00122996d5796f51b61768dfb0f, type: 3}
+  m_Name: "maragogipe"
+  m_EditorClassIdentifier: 
+  Id: "maragogipe"
+  Country: "Guatemala"
+  CountryKo: "과테말라"
+  Region: "Coban"
+  RegionKo: "코반"
+  Variety: "Maragogipe"
+  VarietyKo: "마라고지페"
+  Description: "과테말라 코반의 안개 낀 숲을 담아, 들꽃 향과 오렌지 뒤에 남는 초콜릿을 표현했어요."
+  Acidity: 3
+  Sweetness: 3
+  Body: 3
+  Process: "워시드"
+  Roast: "미디엄 라이트"
+  NetWeightGrams: 250
+  SourceUrl: "https://kaffeejager.shop/en"
+  TastingNotes:
+  - "들꽃"
+  - "오렌지"
+  - "초콜릿"
+  BagSprite: {fileID: 21300000, guid: 322e49c2e7f1cbf0e50641a3cfb62ea4, type: 3}

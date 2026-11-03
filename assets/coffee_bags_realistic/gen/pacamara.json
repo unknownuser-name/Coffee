@@ -1,0 +1,9 @@
+{
+  "slug": "pacamara",
+  "tool": "built-in image_gen.imagegen",
+  "transparent_background": true,
+  "prompt_path": "prompts/pacamara.txt",
+  "source_file": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-1ec2-7300-ae5d-783c7812c07a\\exec-718cdf03-69c2-4e45-90ff-7034d06b52c3.png",
+  "saved_file": "E:\\Project_Coffee\\assets\\coffee_bags_realistic\\unity\\Assets\\CoffeeBagsRealistic\\Sprites\\pacamara.png",
+  "review": "Physical packaging, origin, cultivar and taste labels visually checked."
+}

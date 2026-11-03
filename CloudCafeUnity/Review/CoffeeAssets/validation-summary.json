@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "unity_version": "6000.6.5f1",
+  "windows_build_exit_code": 0,
+  "catalog": "catalog-validation.json",
+  "selection_api": "selection-validation.json",
+  "complete_crafting_flow": "front-grind-validation.json",
+  "latte_practice": "latte-validation.json",
+  "pure_model_assertions": 518,
+  "os_mouse_keyboard_acceptance": false,
+  "selection_visual_capture_verified": false,
+  "visual_capture_limitation": "The hidden-window backbuffer was black; no visual UI pass is claimed. Runtime API tests were run separately.",
+  "selection_api_checks_passed": true
+}

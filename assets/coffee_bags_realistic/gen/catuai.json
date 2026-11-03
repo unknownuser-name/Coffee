@@ -1,0 +1,9 @@
+{
+  "slug": "catuai",
+  "tool": "built-in image_gen.imagegen",
+  "transparent_background": true,
+  "prompt_path": "prompts/catuai.txt",
+  "source_file": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-1ec2-7300-ae5d-783c7812c07a\\exec-8cc4ba8d-f271-4da7-8f34-5d67203320cc.png",
+  "saved_file": "E:\\Project_Coffee\\assets\\coffee_bags_realistic\\unity\\Assets\\CoffeeBagsRealistic\\Sprites\\catuai.png",
+  "review": "Physical kraft bag and printed origin readable."
+}

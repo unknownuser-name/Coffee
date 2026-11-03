@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583da00122996d5796f51b61768dfb0f, type: 3}
+  m_Name: "sl34"
+  m_EditorClassIdentifier: 
+  Id: "sl34"
+  Country: "Kenya"
+  CountryKo: "케냐"
+  Region: "Nyeri"
+  RegionKo: "니에리"
+  Variety: "SL34"
+  VarietyKo: "SL34"
+  Description: "케냐 니에리의 붉은 흙과 산기슭을 담아, 짙은 베리와 포도의 풍성한 질감을 표현했어요."
+  Acidity: 4
+  Sweetness: 4
+  Body: 4
+  Process: "워시드"
+  Roast: "미디엄 라이트"
+  NetWeightGrams: 250
+  SourceUrl: "https://sucafina.com/emea/offerings/kieni-nyeri-aa"
+  TastingNotes:
+  - "블랙베리"
+  - "적포도"
+  - "흑설탕"
+  BagSprite: {fileID: 21300000, guid: 82208020628eac6ee802c49bfe8210e3, type: 3}

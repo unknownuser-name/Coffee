@@ -1,0 +1,242 @@
+{
+  "format_version": 1,
+  "count": 18,
+  "resource_path": "CoffeeBags/CoffeeBeanCatalog",
+  "asset_type": "photorealistic fixed-view 2.5D sprites",
+  "assets": [
+    {
+      "id": "bourbon",
+      "definition": "Assets/Resources/CoffeeBags/Beans/bourbon.asset",
+      "definition_guid": "38cd12955dfe85a2be4c706c71f07f17",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/bourbon.png",
+      "sprite_guid": "ab0357300f8d4dbd9051ca3550fbe321",
+      "sha256": "c2750b34de84f86bbc430339b9a478d380982129ed0a71c2cc2029e3363230f2",
+      "pixels_per_unit": 6359.0909,
+      "pivot": [
+        0.49267578,
+        0.03450521
+      ]
+    },
+    {
+      "id": "typica",
+      "definition": "Assets/Resources/CoffeeBags/Beans/typica.asset",
+      "definition_guid": "c168397513766704998b63bc0e90d9c8",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/typica.png",
+      "sprite_guid": "34f5713c70510980012903dcdd8526f5",
+      "sha256": "99b1b6b5c47c801ab9b741a565d5478f15ebf5c337b9c1d8cc8f642e6d526778",
+      "pixels_per_unit": 5303.7037,
+      "pivot": [
+        0.49951172,
+        0.02929688
+      ]
+    },
+    {
+      "id": "caturra",
+      "definition": "Assets/Resources/CoffeeBags/Beans/caturra.asset",
+      "definition_guid": "38cb525ea849b4b78febdcfd21124480",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/caturra.png",
+      "sprite_guid": "c79077f629b4ab7023a58e73aa48bb6d",
+      "sha256": "1941076b9e03f8eb21e1b234ac8174f05c6e5345f8079658031ed380d6e3dac5",
+      "pixels_per_unit": 4627.7778,
+      "pivot": [
+        0.50341797,
+        0.13151042
+      ]
+    },
+    {
+      "id": "catuai",
+      "definition": "Assets/Resources/CoffeeBags/Beans/catuai.asset",
+      "definition_guid": "271d8967975d4fd8e03dcca0ef35c977",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/catuai.png",
+      "sprite_guid": "bc9a6915ad82afe6be11c17e81996021",
+      "sha256": "3a92a4d613893656d1be783385dce451a887bfa47fa70cb60b31c2819edfbb29",
+      "pixels_per_unit": 5948.9362,
+      "pivot": [
+        0.49609375,
+        0.03841146
+      ]
+    },
+    {
+      "id": "mundo_novo",
+      "definition": "Assets/Resources/CoffeeBags/Beans/mundo_novo.asset",
+      "definition_guid": "48c32d89aa32ed85e110f1d17f7e527d",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/mundo_novo.png",
+      "sprite_guid": "04fd35246d0a80ce4674d723ef4e3170",
+      "sha256": "e150326b3675258fe9cdcf204bef63503f9d47a962303ffb44e3ca80da28398f",
+      "pixels_per_unit": 6104.3478,
+      "pivot": [
+        0.5,
+        0.03515625
+      ]
+    },
+    {
+      "id": "pacamara",
+      "definition": "Assets/Resources/CoffeeBags/Beans/pacamara.asset",
+      "definition_guid": "3fc32000fc2b0cfaf7c64c3b4ee6e586",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/pacamara.png",
+      "sprite_guid": "7d832225dbed32941ef70a38d8787b6c",
+      "sha256": "bffce0478932f3e9431f10b9a8de9f5153756b1bcf413aaee15f11420f175c54",
+      "pixels_per_unit": 6465.1163,
+      "pivot": [
+        0.50146484,
+        0.04036458
+      ]
+    },
+    {
+      "id": "maragogipe",
+      "definition": "Assets/Resources/CoffeeBags/Beans/maragogipe.asset",
+      "definition_guid": "d5b838d4d406ea42e282283aa435d573",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/maragogipe.png",
+      "sprite_guid": "322e49c2e7f1cbf0e50641a3cfb62ea4",
+      "sha256": "49d1260cb81e5ad2dc4bfae7af593bfcc63cb5675024b084bd08ec9e2f590001",
+      "pixels_per_unit": 5192.5926,
+      "pivot": [
+        0.49951172,
+        0.03841146
+      ]
+    },
+    {
+      "id": "pache",
+      "definition": "Assets/Resources/CoffeeBags/Beans/pache.asset",
+      "definition_guid": "4d02d72b1ca9e1b9e78fdb7d152e94e8",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/pache.png",
+      "sprite_guid": "e2fe5f112eb1c666cd96d9acf9ec1de7",
+      "sha256": "4e9f94398b33374632a1b1cae87c62aaa8177cae5ffb01d850f08ab25062f26f",
+      "pixels_per_unit": 5897.8723,
+      "pivot": [
+        0.49707031,
+        0.04492188
+      ]
+    },
+    {
+      "id": "sl28",
+      "definition": "Assets/Resources/CoffeeBags/Beans/sl28.asset",
+      "definition_guid": "8f4c9a222c077f5c09246557fcfdc27e",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/sl28.png",
+      "sprite_guid": "4c838fca8e069edf61ff1a384a587ce1",
+      "sha256": "79ac5701b325caa222962ed83a74a59fd6c0b134890c1f1ab8fb71867211782b",
+      "pixels_per_unit": 6113.0435,
+      "pivot": [
+        0.4921875,
+        0.03515625
+      ]
+    },
+    {
+      "id": "sl34",
+      "definition": "Assets/Resources/CoffeeBags/Beans/sl34.asset",
+      "definition_guid": "59687281f62f04afec81091b2921742f",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/sl34.png",
+      "sprite_guid": "82208020628eac6ee802c49bfe8210e3",
+      "sha256": "238c63918de97d120979543bfaf595e6994e081fd3e2cf08d2c7ea59f8d316d2",
+      "pixels_per_unit": 6013.0435,
+      "pivot": [
+        0.5,
+        0.04231771
+      ]
+    },
+    {
+      "id": "ruiru_11",
+      "definition": "Assets/Resources/CoffeeBags/Beans/ruiru_11.asset",
+      "definition_guid": "319ee8a611887cee36c6d491bf85f52e",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/ruiru_11.png",
+      "sprite_guid": "4202681df8ee085b9dd348bc11690682",
+      "sha256": "71321eb170184bb781b17dba93b904939d38b07217142ba58278b7eb62511580",
+      "pixels_per_unit": 6530.2326,
+      "pivot": [
+        0.49707031,
+        0.03255208
+      ]
+    },
+    {
+      "id": "batian",
+      "definition": "Assets/Resources/CoffeeBags/Beans/batian.asset",
+      "definition_guid": "bdb33bd912e62d6fee9acee9707a7fe0",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/batian.png",
+      "sprite_guid": "792e3f90636029e89237b3d63c46dfdc",
+      "sha256": "dcd20b651a6abbb4df1108a29c28dbf3acfc20cede3b174f4f90074873c7dbd5",
+      "pixels_per_unit": 6404.5455,
+      "pivot": [
+        0.50390625,
+        0.03645833
+      ]
+    },
+    {
+      "id": "gesha",
+      "definition": "Assets/Resources/CoffeeBags/Beans/gesha.asset",
+      "definition_guid": "80b1736c39925740d4cad137d655e53b",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/gesha.png",
+      "sprite_guid": "177c1a58f4cdd93519c640f4480e0557",
+      "sha256": "81b34d3c92aee84a243fc3f06340999e77a0347dcd9d47a3147cd633e8cde241",
+      "pixels_per_unit": 5254.902,
+      "pivot": [
+        0.49951172,
+        0.05208333
+      ]
+    },
+    {
+      "id": "villa_sarchi",
+      "definition": "Assets/Resources/CoffeeBags/Beans/villa_sarchi.asset",
+      "definition_guid": "f80a0d10b596e0eeef90887439b5379c",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/villa_sarchi.png",
+      "sprite_guid": "ddd7132f647684337989f52b75b5da48",
+      "sha256": "8d66e716796128eff4f34e124330cde4b5d5b59b068fbaeb28395064a5197a1a",
+      "pixels_per_unit": 4772.2222,
+      "pivot": [
+        0.50292969,
+        0.17447917
+      ]
+    },
+    {
+      "id": "marsellesa",
+      "definition": "Assets/Resources/CoffeeBags/Beans/marsellesa.asset",
+      "definition_guid": "4e33b19691bf73fc1131f52d3ec5c269",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/marsellesa.png",
+      "sprite_guid": "3ac51556069ad5aeb92e109f75b8163e",
+      "sha256": "9a61b4609bd5798020d4935f19fa55540e67f5117904155f8d449f1682410a8e",
+      "pixels_per_unit": 6086.9565,
+      "pivot": [
+        0.49658203,
+        0.03515625
+      ]
+    },
+    {
+      "id": "parainema",
+      "definition": "Assets/Resources/CoffeeBags/Beans/parainema.asset",
+      "definition_guid": "65ac1149cfba9a35e6d9d12f8597a34f",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/parainema.png",
+      "sprite_guid": "3f7a97b1b3694875c4df3f2f299db68d",
+      "sha256": "a2a13bb397853080ef7c0975b4679e429157028ac01fa7635e3ea84ca9bf7c29",
+      "pixels_per_unit": 5329.4118,
+      "pivot": [
+        0.49072266,
+        0.05794271
+      ]
+    },
+    {
+      "id": "yirgacheffe_kurume",
+      "definition": "Assets/Resources/CoffeeBags/Beans/yirgacheffe_kurume.asset",
+      "definition_guid": "1ca55bd8a3c6a1398d0fdf042fca338d",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/yirgacheffe_kurume.png",
+      "sprite_guid": "264f047c157b3131dd4d37ec4066abae",
+      "sha256": "0a1f42fd1b98ab84f478e1ac08e6d32a6f00674ba03a56b12f674c98dcbbd23e",
+      "pixels_per_unit": 6381.8182,
+      "pivot": [
+        0.49023438,
+        0.04166667
+      ]
+    },
+    {
+      "id": "kilimanjaro_bourbon",
+      "definition": "Assets/Resources/CoffeeBags/Beans/kilimanjaro_bourbon.asset",
+      "definition_guid": "1788c12331b43e1191f202a901ac5dc3",
+      "sprite": "Assets/Resources/CoffeeBags/Sprites/kilimanjaro_bourbon.png",
+      "sprite_guid": "9cf0b5b5f13e21def0b972ac049d3220",
+      "sha256": "75554a5b2438e5d38c9178923b48f15ccb4c6e72382510f6dca7f44cc9947ca7",
+      "pixels_per_unit": 6052.1739,
+      "pivot": [
+        0.49951172,
+        0.04231771
+      ]
+    }
+  ]
+}

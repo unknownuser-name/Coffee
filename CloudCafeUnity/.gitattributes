@@ -1,0 +1,17 @@
+# Keep this small, self-contained Unity source share as regular Git files.
+# Override inherited repository-wide LFS rules for the files below.
+*.png -filter -diff -merge -text
+*.jpg -filter -diff -merge -text
+*.gif -filter -diff -merge -text
+*.dll -filter -diff -merge -text
+*.wav -filter -diff -merge -text
+*.mp3 -filter -diff -merge -text
+*.ogg -filter -diff -merge -text
+*.ttf -filter -diff -merge -text
+*.otf -filter -diff -merge -text
+*.cs text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.meta text eol=lf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf

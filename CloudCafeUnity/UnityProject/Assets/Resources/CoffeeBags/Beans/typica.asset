@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583da00122996d5796f51b61768dfb0f, type: 3}
+  m_Name: "typica"
+  m_EditorClassIdentifier: 
+  Id: "typica"
+  Country: "Ecuador"
+  CountryKo: "에콰도르"
+  Region: "Loja"
+  RegionKo: "로하"
+  Variety: "Typica"
+  VarietyKo: "티피카"
+  Description: "에콰도르 로하의 안데스 능선을 따라, 핵과일과 초콜릿이 어우러지는 맛을 표현했어요."
+  Acidity: 3
+  Sweetness: 4
+  Body: 3
+  Process: "워시드"
+  Roast: "미디엄 라이트"
+  NetWeightGrams: 250
+  SourceUrl: "https://interamericancoffee.de/ecuador-loja/"
+  TastingNotes:
+  - "핵과일"
+  - "시트러스"
+  - "초콜릿"
+  BagSprite: {fileID: 21300000, guid: 34f5713c70510980012903dcdd8526f5, type: 3}

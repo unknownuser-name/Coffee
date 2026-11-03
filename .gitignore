@@ -1,0 +1,43 @@
+# Unity-generated state and local builds
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/UserSettings/
+**/MemoryCaptures/
+**/Recordings/
+**/Build/
+**/Builds/
+/CloudCafeUnity/CoffeeCraft*/
+/CloudCafeUnity/FrontGrind*/
+/CloudCafeUnity/FrontBrew*/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.log
+*.pdb
+.vs/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local Python/.NET verification output
+__pycache__/
+*.pyc
+/tools/.validation/
+
+# Earlier artwork iterations stay on this workstation.
+/assets/coffee_bags/
+/assets/coffee_bags_realistic/archive/
+/assets/coffee_bags_realistic/gen/*.png
+# Root-level Unity import state is not the standalone cafe project.
+/Packages/
+/ProjectSettings/
+/assets/**/*.meta
+!/assets/coffee_bags_realistic/unity/**/*.meta
+
+# Credentials and machine-local overrides
+.env
+.env.*
+!.env.example

@@ -1,0 +1,11 @@
+{
+  "slug": "mundo_novo",
+  "tool": "built-in image_gen.imagegen",
+  "transparent_background": true,
+  "prompt_path": "prompts/mundo_novo.txt",
+  "source_file": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-1ec2-7300-ae5d-783c7812c07a\\exec-24b7cafd-4ea4-474b-8987-e96fda3408e4.png",
+  "saved_file": "E:\\Project_Coffee\\assets\\coffee_bags_realistic\\unity\\Assets\\CoffeeBagsRealistic\\Sprites\\mundo_novo.png",
+  "review": "Cultivar corrected to Mundo Novo using targeted built-in image edit; origin, notes, taste values and physical packaging visually checked.",
+  "original_source_file": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-1ec2-7300-ae5d-783c7812c07a\\exec-bbde86b0-5d90-41c2-8267-fe889ac3d474.png",
+  "correction_prompt_path": "prompts/mundo_novo-correction.txt"
+}

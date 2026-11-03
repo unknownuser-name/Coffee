@@ -1,0 +1,528 @@
+{
+  "checked_at_utc": "2026-11-03T11:37:58.844804+00:00",
+  "expected_count": 18,
+  "checked_count": 18,
+  "missing": [],
+  "errors": [],
+  "images": [
+    {
+      "id": "bourbon",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/bourbon.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        118,
+        84,
+        891,
+        1483
+      ],
+      "occupied_fraction": 0.646322,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6359.0909,
+      "pivot": [
+        0.49267578,
+        0.03450521
+      ],
+      "nominal_height_m": 0.22,
+      "sha256": "c2750b34de84f86bbc430339b9a478d380982129ed0a71c2cc2029e3363230f2"
+    },
+    {
+      "id": "typica",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/typica.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        146,
+        59,
+        877,
+        1491
+      ],
+      "occupied_fraction": 0.616824,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 1,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 5303.7037,
+      "pivot": [
+        0.49951172,
+        0.02929688
+      ],
+      "nominal_height_m": 0.27,
+      "sha256": "99b1b6b5c47c801ab9b741a565d5478f15ebf5c337b9c1d8cc8f642e6d526778"
+    },
+    {
+      "id": "caturra",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/caturra.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        56,
+        501,
+        975,
+        1334
+      ],
+      "occupied_fraction": 0.45229,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 4627.7778,
+      "pivot": [
+        0.50341797,
+        0.13151042
+      ],
+      "nominal_height_m": 0.18,
+      "sha256": "1941076b9e03f8eb21e1b234ac8174f05c6e5345f8079658031ed380d6e3dac5"
+    },
+    {
+      "id": "catuai",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/catuai.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        86,
+        79,
+        930,
+        1477
+      ],
+      "occupied_fraction": 0.688076,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 1,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 5948.9362,
+      "pivot": [
+        0.49609375,
+        0.03841146
+      ],
+      "nominal_height_m": 0.235,
+      "sha256": "3a92a4d613893656d1be783385dce451a887bfa47fa70cb60b31c2819edfbb29"
+    },
+    {
+      "id": "mundo_novo",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/mundo_novo.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        125,
+        78,
+        899,
+        1482
+      ],
+      "occupied_fraction": 0.645433,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6104.3478,
+      "pivot": [
+        0.5,
+        0.03515625
+      ],
+      "nominal_height_m": 0.23,
+      "sha256": "e150326b3675258fe9cdcf204bef63503f9d47a962303ffb44e3ca80da28398f"
+    },
+    {
+      "id": "pacamara",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/pacamara.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        95,
+        84,
+        932,
+        1474
+      ],
+      "occupied_fraction": 0.693878,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6465.1163,
+      "pivot": [
+        0.50146484,
+        0.04036458
+      ],
+      "nominal_height_m": 0.215,
+      "sha256": "bffce0478932f3e9431f10b9a8de9f5153756b1bcf413aaee15f11420f175c54"
+    },
+    {
+      "id": "maragogipe",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/maragogipe.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        167,
+        75,
+        856,
+        1477
+      ],
+      "occupied_fraction": 0.558662,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 5192.5926,
+      "pivot": [
+        0.49951172,
+        0.03841146
+      ],
+      "nominal_height_m": 0.27,
+      "sha256": "49d1260cb81e5ad2dc4bfae7af593bfcc63cb5675024b084bd08ec9e2f590001"
+    },
+    {
+      "id": "pache",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/pache.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        93,
+        81,
+        925,
+        1467
+      ],
+      "occupied_fraction": 0.688349,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 1,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 5897.8723,
+      "pivot": [
+        0.49707031,
+        0.04492188
+      ],
+      "nominal_height_m": 0.235,
+      "sha256": "4e9f94398b33374632a1b1cae87c62aaa8177cae5ffb01d850f08ab25062f26f"
+    },
+    {
+      "id": "sl28",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/sl28.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        99,
+        76,
+        909,
+        1482
+      ],
+      "occupied_fraction": 0.677538,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6113.0435,
+      "pivot": [
+        0.4921875,
+        0.03515625
+      ],
+      "nominal_height_m": 0.23,
+      "sha256": "79ac5701b325caa222962ed83a74a59fd6c0b134890c1f1ab8fb71867211782b"
+    },
+    {
+      "id": "sl34",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/sl34.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        120,
+        88,
+        904,
+        1471
+      ],
+      "occupied_fraction": 0.648557,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6013.0435,
+      "pivot": [
+        0.5,
+        0.04231771
+      ],
+      "nominal_height_m": 0.23,
+      "sha256": "238c63918de97d120979543bfaf595e6994e081fd3e2cf08d2c7ea59f8d316d2"
+    },
+    {
+      "id": "ruiru_11",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/ruiru_11.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        91,
+        82,
+        927,
+        1486
+      ],
+      "occupied_fraction": 0.713731,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6530.2326,
+      "pivot": [
+        0.49707031,
+        0.03255208
+      ],
+      "nominal_height_m": 0.215,
+      "sha256": "71321eb170184bb781b17dba93b904939d38b07217142ba58278b7eb62511580"
+    },
+    {
+      "id": "batian",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/batian.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        136,
+        71,
+        896,
+        1480
+      ],
+      "occupied_fraction": 0.64032,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6404.5455,
+      "pivot": [
+        0.50390625,
+        0.03645833
+      ],
+      "nominal_height_m": 0.22,
+      "sha256": "dcd20b651a6abbb4df1108a29c28dbf3acfc20cede3b174f4f90074873c7dbd5"
+    },
+    {
+      "id": "gesha",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/gesha.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        142,
+        116,
+        881,
+        1456
+      ],
+      "occupied_fraction": 0.586418,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 1,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 5254.902,
+      "pivot": [
+        0.49951172,
+        0.05208333
+      ],
+      "nominal_height_m": 0.255,
+      "sha256": "81b34d3c92aee84a243fc3f06340999e77a0347dcd9d47a3147cd633e8cde241"
+    },
+    {
+      "id": "villa_sarchi",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/villa_sarchi.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        31,
+        409,
+        999,
+        1268
+      ],
+      "occupied_fraction": 0.494546,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 4772.2222,
+      "pivot": [
+        0.50292969,
+        0.17447917
+      ],
+      "nominal_height_m": 0.18,
+      "sha256": "8d66e716796128eff4f34e124330cde4b5d5b59b068fbaeb28395064a5197a1a"
+    },
+    {
+      "id": "marsellesa",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/marsellesa.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        138,
+        82,
+        879,
+        1482
+      ],
+      "occupied_fraction": 0.625174,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 1,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6086.9565,
+      "pivot": [
+        0.49658203,
+        0.03515625
+      ],
+      "nominal_height_m": 0.23,
+      "sha256": "9a61b4609bd5798020d4935f19fa55540e67f5117904155f8d449f1682410a8e"
+    },
+    {
+      "id": "parainema",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/parainema.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        141,
+        88,
+        864,
+        1447
+      ],
+      "occupied_fraction": 0.588834,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 5329.4118,
+      "pivot": [
+        0.49072266,
+        0.05794271
+      ],
+      "nominal_height_m": 0.255,
+      "sha256": "a2a13bb397853080ef7c0975b4679e429157028ac01fa7635e3ea84ca9bf7c29"
+    },
+    {
+      "id": "yirgacheffe_kurume",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/yirgacheffe_kurume.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        135,
+        68,
+        869,
+        1472
+      ],
+      "occupied_fraction": 0.617428,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 0,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6381.8182,
+      "pivot": [
+        0.49023438,
+        0.04166667
+      ],
+      "nominal_height_m": 0.22,
+      "sha256": "0a1f42fd1b98ab84f478e1ac08e6d32a6f00674ba03a56b12f674c98dcbbd23e"
+    },
+    {
+      "id": "kilimanjaro_bourbon",
+      "sprite": "Assets/CoffeeBagsRealistic/Sprites/kilimanjaro_bourbon.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "foreground_bbox_px": [
+        97,
+        79,
+        926,
+        1471
+      ],
+      "occupied_fraction": 0.673283,
+      "has_true_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 254,
+      "corners_clear_within_1_255": true,
+      "corner_alpha_max": 1,
+      "alpha_quantization_tolerance": 1,
+      "pixels_per_unit": 6052.1739,
+      "pivot": [
+        0.49951172,
+        0.04231771
+      ],
+      "nominal_height_m": 0.23,
+      "sha256": "75554a5b2438e5d38c9178923b48f15ccb4c6e72382510f6dca7f44cc9947ca7"
+    }
+  ],
+  "unity_editor_executed": false,
+  "limitations": [
+    "Unity Editor import and execution have not been run.",
+    "Photorealistic raster cutouts; no new 3D meshes are included.",
+    "Printed text requires visual review of each generated image."
+  ],
+  "passed": true,
+  "preview": "E:\\Project_Coffee\\assets\\coffee_bags_realistic\\preview_realistic_18.png",
+  "unitypackage": {
+    "files": 22,
+    "entries": 26,
+    "source_hashes_match": true,
+    "sha256": "8eb488411c09d8c60ae469abfe4905a729b9ce09144c3b4e44202a14b667dfb1"
+  },
+  "package": "E:\\Project_Coffee\\assets\\coffee_bags_realistic\\CoffeeBags_Realistic_Unity.unitypackage"
+}

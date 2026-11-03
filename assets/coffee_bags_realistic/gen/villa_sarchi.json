@@ -1,0 +1,29 @@
+{
+  "slug": "villa_sarchi",
+  "tool": "builtin image_gen",
+  "prompt": "prompts/villa_sarchi.txt",
+  "native_output": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-54a7-7062-afb0-ec30b0f4d090\\exec-76ab1873-ed12-4aa6-9e09-29ce8c31b588.png",
+  "output": "unity/Assets/CoffeeBagsRealistic/Sprites/villa_sarchi.png",
+  "size": [
+    1024,
+    1536
+  ],
+  "mode": "RGBA",
+  "alpha_extrema": [
+    0,
+    254
+  ],
+  "corner_alpha": 0,
+  "initial_native_output": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-54a7-7062-afb0-ec30b0f4d090\\exec-0696ee75-19bb-4fcd-894d-d89bc87cacf1.png",
+  "initial_preserved": "gen/villa_sarchi_initial.png",
+  "edit": "Builtin image_gen edit: preserve material/printing/text, change physical package into short wide zipper doypack, genuine transparent background.",
+  "body_bbox_alpha128": [
+    32,
+    410,
+    998,
+    1267
+  ],
+  "silhouette_width_height": 1.127,
+  "sha256": "8d66e716796128eff4f34e124330cde4b5d5b59b068fbaeb28395064a5197a1a",
+  "visual_review": "Photoreal thin flexible packaging; real folds/gussets; print follows surface; origin/cultivar/notes/profile/description legible; no vector scene panel."
+}

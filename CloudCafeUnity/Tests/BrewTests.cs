@@ -1,0 +1,6 @@
+using System;
+using CloudCafe.Crafting;
+class BrewTests {
+ static int n;static void Check(bool ok,string why){n++;if(!ok)throw new Exception(why);}
+ static void Main(){var b=new BrewModel();Check(!b.TogglePump(),"pump blocked without basket");Check(!b.Insert(false),"untamped basket blocked");Check(b.Insert(true),"insert prepared basket");b.Turn(20);Check(!b.Locked,"partial turn not locked");b.CupDocked=true;Check(!b.TogglePump(),"pump blocked before lock");b.Turn(20);Check(b.Locked,"full locking arc");b.CupDocked=false;Check(!b.TogglePump(),"pump blocked without cup");b.CupDocked=true;Check(b.TogglePump(),"pump starts");for(int i=0;i<12;i++)b.Step(.05f);Check(b.InCup==0,"preinfusion delay");for(int i=0;i<25;i++)b.Step(.05f);Check(b.InCup>0&&b.InFlight>0,"liquid travels before landing");b.TogglePump();float dose=b.Pumped;for(int i=0;i<10;i++)b.Step(.05f);Check(b.InFlight==0&&Math.Abs(b.InCup-dose)<.001f,"stop still lands last liquid");b.TogglePump();for(int i=0;i<280;i++){b.Step(.05f);Check(Math.Abs(b.Pumped-b.InCup-b.InFlight-b.Spilled)<.002f,"conservation");}Check(b.Complete&&Math.Abs(b.InCup-36)<.002f&&!b.Running,"shot auto stops at 36");b.Reset();Check(!b.Inserted&&!b.Locked&&!b.CupDocked&&b.InCup==0&&!b.Running,"reset");Console.WriteLine("BREW_TESTS_PASSED "+n);}
+}

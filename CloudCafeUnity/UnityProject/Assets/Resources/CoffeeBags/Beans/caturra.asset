@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583da00122996d5796f51b61768dfb0f, type: 3}
+  m_Name: "caturra"
+  m_EditorClassIdentifier: 
+  Id: "caturra"
+  Country: "Colombia"
+  CountryKo: "콜롬비아"
+  Region: "Antioquia"
+  RegionKo: "안티오키아"
+  Variety: "Caturra"
+  VarietyKo: "카투라"
+  Description: "콜롬비아 안티오키아의 산비탈을 담아, 붉은 과일의 산뜻함과 부드러운 단맛을 표현했어요."
+  Acidity: 3
+  Sweetness: 4
+  Body: 3
+  Process: "워시드"
+  Roast: "미디엄 라이트"
+  NetWeightGrams: 250
+  SourceUrl: "https://sucafina.com/na/offerings/luz-estela-caturra-fw"
+  TastingNotes:
+  - "붉은 베리"
+  - "초콜릿"
+  - "크림"
+  BagSprite: {fileID: 21300000, guid: c79077f629b4ab7023a58e73aa48bb6d, type: 3}

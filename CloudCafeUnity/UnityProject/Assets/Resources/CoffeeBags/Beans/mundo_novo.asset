@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583da00122996d5796f51b61768dfb0f, type: 3}
+  m_Name: "mundo_novo"
+  m_EditorClassIdentifier: 
+  Id: "mundo_novo"
+  Country: "Brazil"
+  CountryKo: "브라질"
+  Region: "Mantiqueira de Minas"
+  RegionKo: "만치케이라 지 미나스"
+  Variety: "Mundo Novo"
+  VarietyKo: "문도 노보"
+  Description: "브라질 만치케이라의 깊은 계곡을 담아, 코코아와 말린 과일의 차분한 단맛을 표현했어요."
+  Acidity: 2
+  Sweetness: 4
+  Body: 4
+  Process: "내추럴"
+  Roast: "미디엄"
+  NetWeightGrams: 250
+  SourceUrl: "https://sucafina.com/na/offerings/fazenda-pedra-preta-natural"
+  TastingNotes:
+  - "코코아"
+  - "구운 견과"
+  - "말린 과일"
+  BagSprite: {fileID: 21300000, guid: 04fd35246d0a80ce4674d723ef4e3170, type: 3}

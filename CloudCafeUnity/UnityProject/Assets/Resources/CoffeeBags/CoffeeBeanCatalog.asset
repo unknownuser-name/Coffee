@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cefa3fcabefad81e9890ed84bea5f554, type: 3}
+  m_Name: "CoffeeBeanCatalog"
+  m_EditorClassIdentifier: 
+  Beans:
+  - {fileID: 11400000, guid: 38cd12955dfe85a2be4c706c71f07f17, type: 2}
+  - {fileID: 11400000, guid: c168397513766704998b63bc0e90d9c8, type: 2}
+  - {fileID: 11400000, guid: 38cb525ea849b4b78febdcfd21124480, type: 2}
+  - {fileID: 11400000, guid: 271d8967975d4fd8e03dcca0ef35c977, type: 2}
+  - {fileID: 11400000, guid: 48c32d89aa32ed85e110f1d17f7e527d, type: 2}
+  - {fileID: 11400000, guid: 3fc32000fc2b0cfaf7c64c3b4ee6e586, type: 2}
+  - {fileID: 11400000, guid: d5b838d4d406ea42e282283aa435d573, type: 2}
+  - {fileID: 11400000, guid: 4d02d72b1ca9e1b9e78fdb7d152e94e8, type: 2}
+  - {fileID: 11400000, guid: 8f4c9a222c077f5c09246557fcfdc27e, type: 2}
+  - {fileID: 11400000, guid: 59687281f62f04afec81091b2921742f, type: 2}
+  - {fileID: 11400000, guid: 319ee8a611887cee36c6d491bf85f52e, type: 2}
+  - {fileID: 11400000, guid: bdb33bd912e62d6fee9acee9707a7fe0, type: 2}
+  - {fileID: 11400000, guid: 80b1736c39925740d4cad137d655e53b, type: 2}
+  - {fileID: 11400000, guid: f80a0d10b596e0eeef90887439b5379c, type: 2}
+  - {fileID: 11400000, guid: 4e33b19691bf73fc1131f52d3ec5c269, type: 2}
+  - {fileID: 11400000, guid: 65ac1149cfba9a35e6d9d12f8597a34f, type: 2}
+  - {fileID: 11400000, guid: 1ca55bd8a3c6a1398d0fdf042fca338d, type: 2}
+  - {fileID: 11400000, guid: 1788c12331b43e1191f202a901ac5dc3, type: 2}

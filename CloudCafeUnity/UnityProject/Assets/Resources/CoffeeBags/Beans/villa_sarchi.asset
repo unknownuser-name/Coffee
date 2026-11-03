@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 583da00122996d5796f51b61768dfb0f, type: 3}
+  m_Name: "villa_sarchi"
+  m_EditorClassIdentifier: 
+  Id: "villa_sarchi"
+  Country: "Costa Rica"
+  CountryKo: "코스타리카"
+  Region: "West Valley"
+  RegionKo: "웨스트 밸리"
+  Variety: "Villa Sarchi"
+  VarietyKo: "비야 사르치"
+  Description: "코스타리카 웨스트 밸리의 햇살 든 산길을 담아, 꿀과 살구의 둥근 단맛을 표현했어요."
+  Acidity: 3
+  Sweetness: 5
+  Body: 3
+  Process: "허니"
+  Roast: "미디엄 라이트"
+  NetWeightGrams: 250
+  SourceUrl: "https://www.horshamcoffeeroaster.co.uk/blogs/news/coffee-of-the-month-costa-rica-la-isla-yellow-honey"
+  TastingNotes:
+  - "꿀"
+  - "살구"
+  - "시트러스"
+  BagSprite: {fileID: 21300000, guid: ddd7132f647684337989f52b75b5da48, type: 3}

@@ -1,0 +1,26 @@
+{
+  "slug": "marsellesa",
+  "tool": "builtin image_gen",
+  "prompt": "prompts/marsellesa.txt",
+  "native_output": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-54a7-7062-afb0-ec30b0f4d090\\exec-66f63147-2adb-4aab-8c7a-8fbf4107b833.png",
+  "output": "unity/Assets/CoffeeBagsRealistic/Sprites/marsellesa.png",
+  "size": [
+    1024,
+    1536
+  ],
+  "mode": "RGBA",
+  "alpha_extrema": [
+    0,
+    254
+  ],
+  "corner_alpha": 0,
+  "body_bbox_alpha128": [
+    138,
+    83,
+    878,
+    1481
+  ],
+  "silhouette_width_height": 0.529,
+  "sha256": "9a61b4609bd5798020d4935f19fa55540e67f5117904155f8d449f1682410a8e",
+  "visual_review": "Photoreal thin flexible packaging; real folds/gussets; print follows surface; origin/cultivar/notes/profile/description legible; no vector scene panel."
+}

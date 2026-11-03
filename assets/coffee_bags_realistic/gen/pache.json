@@ -1,0 +1,9 @@
+{
+  "slug": "pache",
+  "tool": "built-in image_gen.imagegen",
+  "transparent_background": true,
+  "prompt_path": "prompts/pache.txt",
+  "source_file": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-1ec2-7300-ae5d-783c7812c07a\\exec-a26387be-3407-4097-b040-cce5891ce3a7.png",
+  "saved_file": "E:\\Project_Coffee\\assets\\coffee_bags_realistic\\unity\\Assets\\CoffeeBagsRealistic\\Sprites\\pache.png",
+  "review": "Physical packaging, origin, cultivar and taste labels visually checked."
+}

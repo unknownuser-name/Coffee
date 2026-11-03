@@ -1,0 +1,188 @@
+{
+    "passed": true,
+    "count": 18,
+    "unity_version": "6000.6.5f1",
+    "resource_path": "CoffeeBags/CoffeeBeanCatalog",
+    "items": [
+        {
+            "id": "bourbon",
+            "definition": "Assets/Resources/CoffeeBags/Beans/bourbon.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/bourbon.png",
+            "sprite_guid": "ab0357300f8d4dbd9051ca3550fbe321",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6359.0908203125
+        },
+        {
+            "id": "typica",
+            "definition": "Assets/Resources/CoffeeBags/Beans/typica.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/typica.png",
+            "sprite_guid": "34f5713c70510980012903dcdd8526f5",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 5303.70361328125
+        },
+        {
+            "id": "caturra",
+            "definition": "Assets/Resources/CoffeeBags/Beans/caturra.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/caturra.png",
+            "sprite_guid": "c79077f629b4ab7023a58e73aa48bb6d",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 4627.77783203125
+        },
+        {
+            "id": "catuai",
+            "definition": "Assets/Resources/CoffeeBags/Beans/catuai.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/catuai.png",
+            "sprite_guid": "bc9a6915ad82afe6be11c17e81996021",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 5948.93603515625
+        },
+        {
+            "id": "mundo_novo",
+            "definition": "Assets/Resources/CoffeeBags/Beans/mundo_novo.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/mundo_novo.png",
+            "sprite_guid": "04fd35246d0a80ce4674d723ef4e3170",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6104.34765625
+        },
+        {
+            "id": "pacamara",
+            "definition": "Assets/Resources/CoffeeBags/Beans/pacamara.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/pacamara.png",
+            "sprite_guid": "7d832225dbed32941ef70a38d8787b6c",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6465.1162109375
+        },
+        {
+            "id": "maragogipe",
+            "definition": "Assets/Resources/CoffeeBags/Beans/maragogipe.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/maragogipe.png",
+            "sprite_guid": "322e49c2e7f1cbf0e50641a3cfb62ea4",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 5192.5927734375
+        },
+        {
+            "id": "pache",
+            "definition": "Assets/Resources/CoffeeBags/Beans/pache.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/pache.png",
+            "sprite_guid": "e2fe5f112eb1c666cd96d9acf9ec1de7",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 5897.8720703125
+        },
+        {
+            "id": "sl28",
+            "definition": "Assets/Resources/CoffeeBags/Beans/sl28.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/sl28.png",
+            "sprite_guid": "4c838fca8e069edf61ff1a384a587ce1",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6113.04345703125
+        },
+        {
+            "id": "sl34",
+            "definition": "Assets/Resources/CoffeeBags/Beans/sl34.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/sl34.png",
+            "sprite_guid": "82208020628eac6ee802c49bfe8210e3",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6013.04345703125
+        },
+        {
+            "id": "ruiru_11",
+            "definition": "Assets/Resources/CoffeeBags/Beans/ruiru_11.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/ruiru_11.png",
+            "sprite_guid": "4202681df8ee085b9dd348bc11690682",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6530.232421875
+        },
+        {
+            "id": "batian",
+            "definition": "Assets/Resources/CoffeeBags/Beans/batian.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/batian.png",
+            "sprite_guid": "792e3f90636029e89237b3d63c46dfdc",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6404.54541015625
+        },
+        {
+            "id": "gesha",
+            "definition": "Assets/Resources/CoffeeBags/Beans/gesha.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/gesha.png",
+            "sprite_guid": "177c1a58f4cdd93519c640f4480e0557",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 5254.90185546875
+        },
+        {
+            "id": "villa_sarchi",
+            "definition": "Assets/Resources/CoffeeBags/Beans/villa_sarchi.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/villa_sarchi.png",
+            "sprite_guid": "ddd7132f647684337989f52b75b5da48",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 4772.22216796875
+        },
+        {
+            "id": "marsellesa",
+            "definition": "Assets/Resources/CoffeeBags/Beans/marsellesa.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/marsellesa.png",
+            "sprite_guid": "3ac51556069ad5aeb92e109f75b8163e",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6086.95654296875
+        },
+        {
+            "id": "parainema",
+            "definition": "Assets/Resources/CoffeeBags/Beans/parainema.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/parainema.png",
+            "sprite_guid": "3f7a97b1b3694875c4df3f2f299db68d",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 5329.41162109375
+        },
+        {
+            "id": "yirgacheffe_kurume",
+            "definition": "Assets/Resources/CoffeeBags/Beans/yirgacheffe_kurume.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/yirgacheffe_kurume.png",
+            "sprite_guid": "264f047c157b3131dd4d37ec4066abae",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6381.818359375
+        },
+        {
+            "id": "kilimanjaro_bourbon",
+            "definition": "Assets/Resources/CoffeeBags/Beans/kilimanjaro_bourbon.asset",
+            "sprite": "Assets/Resources/CoffeeBags/Sprites/kilimanjaro_bourbon.png",
+            "sprite_guid": "9cf0b5b5f13e21def0b972ac049d3220",
+            "sprite_file_id": 21300000,
+            "width": 1024,
+            "height": 1536,
+            "pixels_per_unit": 6052.173828125
+        }
+    ]
+}

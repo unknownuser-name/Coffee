@@ -1,0 +1,26 @@
+{
+  "slug": "ruiru_11",
+  "tool": "builtin image_gen",
+  "prompt": "prompts/ruiru_11.txt",
+  "native_output": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-54a7-7062-afb0-ec30b0f4d090\\exec-ee72c4aa-5b15-4668-bff3-3f87f68833da.png",
+  "output": "unity/Assets/CoffeeBagsRealistic/Sprites/ruiru_11.png",
+  "size": [
+    1024,
+    1536
+  ],
+  "mode": "RGBA",
+  "alpha_extrema": [
+    0,
+    254
+  ],
+  "corner_alpha": 0,
+  "body_bbox_alpha128": [
+    92,
+    83,
+    926,
+    1485
+  ],
+  "silhouette_width_height": 0.595,
+  "sha256": "71321eb170184bb781b17dba93b904939d38b07217142ba58278b7eb62511580",
+  "visual_review": "Photoreal thin flexible packaging; real folds/gussets; print follows surface; origin/cultivar/notes/profile/description legible; no vector scene panel."
+}

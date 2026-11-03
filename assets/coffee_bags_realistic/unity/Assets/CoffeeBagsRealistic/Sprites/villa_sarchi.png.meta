@@ -1,0 +1,36 @@
+fileFormatVersion: 2
+guid: 96e36f216a6b0c9e3a472045da925a99
+TextureImporter:
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+  isReadable: 0
+  streamingMipmaps: 0
+  textureFormat: 1
+  maxTextureSize: 4096
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  textureCompression: 0
+  alphaSource: 1
+  alphaIsTransparency: 1
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 9
+  spritePivot: {x: 0.50292969, y: 0.17447917}
+  spritePixelsToUnits: 4772.2222
+  textureType: 8
+  textureShape: 1
+  userData: Realistic coffee cutout; imagegen original pixels preserved
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,981 @@
+{
+  "schema_version": 2,
+  "verified_on": "2026-11-03",
+  "display_priority": [
+    "country",
+    "region",
+    "variety",
+    "tasting_notes",
+    "taste"
+  ],
+  "profile_scale": {
+    "min": 1,
+    "max": 5,
+    "labels_ko": {
+      "acidity": "산미",
+      "sweetness": "단맛",
+      "body": "바디"
+    },
+    "basis": "illustrative game profile; varies by lot/process/roast"
+  },
+  "notes_ko": [
+    "국가와 산지를 전면에 표시하는 카페 게임용 가상 제품 18종이다. 실제 유통 브랜드·농장 상품·인증 로트의 복제품이 아니다.",
+    "각 품종의 실제 지역 재배 사례는 생산자·수출입업자 등의 1차 자료로 확인했다. 혼합 품종 로트도 재배 근거로 포함되며, 해당 로트를 단일 품종 제품이라고 주장하지 않는다.",
+    "향미 3종과 산미·단맛·바디의 1~5 지표는 산지 자료를 참고해 연출한 대략적인 게임 프로필이다. 측정값이나 품종 공통의 고정된 특성이 아니며 로트·가공·로스팅에 따라 달라진다.",
+    "가공법과 로스팅은 가상 제품을 위한 선택이다. 참고 자료와 다른 경우에도 특정 실물 로트와 동일하다는 뜻이 아니다.",
+    "예가체프·안티오키아·킬리만자로는 산지 이름이다. 각각 쿠루메·카투라·부르봉과 조합했으며, 'Heirloom'을 하나의 단일 품종명으로 쓰지 않았다.",
+    "디자인 모티프는 산지의 산·호수·구릉·산림 등 자연 경관을 단순화한다. 부족·종교·성스러운 상징의 진본 문양을 주장하지 않는다."
+  ],
+  "products": [
+    {
+      "slug": "bourbon",
+      "country": "Rwanda",
+      "country_ko": "르완다",
+      "region": "Nyamasheke",
+      "region_ko": "니야마셰케",
+      "origin_label_en": "Rwanda / Nyamasheke",
+      "origin_label_ko": "르완다 니야마셰케",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Red berry",
+        "Citrus",
+        "Sweet spice"
+      ],
+      "tasting_notes_ko": [
+        "붉은 베리",
+        "시트러스",
+        "달콤한 향신료"
+      ],
+      "taste": {
+        "acidity": 4,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "르완다 니야마셰케의 구릉을 담아, 붉은 베리와 은은한 향신료의 여운을 표현했어요.",
+      "description_en": "A Nyamasheke-inspired washed Bourbon with red-fruit brightness and a gently spiced finish.",
+      "design_motif": "Layered green hills descending toward Lake Kivu; quiet horizontal lake ripples.",
+      "source_url": "https://www.sucafina.com/NA/offerings/karambi-fw-impact-beyond-flagship",
+      "variety": {
+        "name": "Bourbon",
+        "name_ko": "부르봉",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/bourbon"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Rwanda Nyamasheke Bourbon",
+      "product_name_ko": "르완다 니야마셰케 부르봉",
+      "net_weight_g": 250,
+      "shape_id": "roll_top",
+      "dimensions_m": [
+        0.15,
+        0.22,
+        0.075
+      ],
+      "front_description_ko": "붉은 베리의 향과 시트러스의 은은한 여운.",
+      "back_description_ko": "르완다 니야마셰케의 구릉을 담아, 붉은 베리와 은은한 향신료의 여운을 표현했어요."
+    },
+    {
+      "slug": "typica",
+      "country": "Ecuador",
+      "country_ko": "에콰도르",
+      "region": "Loja",
+      "region_ko": "로하",
+      "origin_label_en": "Ecuador / Loja",
+      "origin_label_ko": "에콰도르 로하",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Stone fruit",
+        "Citrus",
+        "Chocolate"
+      ],
+      "tasting_notes_ko": [
+        "핵과일",
+        "시트러스",
+        "초콜릿"
+      ],
+      "taste": {
+        "acidity": 3,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "에콰도르 로하의 안데스 능선을 따라, 핵과일과 초콜릿이 어우러지는 맛을 표현했어요.",
+      "description_en": "A Loja-inspired washed Typica balancing stone-fruit notes, citrus and a chocolate finish.",
+      "design_motif": "Stepped Andean ridgelines and pale cloud bands above a winding valley.",
+      "source_url": "https://interamericancoffee.de/ecuador-loja/",
+      "variety": {
+        "name": "Typica",
+        "name_ko": "티피카",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/typica"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Ecuador Loja Typica",
+      "product_name_ko": "에콰도르 로하 티피카",
+      "net_weight_g": 250,
+      "shape_id": "tall_gusset",
+      "dimensions_m": [
+        0.115,
+        0.27,
+        0.065
+      ],
+      "front_description_ko": "핵과일의 향과 시트러스의 은은한 여운.",
+      "back_description_ko": "에콰도르 로하의 안데스 능선을 따라, 핵과일과 초콜릿이 어우러지는 맛을 표현했어요."
+    },
+    {
+      "slug": "caturra",
+      "country": "Colombia",
+      "country_ko": "콜롬비아",
+      "region": "Antioquia",
+      "region_ko": "안티오키아",
+      "origin_label_en": "Colombia / Antioquia",
+      "origin_label_ko": "콜롬비아 안티오키아",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Red berry",
+        "Chocolate",
+        "Cream"
+      ],
+      "tasting_notes_ko": [
+        "붉은 베리",
+        "초콜릿",
+        "크림"
+      ],
+      "taste": {
+        "acidity": 3,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "콜롬비아 안티오키아의 산비탈을 담아, 붉은 과일의 산뜻함과 부드러운 단맛을 표현했어요.",
+      "description_en": "An Antioquia-inspired washed Caturra with red-fruit brightness and a rounded, sweet finish.",
+      "design_motif": "Andean coffee slopes, curved planted rows and small pitched-roof farmhouses.",
+      "source_url": "https://sucafina.com/na/offerings/luz-estela-caturra-fw",
+      "additional_sources": [
+        {
+          "url": "https://sucafina.com/na/offerings/isaias-manco-antioquia-fw",
+          "supports": "Regional washed cup reference: berries, chocolate and cream; this real source lot contains Castillo and Caturra."
+        }
+      ],
+      "variety": {
+        "name": "Caturra",
+        "name_ko": "카투라",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/caturra"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Colombia Antioquia Caturra",
+      "product_name_ko": "콜롬비아 안티오키아 카투라",
+      "net_weight_g": 250,
+      "shape_id": "squat_doypack",
+      "dimensions_m": [
+        0.17,
+        0.18,
+        0.08
+      ],
+      "front_description_ko": "안티오키아의 산뜻한 베리와 부드러운 크림.",
+      "back_description_ko": "콜롬비아 안티오키아의 산비탈을 담아, 붉은 과일의 산뜻함과 부드러운 단맛을 표현했어요."
+    },
+    {
+      "slug": "catuai",
+      "country": "Brazil",
+      "country_ko": "브라질",
+      "region": "Cerrado Mineiro",
+      "region_ko": "세하두 미네이루",
+      "origin_label_en": "Brazil / Cerrado Mineiro",
+      "origin_label_ko": "브라질 세하두 미네이루",
+      "process_en": "Natural",
+      "process_ko": "내추럴",
+      "roast_en": "Medium",
+      "roast_ko": "미디엄",
+      "tasting_notes_en": [
+        "Milk chocolate",
+        "Roasted nut",
+        "Caramel"
+      ],
+      "tasting_notes_ko": [
+        "밀크 초콜릿",
+        "구운 견과",
+        "캐러멜"
+      ],
+      "taste": {
+        "acidity": 2,
+        "sweetness": 4,
+        "body": 4
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "브라질 세하두의 넓은 지평선을 담아, 고소한 견과와 초콜릿의 묵직한 단맛을 표현했어요.",
+      "description_en": "A Cerrado-inspired natural Catuai with nutty chocolate sweetness and a full, mellow body.",
+      "design_motif": "A broad savanna horizon, low sun disc and a single branching savanna tree.",
+      "source_url": "https://sucafina.com/na/offerings/cerrado-bioma-yellow-catuai-natural",
+      "variety": {
+        "name": "Catuai",
+        "name_ko": "카투아이",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/catuai"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Brazil Cerrado Mineiro Catuai",
+      "product_name_ko": "브라질 세하두 미네이루 카투아이",
+      "net_weight_g": 250,
+      "shape_id": "flat_bottom",
+      "dimensions_m": [
+        0.145,
+        0.235,
+        0.075
+      ],
+      "front_description_ko": "밀크 초콜릿의 향과 구운 견과의 은은한 여운.",
+      "back_description_ko": "브라질 세하두의 넓은 지평선을 담아, 고소한 견과와 초콜릿의 묵직한 단맛을 표현했어요."
+    },
+    {
+      "slug": "mundo_novo",
+      "country": "Brazil",
+      "country_ko": "브라질",
+      "region": "Mantiqueira de Minas",
+      "region_ko": "만치케이라 지 미나스",
+      "origin_label_en": "Brazil / Mantiqueira de Minas",
+      "origin_label_ko": "브라질 만치케이라 지 미나스",
+      "process_en": "Natural",
+      "process_ko": "내추럴",
+      "roast_en": "Medium",
+      "roast_ko": "미디엄",
+      "tasting_notes_en": [
+        "Cocoa",
+        "Roasted nut",
+        "Dried fruit"
+      ],
+      "tasting_notes_ko": [
+        "코코아",
+        "구운 견과",
+        "말린 과일"
+      ],
+      "taste": {
+        "acidity": 2,
+        "sweetness": 4,
+        "body": 4
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "브라질 만치케이라의 깊은 계곡을 담아, 코코아와 말린 과일의 차분한 단맛을 표현했어요.",
+      "description_en": "A Mantiqueira-inspired natural Mundo Novo with cocoa, dried-fruit sweetness and a rounded body.",
+      "design_motif": "Overlapping blue-green mountain ridges, deep valleys and a slender valley river.",
+      "source_url": "https://sucafina.com/na/offerings/fazenda-pedra-preta-natural",
+      "variety": {
+        "name": "Mundo Novo",
+        "name_ko": "문도 노보",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/mundo-novo"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Brazil Mantiqueira de Minas Mundo Novo",
+      "product_name_ko": "브라질 만치케이라 지 미나스 문도 노보",
+      "net_weight_g": 250,
+      "shape_id": "gable_top",
+      "dimensions_m": [
+        0.145,
+        0.23,
+        0.08
+      ],
+      "front_description_ko": "코코아의 향과 구운 견과의 은은한 여운.",
+      "back_description_ko": "브라질 만치케이라의 깊은 계곡을 담아, 코코아와 말린 과일의 차분한 단맛을 표현했어요."
+    },
+    {
+      "slug": "pacamara",
+      "country": "El Salvador",
+      "country_ko": "엘살바도르",
+      "region": "Chalatenango",
+      "region_ko": "찰라테낭고",
+      "origin_label_en": "El Salvador / Chalatenango",
+      "origin_label_ko": "엘살바도르 찰라테낭고",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Plum",
+        "White grape",
+        "Brown sugar"
+      ],
+      "tasting_notes_ko": [
+        "자두",
+        "청포도",
+        "흑설탕"
+      ],
+      "taste": {
+        "acidity": 4,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "엘살바도르 찰라테낭고의 소나무 산길을 담아, 자두와 포도 같은 풍성한 향을 표현했어요.",
+      "description_en": "A Chalatenango-inspired washed Pacamara with plum, grape-like fruit and a sugar-sweet finish.",
+      "design_motif": "Slender pine silhouettes on a steep mountain trail and angular highland ridges.",
+      "source_url": "https://projectorigin.coffee/finca-milaydi-best-of-el-salvador-champion-2017/",
+      "additional_sources": [
+        {
+          "url": "https://shop.coavacoffee.com/products/chalatenango-pacamara-semi-washed",
+          "supports": "Regional Pacamara fruit-and-sugar reference; this real source is semi-washed rather than the selected game process."
+        }
+      ],
+      "variety": {
+        "name": "Pacamara",
+        "name_ko": "파카마라",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/pacamara"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "El Salvador Chalatenango Pacamara",
+      "product_name_ko": "엘살바도르 찰라테낭고 파카마라",
+      "net_weight_g": 250,
+      "shape_id": "pillow",
+      "dimensions_m": [
+        0.16,
+        0.215,
+        0.048
+      ],
+      "front_description_ko": "자두의 향과 청포도의 은은한 여운.",
+      "back_description_ko": "엘살바도르 찰라테낭고의 소나무 산길을 담아, 자두와 포도 같은 풍성한 향을 표현했어요."
+    },
+    {
+      "slug": "maragogipe",
+      "country": "Guatemala",
+      "country_ko": "과테말라",
+      "region": "Coban",
+      "region_ko": "코반",
+      "origin_label_en": "Guatemala / Coban",
+      "origin_label_ko": "과테말라 코반",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Wildflower",
+        "Orange",
+        "Chocolate"
+      ],
+      "tasting_notes_ko": [
+        "들꽃",
+        "오렌지",
+        "초콜릿"
+      ],
+      "taste": {
+        "acidity": 3,
+        "sweetness": 3,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "과테말라 코반의 안개 낀 숲을 담아, 들꽃 향과 오렌지 뒤에 남는 초콜릿을 표현했어요.",
+      "description_en": "A Coban-inspired Maragogipe with gentle floral aromas, orange and a chocolate finish.",
+      "design_motif": "Humid forest canopy, fern silhouettes and soft horizontal bands of mountain mist.",
+      "source_url": "https://kaffeejager.shop/en",
+      "additional_sources": [
+        {
+          "url": "https://kaffeejager.shop/en/products/maragogipe-400gr",
+          "supports": "Producer's own Maragogipe cup reference: wildflowers, orange and chocolate."
+        }
+      ],
+      "process_source_status": "Game design selection; the source confirms growing location and variety but does not explicitly specify this product's processing method.",
+      "variety": {
+        "name": "Maragogipe",
+        "name_ko": "마라고지페",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/maragogipe"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Guatemala Coban Maragogipe",
+      "product_name_ko": "과테말라 코반 마라고지페",
+      "net_weight_g": 250,
+      "shape_id": "tall_gusset",
+      "dimensions_m": [
+        0.115,
+        0.27,
+        0.065
+      ],
+      "front_description_ko": "들꽃의 향과 오렌지의 은은한 여운.",
+      "back_description_ko": "과테말라 코반의 안개 낀 숲을 담아, 들꽃 향과 오렌지 뒤에 남는 초콜릿을 표현했어요."
+    },
+    {
+      "slug": "pache",
+      "country": "Guatemala",
+      "country_ko": "과테말라",
+      "region": "Santa Rosa",
+      "region_ko": "산타로사",
+      "origin_label_en": "Guatemala / Santa Rosa",
+      "origin_label_ko": "과테말라 산타로사",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Red apple",
+        "Caramel",
+        "Cocoa"
+      ],
+      "tasting_notes_ko": [
+        "붉은 사과",
+        "캐러멜",
+        "코코아"
+      ],
+      "taste": {
+        "acidity": 3,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "과테말라 산타로사의 완만한 산등성이를 담아, 사과와 캐러멜의 편안한 단맛을 표현했어요.",
+      "description_en": "A Santa Rosa-inspired washed Pache with apple-like acidity, caramel sweetness and a cocoa finish.",
+      "design_motif": "Low volcanic highland ridges with broad coffee-leaf silhouettes and curved planted rows.",
+      "source_url": "https://static1.squarespace.com/static/51d3052de4b001d5c138c4f7/t/5efe28643930f0206b7e934c/1593714789614/IWCAChapterMemberCoffeeAvailabilityList_June2020v7.pdf",
+      "additional_sources": [
+        {
+          "url": "https://bewmcoffee.com/pages/about-our-coffee",
+          "supports": "Roaster's own Santa Rosa washed Red Bourbon/Pache cup reference: apple and caramel-like sweetness."
+        }
+      ],
+      "variety": {
+        "name": "Pache",
+        "name_ko": "파체",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/pache"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Guatemala Santa Rosa Pache",
+      "product_name_ko": "과테말라 산타로사 파체",
+      "net_weight_g": 250,
+      "shape_id": "flat_bottom",
+      "dimensions_m": [
+        0.145,
+        0.235,
+        0.075
+      ],
+      "front_description_ko": "붉은 사과의 향과 캐러멜의 은은한 여운.",
+      "back_description_ko": "과테말라 산타로사의 완만한 산등성이를 담아, 사과와 캐러멜의 편안한 단맛을 표현했어요."
+    },
+    {
+      "slug": "sl28",
+      "country": "Kenya",
+      "country_ko": "케냐",
+      "region": "Kirinyaga",
+      "region_ko": "키리냐가",
+      "origin_label_en": "Kenya / Kirinyaga",
+      "origin_label_ko": "케냐 키리냐가",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Blackcurrant",
+        "Citrus",
+        "Black tea"
+      ],
+      "tasting_notes_ko": [
+        "블랙커런트",
+        "시트러스",
+        "홍차"
+      ],
+      "taste": {
+        "acidity": 5,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "케냐 키리냐가의 설산과 커피밭을 담아, 진한 베리와 시트러스의 또렷한 인상을 표현했어요.",
+      "description_en": "A Kirinyaga-inspired washed SL28 with vivid berry and citrus notes and a tea-like finish.",
+      "design_motif": "Twin snow-tipped Mount Kenya peaks above fan-shaped coffee rows and cool foothills.",
+      "source_url": "https://sucafina.com/na/offerings/kiri-kirinyaga-aa",
+      "additional_sources": [
+        {
+          "url": "https://sucafina.com/na/offerings/karani-kirinyaga-ab",
+          "supports": "Regional washed SL28/SL34 cup reference: sweet florals, black tea and citrus."
+        }
+      ],
+      "variety": {
+        "name": "SL28",
+        "name_ko": "SL28",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/sl28"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Kenya Kirinyaga SL28",
+      "product_name_ko": "케냐 키리냐가 SL28",
+      "net_weight_g": 250,
+      "shape_id": "gable_top",
+      "dimensions_m": [
+        0.145,
+        0.23,
+        0.08
+      ],
+      "front_description_ko": "블랙커런트의 향과 시트러스의 은은한 여운.",
+      "back_description_ko": "케냐 키리냐가의 설산과 커피밭을 담아, 진한 베리와 시트러스의 또렷한 인상을 표현했어요."
+    },
+    {
+      "slug": "sl34",
+      "country": "Kenya",
+      "country_ko": "케냐",
+      "region": "Nyeri",
+      "region_ko": "니에리",
+      "origin_label_en": "Kenya / Nyeri",
+      "origin_label_ko": "케냐 니에리",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Blackberry",
+        "Red grape",
+        "Brown sugar"
+      ],
+      "tasting_notes_ko": [
+        "블랙베리",
+        "적포도",
+        "흑설탕"
+      ],
+      "taste": {
+        "acidity": 4,
+        "sweetness": 4,
+        "body": 4
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "케냐 니에리의 붉은 흙과 산기슭을 담아, 짙은 베리와 포도의 풍성한 질감을 표현했어요.",
+      "description_en": "A Nyeri-inspired washed SL34 with deep berry fruit, grape-like sweetness and a rounded body.",
+      "design_motif": "Red-earth contour furrows, layered foothills and a distant Mount Kenya profile.",
+      "source_url": "https://sucafina.com/emea/offerings/kieni-nyeri-aa",
+      "variety": {
+        "name": "SL34",
+        "name_ko": "SL34",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/sl34"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Kenya Nyeri SL34",
+      "product_name_ko": "케냐 니에리 SL34",
+      "net_weight_g": 250,
+      "shape_id": "doypack",
+      "dimensions_m": [
+        0.135,
+        0.23,
+        0.07
+      ],
+      "front_description_ko": "블랙베리의 향과 적포도의 은은한 여운.",
+      "back_description_ko": "케냐 니에리의 붉은 흙과 산기슭을 담아, 짙은 베리와 포도의 풍성한 질감을 표현했어요."
+    },
+    {
+      "slug": "ruiru_11",
+      "country": "Kenya",
+      "country_ko": "케냐",
+      "region": "Kiambu",
+      "region_ko": "키암부",
+      "origin_label_en": "Kenya / Kiambu",
+      "origin_label_ko": "케냐 키암부",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Blackcurrant",
+        "Sweet floral",
+        "Citrus"
+      ],
+      "tasting_notes_ko": [
+        "블랙커런트",
+        "달콤한 꽃향",
+        "시트러스"
+      ],
+      "taste": {
+        "acidity": 4,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "케냐 키암부의 초록 구릉을 담아, 블랙커런트와 은은한 꽃향이 어우러지는 맛을 표현했어요.",
+      "description_en": "A Kiambu-inspired washed Ruiru 11 with blackcurrant, gentle florals and bright citrus.",
+      "design_motif": "Undulating green coffee rows, a wide shade-tree canopy and pale highland clouds.",
+      "source_url": "https://sucafina.com/na/offerings/tuniuru-farm-ab",
+      "variety": {
+        "name": "Ruiru 11",
+        "name_ko": "루이루 11",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/ruiru-11"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Kenya Kiambu Ruiru 11",
+      "product_name_ko": "케냐 키암부 루이루 11",
+      "net_weight_g": 250,
+      "shape_id": "pillow",
+      "dimensions_m": [
+        0.16,
+        0.215,
+        0.048
+      ],
+      "front_description_ko": "블랙커런트의 향과 달콤한 꽃향의 은은한 여운.",
+      "back_description_ko": "케냐 키암부의 초록 구릉을 담아, 블랙커런트와 은은한 꽃향이 어우러지는 맛을 표현했어요."
+    },
+    {
+      "slug": "batian",
+      "country": "Kenya",
+      "country_ko": "케냐",
+      "region": "Meru",
+      "region_ko": "메루",
+      "origin_label_en": "Kenya / Meru",
+      "origin_label_ko": "케냐 메루",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Citrus",
+        "White grape",
+        "Black tea"
+      ],
+      "tasting_notes_ko": [
+        "시트러스",
+        "청포도",
+        "홍차"
+      ],
+      "taste": {
+        "acidity": 4,
+        "sweetness": 3,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "케냐 메루의 동쪽 산자락을 담아, 시트러스와 청포도 뒤에 남는 홍차의 여운을 표현했어요.",
+      "description_en": "A Meru-inspired washed Batian with citrus, white-grape notes and a clean tea-like finish.",
+      "design_motif": "Eastern Mount Kenya foothill contours, a rising sun and narrow streams between coffee gardens.",
+      "source_url": "https://sucafina.com/apac/offerings/ngonyi-meru-aa",
+      "variety": {
+        "name": "Batian",
+        "name_ko": "바티안",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/batian"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Kenya Meru Batian",
+      "product_name_ko": "케냐 메루 바티안",
+      "net_weight_g": 250,
+      "shape_id": "roll_top",
+      "dimensions_m": [
+        0.15,
+        0.22,
+        0.075
+      ],
+      "front_description_ko": "시트러스의 향과 청포도의 은은한 여운.",
+      "back_description_ko": "케냐 메루의 동쪽 산자락을 담아, 시트러스와 청포도 뒤에 남는 홍차의 여운을 표현했어요."
+    },
+    {
+      "slug": "gesha",
+      "country": "Panama",
+      "country_ko": "파나마",
+      "region": "Boquete",
+      "region_ko": "보케테",
+      "origin_label_en": "Panama / Boquete",
+      "origin_label_ko": "파나마 보케테",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Jasmine",
+        "Bergamot",
+        "Peach"
+      ],
+      "tasting_notes_ko": [
+        "재스민",
+        "베르가모트",
+        "복숭아"
+      ],
+      "taste": {
+        "acidity": 5,
+        "sweetness": 4,
+        "body": 2
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "파나마 보케테의 구름 낀 고산을 담아, 재스민과 베르가모트의 섬세한 꽃향을 표현했어요.",
+      "description_en": "A Boquete-inspired washed Gesha with delicate jasmine, bergamot and soft stone-fruit sweetness.",
+      "design_motif": "Pale cloud-forest mountains, curling mist and a small botanical flower accent.",
+      "source_url": "https://haciendaesmeralda.com/geisha-2/",
+      "variety": {
+        "name": "Gesha",
+        "name_ko": "게이샤",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/geisha-panama"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Panama Boquete Gesha",
+      "product_name_ko": "파나마 보케테 게이샤",
+      "net_weight_g": 250,
+      "shape_id": "pinch_top",
+      "dimensions_m": [
+        0.12,
+        0.255,
+        0.06
+      ],
+      "front_description_ko": "구름 낀 고산의 재스민 향과 베르가모트의 여운.",
+      "back_description_ko": "파나마 보케테의 구름 낀 고산을 담아, 재스민과 베르가모트의 섬세한 꽃향을 표현했어요."
+    },
+    {
+      "slug": "villa_sarchi",
+      "country": "Costa Rica",
+      "country_ko": "코스타리카",
+      "region": "West Valley",
+      "region_ko": "웨스트 밸리",
+      "origin_label_en": "Costa Rica / West Valley",
+      "origin_label_ko": "코스타리카 웨스트 밸리",
+      "process_en": "Honey",
+      "process_ko": "허니",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Honey",
+        "Apricot",
+        "Citrus"
+      ],
+      "tasting_notes_ko": [
+        "꿀",
+        "살구",
+        "시트러스"
+      ],
+      "taste": {
+        "acidity": 3,
+        "sweetness": 5,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "코스타리카 웨스트 밸리의 햇살 든 산길을 담아, 꿀과 살구의 둥근 단맛을 표현했어요.",
+      "description_en": "A West Valley-inspired honey-process Villa Sarchi with honeyed stone fruit and balanced citrus.",
+      "design_motif": "Sunlit layered ridges, a winding highland footpath and small coffee-leaf accents.",
+      "source_url": "https://www.horshamcoffeeroaster.co.uk/blogs/news/coffee-of-the-month-costa-rica-la-isla-yellow-honey",
+      "variety": {
+        "name": "Villa Sarchi",
+        "name_ko": "비야 사르치",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/villa-sarchi"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Costa Rica West Valley Villa Sarchi",
+      "product_name_ko": "코스타리카 웨스트 밸리 비야 사르치",
+      "net_weight_g": 250,
+      "shape_id": "squat_doypack",
+      "dimensions_m": [
+        0.17,
+        0.18,
+        0.08
+      ],
+      "front_description_ko": "꿀의 향과 살구의 은은한 여운.",
+      "back_description_ko": "코스타리카 웨스트 밸리의 햇살 든 산길을 담아, 꿀과 살구의 둥근 단맛을 표현했어요."
+    },
+    {
+      "slug": "marsellesa",
+      "country": "Mexico",
+      "country_ko": "멕시코",
+      "region": "Chiapas",
+      "region_ko": "치아파스",
+      "origin_label_en": "Mexico / Chiapas",
+      "origin_label_ko": "멕시코 치아파스",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Brown sugar",
+        "Dark chocolate",
+        "Citrus"
+      ],
+      "tasting_notes_ko": [
+        "흑설탕",
+        "다크 초콜릿",
+        "시트러스"
+      ],
+      "taste": {
+        "acidity": 3,
+        "sweetness": 4,
+        "body": 4
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "멕시코 치아파스의 울창한 산림을 담아, 흑설탕과 다크 초콜릿의 깊은 단맛을 표현했어요.",
+      "description_en": "A Chiapas-inspired washed Marsellesa with brown-sugar sweetness, dark chocolate and citrus.",
+      "design_motif": "Dense cloud-forest canopy silhouettes, steep overlapping ridges and a narrow valley.",
+      "source_url": "https://sucafina.com/na/offerings/el-triunfo-chiapas-fw-fto",
+      "variety": {
+        "name": "Marsellesa",
+        "name_ko": "마르세예사",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/marsellesa"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Mexico Chiapas Marsellesa",
+      "product_name_ko": "멕시코 치아파스 마르세예사",
+      "net_weight_g": 250,
+      "shape_id": "doypack",
+      "dimensions_m": [
+        0.135,
+        0.23,
+        0.07
+      ],
+      "front_description_ko": "흑설탕의 향과 다크 초콜릿의 은은한 여운.",
+      "back_description_ko": "멕시코 치아파스의 울창한 산림을 담아, 흑설탕과 다크 초콜릿의 깊은 단맛을 표현했어요."
+    },
+    {
+      "slug": "parainema",
+      "country": "Honduras",
+      "country_ko": "온두라스",
+      "region": "El Paraiso",
+      "region_ko": "엘 파라이소",
+      "origin_label_en": "Honduras / El Paraiso",
+      "origin_label_ko": "온두라스 엘 파라이소",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Citrus",
+        "Caramel",
+        "Tropical fruit"
+      ],
+      "tasting_notes_ko": [
+        "시트러스",
+        "캐러멜",
+        "열대과일"
+      ],
+      "taste": {
+        "acidity": 4,
+        "sweetness": 4,
+        "body": 3
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "온두라스 엘 파라이소의 굽이진 산길을 담아, 산뜻한 과일과 캐러멜의 균형을 표현했어요.",
+      "description_en": "An El Paraiso-inspired washed Parainema balancing fresh fruit notes and caramel sweetness.",
+      "design_motif": "Rounded mountain bands, a winding path and small geometric coffee-field rows.",
+      "source_url": "https://eu.covoyacoffee.com/honduras-misael-durand-washed.html",
+      "variety": {
+        "name": "Parainema",
+        "name_ko": "파라이네마",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/parainema"
+      },
+      "source_scope": "Primary producer/importer reference establishes regional cultivation of this variety. Some reference lots contain multiple varieties. This game product does not copy a certified lot, named farm, harvest or measured cup score.",
+      "product_name_en": "Honduras El Paraiso Parainema",
+      "product_name_ko": "온두라스 엘 파라이소 파라이네마",
+      "net_weight_g": 250,
+      "shape_id": "pinch_top",
+      "dimensions_m": [
+        0.12,
+        0.255,
+        0.06
+      ],
+      "front_description_ko": "시트러스의 향과 캐러멜의 은은한 여운.",
+      "back_description_ko": "온두라스 엘 파라이소의 굽이진 산길을 담아, 산뜻한 과일과 캐러멜의 균형을 표현했어요."
+    },
+    {
+      "slug": "yirgacheffe_kurume",
+      "country": "Ethiopia",
+      "country_ko": "에티오피아",
+      "region": "Yirgacheffe",
+      "region_ko": "예가체프",
+      "origin_label_en": "Ethiopia / Yirgacheffe",
+      "origin_label_ko": "에티오피아 예가체프",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Black tea",
+        "Stone fruit",
+        "Citrus"
+      ],
+      "tasting_notes_ko": [
+        "홍차",
+        "핵과일",
+        "시트러스"
+      ],
+      "taste": {
+        "acidity": 5,
+        "sweetness": 4,
+        "body": 2
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "에티오피아 예가체프의 그늘진 고원을 담아, 홍차와 핵과일의 맑고 섬세한 향을 표현했어요.",
+      "description_en": "A Yirgacheffe-inspired washed Kurume with tea-like clarity, stone-fruit sweetness and bright citrus.",
+      "design_motif": "Tall shade-tree silhouettes, rolling highland ridges and small coffee blossoms.",
+      "source_url": "https://www.allycoffee.com/coffees/koke-washed/",
+      "variety": {
+        "name": "Kurume",
+        "name_ko": "쿠루메",
+        "species": "Coffea arabica",
+        "type": "regional_landrace",
+        "source_url": "https://www.allycoffee.com/coffees/yirgacheffe-aricha-natural-grade-1/"
+      },
+      "source_scope": "The source establishes Kurume cultivation in Yirgacheffe; its real lot includes Kurume, Dega and Wolisho. This game SKU is a selected Kurume concept, not a claim of an authenticated single-variety commercial lot.",
+      "product_name_en": "Ethiopia Yirgacheffe Kurume",
+      "product_name_ko": "에티오피아 예가체프 쿠루메",
+      "net_weight_g": 250,
+      "shape_id": "roll_top",
+      "dimensions_m": [
+        0.15,
+        0.22,
+        0.075
+      ],
+      "front_description_ko": "예가체프 고원의 맑은 홍차 향과 산뜻한 시트러스.",
+      "back_description_ko": "에티오피아 예가체프의 그늘진 고원을 담아, 홍차와 핵과일의 맑고 섬세한 향을 표현했어요."
+    },
+    {
+      "slug": "kilimanjaro_bourbon",
+      "country": "Tanzania",
+      "country_ko": "탄자니아",
+      "region": "Kilimanjaro",
+      "region_ko": "킬리만자로",
+      "origin_label_en": "Tanzania / Kilimanjaro",
+      "origin_label_ko": "탄자니아 킬리만자로",
+      "process_en": "Washed",
+      "process_ko": "워시드",
+      "roast_en": "Medium-light",
+      "roast_ko": "미디엄 라이트",
+      "tasting_notes_en": [
+        "Citrus",
+        "Cocoa",
+        "Black tea"
+      ],
+      "tasting_notes_ko": [
+        "시트러스",
+        "코코아",
+        "홍차"
+      ],
+      "taste": {
+        "acidity": 4,
+        "sweetness": 3,
+        "body": 4
+      },
+      "basis": "illustrative game profile; varies by lot/process/roast",
+      "description_ko": "탄자니아 킬리만자로의 설산과 화산 비탈을 담아, 시트러스와 코코아의 단단한 맛을 표현했어요.",
+      "description_en": "A Kilimanjaro-inspired washed Bourbon with citrus brightness, cocoa and a firm, tea-like finish.",
+      "design_motif": "The broad snow-capped Kilimanjaro profile above volcanic slopes and spreading shade trees.",
+      "source_url": "https://sucafina.com/na/offerings/kilimanjaro-fw-pb",
+      "variety": {
+        "name": "Bourbon",
+        "name_ko": "부르봉",
+        "species": "Coffea arabica",
+        "source_url": "https://varieties.worldcoffeeresearch.org/varieties/bourbon"
+      },
+      "source_scope": "The source establishes Bourbon cultivation in Kilimanjaro; its real lot includes Blue Mountain, Bourbon, Kent and SL28. This game SKU is a selected Bourbon concept, not a claim of an authenticated single-variety commercial lot.",
+      "product_name_en": "Tanzania Kilimanjaro Bourbon",
+      "product_name_ko": "탄자니아 킬리만자로 부르봉",
+      "net_weight_g": 250,
+      "shape_id": "gable_top",
+      "dimensions_m": [
+        0.145,
+        0.23,
+        0.08
+      ],
+      "front_description_ko": "설산 아래를 닮은 시트러스와 코코아의 여운.",
+      "back_description_ko": "탄자니아 킬리만자로의 설산과 화산 비탈을 담아, 시트러스와 코코아의 단단한 맛을 표현했어요."
+    }
+  ]
+}

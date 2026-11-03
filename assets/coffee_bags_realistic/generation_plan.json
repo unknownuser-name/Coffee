@@ -1,0 +1,133 @@
+{
+  "mode": "built-in image_gen",
+  "style": "photorealistic retail packaging",
+  "asset_type": "transparent 2.5D sprite",
+  "products": [
+    {
+      "slug": "bourbon",
+      "prompt_path": "prompts/bourbon.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/bourbon.png",
+      "country": "Rwanda",
+      "region": "Nyamasheke"
+    },
+    {
+      "slug": "typica",
+      "prompt_path": "prompts/typica.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/typica.png",
+      "country": "Ecuador",
+      "region": "Loja"
+    },
+    {
+      "slug": "caturra",
+      "prompt_path": "prompts/caturra.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/caturra.png",
+      "country": "Colombia",
+      "region": "Antioquia"
+    },
+    {
+      "slug": "catuai",
+      "prompt_path": "prompts/catuai.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/catuai.png",
+      "country": "Brazil",
+      "region": "Cerrado Mineiro"
+    },
+    {
+      "slug": "mundo_novo",
+      "prompt_path": "prompts/mundo_novo.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/mundo_novo.png",
+      "country": "Brazil",
+      "region": "Mantiqueira de Minas"
+    },
+    {
+      "slug": "pacamara",
+      "prompt_path": "prompts/pacamara.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/pacamara.png",
+      "country": "El Salvador",
+      "region": "Chalatenango"
+    },
+    {
+      "slug": "maragogipe",
+      "prompt_path": "prompts/maragogipe.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/maragogipe.png",
+      "country": "Guatemala",
+      "region": "Coban"
+    },
+    {
+      "slug": "pache",
+      "prompt_path": "prompts/pache.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/pache.png",
+      "country": "Guatemala",
+      "region": "Santa Rosa"
+    },
+    {
+      "slug": "sl28",
+      "prompt_path": "prompts/sl28.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/sl28.png",
+      "country": "Kenya",
+      "region": "Kirinyaga"
+    },
+    {
+      "slug": "sl34",
+      "prompt_path": "prompts/sl34.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/sl34.png",
+      "country": "Kenya",
+      "region": "Nyeri"
+    },
+    {
+      "slug": "ruiru_11",
+      "prompt_path": "prompts/ruiru_11.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/ruiru_11.png",
+      "country": "Kenya",
+      "region": "Kiambu"
+    },
+    {
+      "slug": "batian",
+      "prompt_path": "prompts/batian.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/batian.png",
+      "country": "Kenya",
+      "region": "Meru"
+    },
+    {
+      "slug": "gesha",
+      "prompt_path": "prompts/gesha.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/gesha.png",
+      "country": "Panama",
+      "region": "Boquete"
+    },
+    {
+      "slug": "villa_sarchi",
+      "prompt_path": "prompts/villa_sarchi.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/villa_sarchi.png",
+      "country": "Costa Rica",
+      "region": "West Valley"
+    },
+    {
+      "slug": "marsellesa",
+      "prompt_path": "prompts/marsellesa.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/marsellesa.png",
+      "country": "Mexico",
+      "region": "Chiapas"
+    },
+    {
+      "slug": "parainema",
+      "prompt_path": "prompts/parainema.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/parainema.png",
+      "country": "Honduras",
+      "region": "El Paraiso"
+    },
+    {
+      "slug": "yirgacheffe_kurume",
+      "prompt_path": "prompts/yirgacheffe_kurume.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/yirgacheffe_kurume.png",
+      "country": "Ethiopia",
+      "region": "Yirgacheffe"
+    },
+    {
+      "slug": "kilimanjaro_bourbon",
+      "prompt_path": "prompts/kilimanjaro_bourbon.txt",
+      "output": "unity/Assets/CoffeeBagsRealistic/Sprites/kilimanjaro_bourbon.png",
+      "country": "Tanzania",
+      "region": "Kilimanjaro"
+    }
+  ]
+}

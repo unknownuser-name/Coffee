@@ -1,0 +1,26 @@
+{
+  "slug": "sl34",
+  "tool": "builtin image_gen",
+  "prompt": "prompts/sl34.txt",
+  "native_output": "C:\\Users\\User\\.codex\\generated_images\\01a1a0f4-54a7-7062-afb0-ec30b0f4d090\\exec-1ee0aa1a-2f2a-4f9e-a597-66ed770decdc.png",
+  "output": "unity/Assets/CoffeeBagsRealistic/Sprites/sl34.png",
+  "size": [
+    1024,
+    1536
+  ],
+  "mode": "RGBA",
+  "alpha_extrema": [
+    0,
+    254
+  ],
+  "corner_alpha": 0,
+  "body_bbox_alpha128": [
+    120,
+    89,
+    903,
+    1470
+  ],
+  "silhouette_width_height": 0.567,
+  "sha256": "238c63918de97d120979543bfaf595e6994e081fd3e2cf08d2c7ea59f8d316d2",
+  "visual_review": "Photoreal thin flexible packaging; real folds/gussets; print follows surface; origin/cultivar/notes/profile/description legible; no vector scene panel."
+}
