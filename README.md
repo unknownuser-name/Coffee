@@ -6,6 +6,10 @@
 
 ## 시작하기
 
+Windows에서는 저장소 최상위의 **`OpenCoffeeProject.cmd`를 더블클릭**하면 설치된 Unity를 찾아 실제 카페 프로젝트를 엽니다. `FrontGrind` 씬에서 **상단 ▶ Play**를 누른 뒤 **B**로 원두를 선택하세요. 게임 카메라와 도구는 Play 시 생성됩니다.
+
+창 제목이 `Project_Coffee - Untitled`이고 Assets에 `coffee_bags`, `coffee_bags_realistic`만 보인다면 상위 폴더를 빈 Unity 프로젝트로 연 상태입니다. Unity Hub에는 **`CloudCafeUnity/UnityProject`**를 등록해야 합니다. 기존 창이나 수정 중인 씬을 런처가 강제로 닫지는 않습니다.
+
 1. 이 저장소를 내려받습니다.
 2. Unity Hub에서 **`CloudCafeUnity/UnityProject`** 폴더를 추가합니다.
 3. **Unity 6000.6.5f1**로 열고 패키지 가져오기가 끝날 때까지 기다립니다.
