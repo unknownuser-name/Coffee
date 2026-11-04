@@ -11,7 +11,7 @@ namespace CloudCafe.Crafting {
    if(t.IsChildOf(art.Tool))return !Brew.Locked;
    if(t.IsChildOf(art.Distributor))return Model.Complete&&!Prep.Complete;
    if(t.IsChildOf(art.Tamper))return Model.Complete&&Prep.Leveled&&!Prep.Complete;
-   return t.IsChildOf(art.Cup)&&Brew.Locked&&!Brew.Running&&Brew.InFlight==0;
+   return t.IsChildOf(art.Cup)&&Brew.Locked&&!Brew.Running&&Brew.Parcels.Count==0&&!EspressoShotServed;
   }
   void UpdateHandCursor(){if(handCursor==null)return;var pointer=smoke?new Vector2(.45f,.53f):MouseViewport();bool inside=pointer.x>=0&&pointer.x<=1&&pointer.y>=.12f&&pointer.y<=.92f;bool visible=smoke||(Application.isFocused&&inside&&!paused);bool gripping=false;Vector3 anchor=Vector3.zero;
    if(held||brewTurning){gripping=true;anchor=BasketGrip();}

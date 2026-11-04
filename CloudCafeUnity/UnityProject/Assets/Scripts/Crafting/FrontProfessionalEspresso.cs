@@ -19,14 +19,15 @@ namespace CloudCafe.Crafting
         private float professionalTemperature = ProfessionalEspressoModel.TargetTemperatureCelsius, draftTemperature;
         private float professionalPressure = ProfessionalEspressoModel.TargetPressureBar, draftPressure;
         private float tampStartX, tampTiltIntegral, tampFirmSeconds, professionalPuckUniformity = 1;
-        private EspressoBeanProfile professionalBeanRecipe = EspressoBeanProfiles.ForBean(null);
+        private EspressoBeanProfile professionalBeanRecipe = EspressoBeanProfiles.ForBean(null, EspressoRoast.Medium);
+        private EspressoBeanProfile professionalShotBeanRecipe;
         private ProfessionalEspressoModel professionalShot;
         private bool ShowDoseButton => !brewView && !Moving && Model.Slot == CraftSlot.Mat &&
             Model.Ready && !Model.DoseCommitted;
 
         private void ApplyRecommendedBeanRecipe()
         {
-            professionalBeanRecipe = EspressoBeanProfiles.ForBean(selectedCoffeeBean?.Id);
+            professionalBeanRecipe = EspressoBeanProfiles.ForBean(selectedCoffeeBean?.Id, selectedCoffeeRoast);
             professionalGrind = professionalBeanRecipe.GrindSetting;
             professionalTemperature = professionalBeanRecipe.TemperatureCelsius;
         }
@@ -37,10 +38,10 @@ namespace CloudCafe.Crafting
             draftTemperature = professionalBeanRecipe.TemperatureCelsius;
         }
 
-        private string ProfessionalBeanName()
+        private string ProfessionalBeanName(EspressoRoast roast)
         {
             if (selectedCoffeeBean == null) return "기본 레시피";
-            return $"{OriginName(selectedCoffeeBean)} · {selectedCoffeeBean.VarietyKo} · {selectedCoffeeBean.Roast}";
+            return $"{OriginName(selectedCoffeeBean)} · {selectedCoffeeBean.VarietyKo} · {EspressoBeanProfiles.RoastNameKo(roast)}";
         }
 
         private Vector2 StationGuiPointer()
@@ -56,6 +57,7 @@ namespace CloudCafe.Crafting
             professionalGrind = grind;
             professionalTemperature = temperature;
             professionalPressure = pressure;
+            if (professionalMode) EnsureEspressoOrder();
             message = professionalMode
                 ? "프로페셔널 모드. 저울을 보며 분쇄를 멈추고 도징을 확정하세요."
                 : "기본 모드. 손잡이를 잡아 들어 올려 보세요.";
@@ -190,9 +192,11 @@ namespace CloudCafe.Crafting
         {
             if (professionalMenuOpen || professionalReportOpen) CloseProfessionalOverlay();
             professionalShot = null;
+            professionalShotBeanRecipe = default;
             professionalReportShown = false;
             tampTiltIntegral = tampFirmSeconds = 0;
             professionalPuckUniformity = 1;
+            ClearEspressoOrderShot();
         }
 
         private void PrepareProfessionalBrew()
@@ -200,7 +204,10 @@ namespace CloudCafe.Crafting
             if (!professionalMode || professionalShot != null || !Brew.Locked || !Brew.CupDocked) return;
             var recipe = new ProfessionalEspressoModel(Model.Grounds, professionalGrind,
                 professionalPuckUniformity, professionalTemperature, professionalPressure, professionalBeanRecipe);
-            if (Brew.ConfigureProfessional(recipe)) professionalShot = recipe;
+            if (!Brew.ConfigureProfessional(recipe)) return;
+            professionalShot = recipe;
+            professionalShotBeanRecipe = professionalBeanRecipe;
+            CaptureEspressoOrder(selectedCoffeeBean?.Id, selectedCoffeeRoast);
         }
 
         private void StepStationBrew(float dt)
@@ -245,6 +252,7 @@ namespace CloudCafe.Crafting
                 GUI.Button(EspressoActionButton, "샷 리포트", BeanActionStyle());
             else if (ShowDoseButton)
                 GUI.Button(EspressoActionButton, "도징 확정 [Enter]", BeanActionStyle());
+            DrawEspressoOrderTicket();
         }
 
         private bool DrawProfessionalOverlay()
@@ -285,7 +293,7 @@ namespace CloudCafe.Crafting
             if (GUI.Button(new Rect(483, 145, 241, 43), draftProfessional ? "프로페셔널  ✓" : "프로페셔널", BeanActionStyle()))
                 draftProfessional = true;
             string description = draftProfessional
-                ? ProfessionalBeanName()
+                ? ProfessionalBeanName(selectedCoffeeRoast)
                 : "분쇄 18g과 추출 36g에서 자동으로 멈춥니다.";
             GUI.Label(new Rect(234, 200, 490, 25), description, BeanText(14, EspressoInk));
             if (draftProfessional)
@@ -319,9 +327,10 @@ namespace CloudCafe.Crafting
         private void DrawShotReport()
         {
             ProfessionalEspressoResult result = professionalShot.Evaluate(Brew.InCup, Brew.ElapsedSeconds);
+            EspressoBeanProfile shotRecipe = professionalShotBeanRecipe;
             GUI.Label(new Rect(134, 43, 425, 37), "프로페셔널 샷 리포트", BeanText(25, EspressoInk, true));
             GUI.Label(new Rect(617, 48, 209, 32), $"레시피 점수  {result.Score} / 100", BeanText(19, EspressoAccent, true));
-            GUI.Label(new Rect(134, 84, 690, 25), ProfessionalBeanName(), BeanText(15, EspressoAccent, true));
+            GUI.Label(new Rect(134, 84, 690, 25), ProfessionalBeanName(shotRecipe.Roast), BeanText(15, EspressoAccent, true));
             GUI.Label(new Rect(134, 112, 690, 25),
                 $"원두 {result.DoseGrams:0.0}g → 음료 {result.BeverageGrams:0.0}g   ·   추출 {result.ElapsedSeconds:0.0}초 "
                 + $"(참고 {professionalShot.RecommendedTimeMinSeconds:0}–{professionalShot.RecommendedTimeMaxSeconds:0}초)   ·   {professionalShot.PressureBar:0.0} bar",
@@ -335,19 +344,20 @@ namespace CloudCafe.Crafting
             GUI.Label(new Rect(143, 178, 80, 22), "항목", headings);
             GUI.Label(new Rect(225, 178, 85, 22), "이번 샷", headings);
             GUI.Label(new Rect(315, 178, 85, 22), "추천", headings);
-            GUI.Label(new Rect(405, 178, 405, 22), "이 원두에 추천하는 이유", headings);
+            GUI.Label(new Rect(405, 178, 405, 22), "이 원두와 로스팅에 추천하는 이유", headings);
             DrawRecipeReportRow(202, "분쇄도", $"{professionalShot.GrindSetting}/9",
-                $"{professionalBeanRecipe.GrindSetting}/9", professionalBeanRecipe.GrindReasonKo);
+                $"{shotRecipe.GrindSetting}/9", shotRecipe.GrindReasonKo);
             DrawRecipeReportRow(254, "물 온도", $"{professionalShot.TemperatureCelsius:0.0}°C",
-                $"{professionalBeanRecipe.TemperatureCelsius:0.0}°C", professionalBeanRecipe.TemperatureReasonKo);
+                $"{shotRecipe.TemperatureCelsius:0.0}°C", shotRecipe.TemperatureReasonKo);
             DrawRecipeReportRow(306, "추출 비율", $"1:{result.BrewRatio:0.00}",
-                $"1:{professionalBeanRecipe.BrewRatio:0.00}", professionalBeanRecipe.RatioReasonKo);
+                $"1:{shotRecipe.BrewRatio:0.00}", shotRecipe.RatioReasonKo);
 
-            BeanPanel(new Rect(134, 369, 692, 66), new Color(.18f, .20f, .24f));
-            GUI.Label(new Rect(145, 377, 76, 25), "다음 샷", headings);
-            GUI.Label(new Rect(224, 377, 590, 52), ProfessionalFeedback(result.Feedback),
+            BeanPanel(new Rect(134, 363, 692, 57), new Color(.18f, .20f, .24f));
+            GUI.Label(new Rect(145, 370, 76, 25), "다음 샷", headings);
+            GUI.Label(new Rect(224, 370, 590, 44), ProfessionalFeedback(result.Feedback),
                 BeanText(14, EspressoInk, false, true));
 
+            DrawEspressoOrderReport(new Rect(134, 423, 692, 31), new Rect(273, 458, 254, 34));
             if (GUI.Button(new Rect(134, 458, 126, 34), "닫기 [Esc]", BeanActionStyle()))
                 CloseProfessionalOverlay();
             if (GUI.Button(new Rect(544, 458, 119, 34), "새 샷 [R]", BeanActionStyle()))
@@ -355,7 +365,7 @@ namespace CloudCafe.Crafting
                 CloseProfessionalOverlay();
                 ResetStation();
             }
-            if (GUI.Button(new Rect(674, 458, 152, 34), "라떼로 이어가기", BeanActionStyle()))
+            if (!EspressoShotServed && GUI.Button(new Rect(674, 458, 152, 34), "라떼로 이어가기", BeanActionStyle()))
             {
                 CloseProfessionalOverlay();
                 BeginLatte();
@@ -380,16 +390,16 @@ namespace CloudCafe.Crafting
                 case ProfessionalEspressoFeedback.RatioTooShort: return "원두 양에 비해 음료가 적어요. 저울이 목표 무게에 가까워질 때까지 추출해 보세요.";
                 case ProfessionalEspressoFeedback.RatioTooLong: return "원두 양에 비해 음료가 많아요. 목표 무게에 가까워지면 추출을 멈춰 보세요.";
                 case ProfessionalEspressoFeedback.UnderExtracted:
-                    return professionalShot.TemperatureCelsius < professionalBeanRecipe.TemperatureCelsius
-                        ? $"이 원두의 기준보다 예상 수율이 낮아요. 물을 추천 온도인 {professionalBeanRecipe.TemperatureCelsius:0.0}°C 쪽으로 높여 보세요."
-                        : "이 원두의 기준보다 예상 수율이 낮아요. 분쇄도를 조금 더 곱게 조정해 보세요.";
+                    return professionalShot.TemperatureCelsius < professionalShotBeanRecipe.TemperatureCelsius
+                        ? $"이 로스팅의 기준보다 예상 수율이 낮아요. 물을 추천 온도인 {professionalShotBeanRecipe.TemperatureCelsius:0.0}°C 쪽으로 높여 보세요."
+                        : "이 로스팅의 기준보다 예상 수율이 낮아요. 분쇄도를 조금 더 곱게 조정해 보세요.";
                 case ProfessionalEspressoFeedback.OverExtracted:
-                    return professionalShot.TemperatureCelsius > professionalBeanRecipe.TemperatureCelsius
-                        ? $"이 원두의 기준보다 예상 수율이 높아요. 물을 추천 온도인 {professionalBeanRecipe.TemperatureCelsius:0.0}°C 쪽으로 낮춰 보세요."
-                        : "이 원두의 기준보다 예상 수율이 높아요. 분쇄도를 조금 더 굵게 조정해 보세요.";
+                    return professionalShot.TemperatureCelsius > professionalShotBeanRecipe.TemperatureCelsius
+                        ? $"이 로스팅의 기준보다 예상 수율이 높아요. 물을 추천 온도인 {professionalShotBeanRecipe.TemperatureCelsius:0.0}°C 쪽으로 낮춰 보세요."
+                        : "이 로스팅의 기준보다 예상 수율이 높아요. 분쇄도를 조금 더 굵게 조정해 보세요.";
                 case ProfessionalEspressoFeedback.FlowTooFast: return "목표 무게에 빠르게 도달했어요. 다음 잔에서 분쇄를 조금 더 곱게 조정해 보세요.";
                 case ProfessionalEspressoFeedback.FlowTooSlow: return "추출이 느렸어요. 다음 잔에서 분쇄를 조금 더 굵게 조정해 보세요.";
-                case ProfessionalEspressoFeedback.OnTarget: return "이번 잔은 선택한 원두의 추천 레시피 범위에 가까워요.";
+                case ProfessionalEspressoFeedback.OnTarget: return "이번 잔은 선택한 원두와 로스팅의 추천 범위에 가까워요.";
                 default: return "저울을 확인하고 목표량에 맞춰 추출해 보세요.";
             }
         }

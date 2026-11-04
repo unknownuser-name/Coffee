@@ -28,15 +28,27 @@ namespace CloudCafe.Crafting
                 "apply professional difficulty with recommended settings");
             CloseProfessionalOverlay();
             Check(professionalMode && Model.ManualDose, "manual grinder selected");
-            EspressoBeanProfile defaultRecipe = EspressoBeanProfiles.ForBean(SelectedCoffeeBean.Id);
+            Check(espressoOrder.HasRequest, "professional station starts with a customer request");
+            Check(SelectedCoffeeRoast == EspressoRoast.Medium, "station starts at medium roast");
+            EspressoBeanProfile defaultRecipe = EspressoBeanProfiles.ForBean(SelectedCoffeeBean.Id, SelectedCoffeeRoast);
             Check(professionalGrind == defaultRecipe.GrindSetting && professionalTemperature == defaultRecipe.TemperatureCelsius,
                 "professional starts at the selected bean's settings");
 
-            Check(TrySelectCoffeeBean("mundo_novo"), "select a medium-roast bean");
-            EspressoBeanProfile mediumRecipe = EspressoBeanProfiles.ForBean(SelectedCoffeeBean.Id);
-            Check(mediumRecipe.BrewRatio < defaultRecipe.BrewRatio &&
+            Check(TrySelectCoffeeBean("yirgacheffe_kurume", EspressoRoast.Light), "select a lighter roast of the same bean");
+            EspressoBeanProfile lightRecipe = EspressoBeanProfiles.ForBean(SelectedCoffeeBean.Id, EspressoRoast.Light);
+            Check(SelectedCoffeeRoast == EspressoRoast.Light && professionalBeanRecipe.Roast == EspressoRoast.Light &&
+                professionalGrind == lightRecipe.GrindSetting && professionalTemperature == lightRecipe.TemperatureCelsius &&
+                professionalBeanRecipe.BrewRatio == lightRecipe.BrewRatio &&
+                professionalBeanRecipe.GrindReasonKo != defaultRecipe.GrindReasonKo &&
+                professionalBeanRecipe.TemperatureReasonKo != defaultRecipe.TemperatureReasonKo &&
+                professionalBeanRecipe.RatioReasonKo != defaultRecipe.RatioReasonKo,
+                "switching the same bean's roast applies its own settings and three explanations");
+
+            Check(TrySelectCoffeeBean("mundo_novo", EspressoRoast.Medium), "select a different bean in medium roast");
+            EspressoBeanProfile mediumRecipe = EspressoBeanProfiles.ForBean(SelectedCoffeeBean.Id, SelectedCoffeeRoast);
+            Check(mediumRecipe.BrewRatio < lightRecipe.BrewRatio &&
                 professionalGrind == mediumRecipe.GrindSetting && professionalTemperature == mediumRecipe.TemperatureCelsius &&
-                professionalTemperature < defaultRecipe.TemperatureCelsius,
+                professionalTemperature < lightRecipe.TemperatureCelsius,
                 "selecting a medium roast applies its own shorter and cooler recipe");
 
             int manualGrind = mediumRecipe.GrindSetting - 1;
@@ -53,11 +65,15 @@ namespace CloudCafe.Crafting
                 "restoring the recommendation edits only the pending menu settings");
             CloseProfessionalOverlay();
 
-            Check(TrySelectCoffeeBean("gesha"), "select Panama Gesha for the shot");
-            EspressoBeanProfile shotProfile = EspressoBeanProfiles.ForBean(SelectedCoffeeBean.Id);
+            Check(TrySetEspressoOrder("gesha", EspressoRoast.Dark) &&
+                espressoOrder.BeanId == "gesha" && espressoOrder.Roast == EspressoRoast.Dark &&
+                SelectedCoffeeBean.Id == "mundo_novo" && SelectedCoffeeRoast == EspressoRoast.Medium,
+                "customer requirements can be set separately from the barista's bean and roast");
+            Check(TrySelectCoffeeBean("gesha", EspressoRoast.Dark), "select dark roast Panama Gesha for the shot");
+            EspressoBeanProfile shotProfile = EspressoBeanProfiles.ForBean(SelectedCoffeeBean.Id, SelectedCoffeeRoast);
             Check(professionalGrind == shotProfile.GrindSetting && professionalTemperature == shotProfile.TemperatureCelsius &&
-                shotProfile.BrewRatio != mediumRecipe.BrewRatio && shotProfile.BrewRatio != 2f,
-                "next bean also applies its own recipe");
+                professionalBeanRecipe.Roast == EspressoRoast.Dark && professionalBeanRecipe.BrewRatio == shotProfile.BrewRatio,
+                "next bean applies its own dark-roast recipe");
 
             Check(Grab(), "lift empty professional basket");
             yield return Settle();
@@ -75,6 +91,10 @@ namespace CloudCafe.Crafting
             Check(Model.Ready && Model.Grounds >= 18 && Model.Grounds < 19, "manual dose settles");
             Check(!TryApplyDifficulty(false, 5, 93, 9), "cannot change difficulty mid-shot");
             Check(!TrySelectCoffeeBean("mundo_novo"), "cannot change bean recipe after dosing");
+            Check(!TrySelectCoffeeBean("gesha", EspressoRoast.Light) && SelectedCoffeeRoast == EspressoRoast.Dark,
+                "cannot change the current bean's roast after dosing");
+            Check(!TrySetEspressoOrder("gesha", EspressoRoast.Light) && espressoOrder.Roast == EspressoRoast.Dark,
+                "cannot change the customer request after dosing");
             Check(Grab(), "lift filled professional basket");
             yield return Settle();
             Reach(art.Mat);
@@ -117,8 +137,12 @@ namespace CloudCafe.Crafting
             yield return Settle();
             SwitchBrew();
             Check(Brew.Running && Brew.IsProfessional, "start professional pump");
-            Check(professionalShot.TargetBrewRatio == shotProfile.BrewRatio,
-                "pump uses the selected bean recipe as the scoring target");
+            Check(professionalShot.TargetBrewRatio == shotProfile.BrewRatio &&
+                professionalShotBeanRecipe.BeanId == "gesha" && professionalShotBeanRecipe.Roast == EspressoRoast.Dark &&
+                professionalShotBeanRecipe.RatioReasonKo == shotProfile.RatioReasonKo,
+                "pump captures the selected bean and roast recipe for scoring and the shot report");
+            Check(!TryServeEspressoOrder() && !espressoOrderSubmitted && !espressoOrderServed,
+                "customer cannot be served an unfinished shot");
             yield return new WaitForSeconds(.2f);
             TogglePause();
             float pausedAt = Brew.ElapsedSeconds;
@@ -142,11 +166,20 @@ namespace CloudCafe.Crafting
                 result.ElapsedSeconds >= professionalShot.RecommendedTimeMinSeconds &&
                 result.ElapsedSeconds <= professionalShot.RecommendedTimeMaxSeconds,
                 "shot report scores against the selected bean's ratio and timing");
+            Check(espressoOrderMatch == EspressoOrderMatch.Match && TryServeEspressoOrder() &&
+                espressoOrderSubmitted && espressoOrderServed, "finished shot serves the matching customer request");
             CloseProfessionalOverlay();
-            Check(GrabCup() && latteActive, "professional shot can continue to latte");
+            Check(!GrabCup() && !latteActive, "a served espresso cannot also be used for latte");
             ResetStation();
             Check(professionalMode && Model.ManualDose && !Model.DoseCommitted && !Brew.IsProfessional,
                 "reset clears shot while retaining difficulty");
+            Check(espressoOrder.HasRequest && espressoOrder.BeanId == "gesha" &&
+                espressoOrder.Roast == EspressoRoast.Dark && !espressoOrderSubmitted && espressoOrderServed &&
+                espressoOrderMatch == EspressoOrderMatch.None,
+                "station reset keeps the completed request while clearing per-shot results");
+            Check(TryAdvanceEspressoOrder() && espressoOrder.HasRequest &&
+                (espressoOrder.BeanId != "gesha" || espressoOrder.Roast != EspressoRoast.Dark) && !espressoOrderServed,
+                "the next customer supplies a new bean and roast request");
             Check(TryApplyDifficulty(false, 5, 93, 9) && !Model.ManualDose, "return to basic difficulty");
             Debug.Log("PROFESSIONAL_ESPRESSO_SMOKE_PASSED");
             Application.Quit(0);

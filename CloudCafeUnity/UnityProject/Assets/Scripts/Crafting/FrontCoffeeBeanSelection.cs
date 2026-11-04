@@ -13,6 +13,8 @@ namespace CloudCafe.Crafting
         private CoffeeBeanCatalog coffeeBeanCatalog;
         private CoffeeBeanDefinition selectedCoffeeBean;
         private CoffeeBeanDefinition previewCoffeeBean;
+        private EspressoRoast selectedCoffeeRoast = EspressoRoast.Medium;
+        private EspressoRoast previewCoffeeRoast;
         private Vector2 coffeeBeanScroll;
         private bool coffeeBeanBrowserOpen;
         private bool coffeeBeanInputReleaseGuard;
@@ -20,6 +22,7 @@ namespace CloudCafe.Crafting
         private bool coffeePriorCursorVisible;
 
         public CoffeeBeanDefinition SelectedCoffeeBean => selectedCoffeeBean;
+        public EspressoRoast SelectedCoffeeRoast => selectedCoffeeRoast;
         public bool CoffeeBeanSelectionOpen => coffeeBeanBrowserOpen;
 
         public bool ShowCoffeeBeanSelection()
@@ -50,7 +53,8 @@ namespace CloudCafe.Crafting
         private bool CanChangeCoffeeBeans()
         {
             return coffeeBeanCatalog != null && selectedCoffeeBean != null &&
-                (!smoke || professionalSmoke) && !professionalMenuOpen && StationReadyForSettings();
+                (!smoke || professionalSmoke) && !professionalMenuOpen && !espressoOrderMenuOpen &&
+                StationReadyForSettings();
         }
 
         private bool StationReadyForSettings()
@@ -66,6 +70,7 @@ namespace CloudCafe.Crafting
         {
             if (coffeeBeanBrowserOpen || !CanChangeCoffeeBeans()) return;
             previewCoffeeBean = selectedCoffeeBean;
+            previewCoffeeRoast = selectedCoffeeRoast;
             coffeePriorCursorLock = Cursor.lockState;
             coffeePriorCursorVisible = Cursor.visible;
             coffeeBeanBrowserOpen = true;
@@ -83,24 +88,28 @@ namespace CloudCafe.Crafting
             Cursor.visible = Application.isFocused ? coffeePriorCursorVisible : true;
         }
 
-        public bool TrySelectCoffeeBean(string id)
+        public bool TrySelectCoffeeBean(string id) => TrySelectCoffeeBean(id, selectedCoffeeRoast);
+
+        public bool TrySelectCoffeeBean(string id, EspressoRoast roast)
         {
-            if (!CanChangeCoffeeBeans()) return false;
+            if (!CanChangeCoffeeBeans() || !Enum.IsDefined(typeof(EspressoRoast), roast)) return false;
             CoffeeBeanDefinition bean = coffeeBeanCatalog.Find(id);
             if (bean == null) return false;
-            bool changed = selectedCoffeeBean != bean;
+            bool changed = selectedCoffeeBean != bean || selectedCoffeeRoast != roast;
             selectedCoffeeBean = previewCoffeeBean = bean;
+            selectedCoffeeRoast = previewCoffeeRoast = roast;
             if (changed) ApplyRecommendedBeanRecipe();
-            message = OriginName(bean) + (professionalMode && changed
-                ? " 원두의 추천 분쇄도와 온도를 적용했어요. D에서 조정할 수 있어요."
-                : " 원두를 골랐어요. 손잡이를 잡아 분쇄를 시작하세요.");
+            string selection = $"{OriginName(bean)} · {EspressoBeanProfiles.RoastNameKo(roast)}";
+            message = professionalMode && changed
+                ? selection + "의 추천값을 적용했어요. D에서 조정할 수 있어요."
+                : selection + " 선택. 손잡이를 잡아 분쇄를 시작하세요.";
             CloseCoffeeBeanBrowser();
             return true;
         }
 
         private bool HandleCoffeeBeanInput()
         {
-            if (smoke || latteActive) return false;
+            if (smoke || latteActive || espressoOrderMenuOpen) return false;
             if (coffeeBeanInputReleaseGuard)
             {
                 if (!Input.GetMouseButton(0)) coffeeBeanInputReleaseGuard = false;
@@ -119,7 +128,7 @@ namespace CloudCafe.Crafting
             bool button = Input.GetMouseButtonDown(0) && CoffeeBeanButton.Contains(StationGuiPointer());
             if (!keyboard && !button) return false;
             if (CanChangeCoffeeBeans()) OpenCoffeeBeanBrowser();
-            else message = "원두는 분쇄 전 빈 바스켓 상태에서 고를 수 있어요. R로 새 잔을 준비하세요.";
+            else message = "원두와 로스팅은 분쇄 전에 고를 수 있어요. R로 새 잔을 준비하세요.";
             // Consume the GUI button's mouse-down before the world's raycast runs.
             return true;
         }
@@ -183,9 +192,10 @@ namespace CloudCafe.Crafting
                 };
                 GUI.enabled = CanChangeCoffeeBeans();
                 string origin = OriginName(selectedCoffeeBean);
-                if (origin.Length > 8) origin = origin.Substring(0, 7) + "…";
+                if (origin.Length > 6) origin = origin.Substring(0, 5) + "…";
                 if (GUI.Button(CoffeeBeanButton,
-                    new GUIContent("원두 · " + origin + " [B]", "빈 바스켓에서 원두 고르기"), style))
+                    new GUIContent($"{origin} · {EspressoBeanProfiles.RoastNameKo(selectedCoffeeRoast)} [B]",
+                        "빈 바스켓에서 원두와 로스팅 고르기"), style))
                     OpenCoffeeBeanBrowser();
             }
             finally
@@ -214,9 +224,9 @@ namespace CloudCafe.Crafting
                 Color accent = new Color(.30f, .45f, .36f);
                 BeanPanel(new Rect(0, 0, 960, 540), new Color(.035f, .04f, .05f, .82f));
                 BeanPanel(new Rect(18, 20, 924, 500), new Color(.95f, .92f, .86f));
-                GUI.Label(new Rect(38, 35, 550, 30), "원두 선택 · " + coffeeBeanCatalog.Beans.Length + "종",
+                GUI.Label(new Rect(38, 35, 550, 30), "원두와 로스팅 · " + coffeeBeanCatalog.Beans.Length + "종",
                     BeanText(22, ink, true));
-                GUI.Label(new Rect(39, 68, 700, 22), "산지와 향미를 골라 이번 잔을 준비하세요.", BeanText(13, quiet));
+                GUI.Label(new Rect(39, 68, 700, 22), "원두를 고르고 이번 잔에 쓸 로스팅을 선택하세요.", BeanText(13, quiet));
                 if (GUI.Button(new Rect(877, 34, 44, 30), "닫기", BeanActionStyle())) CloseCoffeeBeanBrowser();
 
                 DrawCoffeeBeanGrid(ink, quiet, accent);
@@ -274,29 +284,39 @@ namespace CloudCafe.Crafting
             GUI.Label(new Rect(565, 99, 350, 22), country + " / " + bean.Country, BeanText(13, quiet));
             GUI.Label(new Rect(565, 125, 350, 38), OriginName(bean), BeanText(23, ink, true));
             GUI.Label(new Rect(565, 162, 350, 23), bean.Variety + " · " + bean.VarietyKo, BeanText(13, quiet));
-            BeanPanel(new Rect(565, 195, 160, 232), new Color(.99f, .98f, .95f));
+            BeanPanel(new Rect(565, 195, 160, 190), new Color(.99f, .98f, .95f));
             if (bean.BagTexture != null)
-                GUI.DrawTexture(new Rect(569, 199, 152, 224), bean.BagTexture, ScaleMode.ScaleToFit, true);
-            GUI.Label(new Rect(741, 199, 172, 23), "향미", BeanText(15, ink, true));
-            GUI.Label(new Rect(741, 226, 172, 76), string.Join(" · ", bean.TastingNotes ?? new string[0]),
+                GUI.DrawTexture(new Rect(569, 199, 152, 182), bean.BagTexture, ScaleMode.ScaleToFit, true);
+            GUI.Label(new Rect(741, 199, 172, 23), "봉투의 향미", BeanText(15, ink, true));
+            GUI.Label(new Rect(741, 226, 172, 54), string.Join(" · ", bean.TastingNotes ?? new string[0]),
                 BeanText(14, ink, false, true));
-            DrawCoffeeTaste(new Rect(741, 309, 172, 23), "산미", bean.Acidity, ink, accent);
-            DrawCoffeeTaste(new Rect(741, 341, 172, 23), "단맛", bean.Sweetness, ink, accent);
-            DrawCoffeeTaste(new Rect(741, 373, 172, 23), "바디", bean.Body, ink, accent);
-            if (professionalMode)
-            {
-                EspressoBeanProfile profile = EspressoBeanProfiles.ForBean(bean.Id);
-                GUI.Label(new Rect(741, 398, 172, 17), "에스프레소 추천", BeanText(11, accent, true));
-                GUI.Label(new Rect(741, 413, 172, 17),
-                    $"{profile.GrindSetting}/9 · {profile.TemperatureCelsius:0.0}°C · 1:{profile.BrewRatio:0.00}",
-                    BeanText(11, ink));
-            }
-            GUI.Label(new Rect(565, 434, 350, 39), bean.Description, BeanText(12, quiet, false, true));
+            DrawCoffeeTaste(new Rect(741, 281, 172, 23), "산미", bean.Acidity, ink, accent);
+            DrawCoffeeTaste(new Rect(741, 307, 172, 23), "단맛", bean.Sweetness, ink, accent);
+            DrawCoffeeTaste(new Rect(741, 333, 172, 23), "바디", bean.Body, ink, accent);
+
+            GUI.Label(new Rect(565, 389, 70, 26), "로스팅", BeanText(13, ink, true));
+            DrawRoastOption(EspressoRoast.Light, 637);
+            DrawRoastOption(EspressoRoast.Medium, 732);
+            DrawRoastOption(EspressoRoast.Dark, 827);
+            EspressoBeanProfile profile = EspressoBeanProfiles.ForBean(bean.Id, previewCoffeeRoast);
+            GUI.Label(new Rect(565, 420, 350, 20),
+                $"프로 추천  {profile.GrindSetting}/9 · {profile.TemperatureCelsius:0.0}°C · 1:{profile.BrewRatio:0.00}",
+                BeanText(12, accent, true));
+            GUI.Label(new Rect(565, 443, 350, 34), bean.Description, BeanText(11, quiet, false, true));
             bool oldEnabled = GUI.enabled;
             GUI.enabled = CanChangeCoffeeBeans();
-            if (GUI.Button(new Rect(738, 480, 180, 27), "이 원두로 준비하기", BeanActionStyle())) TrySelectCoffeeBean(bean.Id);
+            if (GUI.Button(new Rect(738, 480, 180, 27), "선택한 조합으로 준비", BeanActionStyle()))
+                TrySelectCoffeeBean(bean.Id, previewCoffeeRoast);
             GUI.enabled = oldEnabled;
             if (GUI.Button(new Rect(565, 480, 155, 27), "돌아가기", BeanActionStyle())) CloseCoffeeBeanBrowser();
+        }
+
+        private void DrawRoastOption(EspressoRoast roast, float x)
+        {
+            string label = EspressoBeanProfiles.RoastNameKo(roast);
+            if (previewCoffeeRoast == roast) label += " ✓";
+            if (GUI.Button(new Rect(x, 390, 90, 25), label, BeanActionStyle()))
+                previewCoffeeRoast = roast;
         }
 
         private void DrawCoffeeTaste(Rect row, string name, int value, Color ink, Color accent)

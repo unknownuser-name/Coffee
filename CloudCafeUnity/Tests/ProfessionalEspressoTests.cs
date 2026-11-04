@@ -99,9 +99,69 @@ static class ProfessionalEspressoTests
             profile.TemperatureCelsius, beanProfile: profile);
     }
 
+    static void CheckRoastProfiles()
+    {
+        EspressoRoast[] roasts = { EspressoRoast.Light, EspressoRoast.Medium, EspressoRoast.Dark };
+        var recommendationsByRoast = new HashSet<(EspressoRoast, int, float, float)>();
+        foreach (string id in CatalogBeanIds)
+        {
+            var grindSettings = new HashSet<int>();
+            var temperatures = new HashSet<float>();
+            var ratios = new HashSet<float>();
+            var grindReasons = new HashSet<string>();
+            var temperatureReasons = new HashSet<string>();
+            var ratioReasons = new HashSet<string>();
+            float previousExtractionFactor = 0f;
+            foreach (EspressoRoast roast in roasts)
+            {
+                EspressoBeanProfile profile = EspressoBeanProfiles.ForBean(id, roast);
+                string description = id + " " + roast;
+                Check(profile.BeanId == id && profile.Roast == roast &&
+                    profile.RoastKo == EspressoBeanProfiles.RoastNameKo(roast),
+                    description + " retains the requested bean and roast");
+                Check(grindSettings.Add(profile.GrindSetting) && temperatures.Add(profile.TemperatureCelsius) &&
+                    ratios.Add(profile.BrewRatio), description + " changes all three settings for this bean");
+                Check(recommendationsByRoast.Add((roast, profile.GrindSetting, profile.TemperatureCelsius, profile.BrewRatio)),
+                    description + " remains distinct from other beans at the same roast");
+                Check(!string.IsNullOrWhiteSpace(profile.GrindReasonKo) && grindReasons.Add(profile.GrindReasonKo) &&
+                    !string.IsNullOrWhiteSpace(profile.TemperatureReasonKo) && temperatureReasons.Add(profile.TemperatureReasonKo) &&
+                    !string.IsNullOrWhiteSpace(profile.RatioReasonKo) && ratioReasons.Add(profile.RatioReasonKo),
+                    description + " has different reasons for all three recommendations");
+                Check(profile.RoastExtractionFactor > previousExtractionFactor,
+                    description + " applies the roast's modeled extractability");
+                previousExtractionFactor = profile.RoastExtractionFactor;
+                Check(profile.GrindSetting >= ProfessionalEspressoModel.MinGrindSetting &&
+                    profile.GrindSetting <= ProfessionalEspressoModel.MaxGrindSetting &&
+                    profile.TemperatureCelsius >= ProfessionalEspressoModel.MinTemperatureCelsius &&
+                    profile.TemperatureCelsius <= ProfessionalEspressoModel.MaxTemperatureCelsius &&
+                    profile.BrewRatio > 0f && profile.BrewRatio * ProfessionalEspressoModel.MaxDoseGrams < 60f,
+                    description + " recommendation fits the machine and cup");
+
+                ProfessionalEspressoModel model = RecommendedModel(profile);
+                float targetMass = ProfessionalEspressoModel.TargetDoseGrams * profile.BrewRatio;
+                float time = TimeToTarget(model, targetMass);
+                Check(time < ProfessionalEspressoModel.ShotLimitSeconds && model.TargetBrewRatio == profile.BrewRatio &&
+                    time >= model.RecommendedTimeMinSeconds && time <= model.RecommendedTimeMaxSeconds,
+                    description + " can reach its own ratio and time targets");
+                ProfessionalEspressoResult shot = model.Evaluate(targetMass, time);
+                Check(shot.Score >= 98 && shot.Feedback == ProfessionalEspressoFeedback.OnTarget,
+                    description + " earns credit for its own calibration");
+            }
+
+            var lightShot = new ProfessionalEspressoModel(18f, 5, 1f,
+                beanProfile: EspressoBeanProfiles.ForBean(id, EspressoRoast.Light));
+            var darkShot = new ProfessionalEspressoModel(18f, 5, 1f,
+                beanProfile: EspressoBeanProfiles.ForBean(id, EspressoRoast.Dark));
+            Check(darkShot.Evaluate(36f, 28f).TdsPercent > lightShot.Evaluate(36f, 28f).TdsPercent,
+                id + " roast changes simulated extraction at the same machine settings");
+        }
+    }
+
     static void Main()
     {
         CheckBeanProfiles();
+        CheckRoastProfiles();
+        CheckCustomerOrder();
         var nominal = new ProfessionalEspressoModel(18f, 5, 1f);
         Check(nominal.FlowGramsPerSecond(0f) == 0f && nominal.FlowGramsPerSecond(3f) == 0f, "preinfusion produces no cup flow");
         Check(nominal.FlowGramsPerSecond(3.5f) > 0f && nominal.FlowGramsPerSecond(3.5f) < nominal.FlowGramsPerSecond(4f), "flow ramps after preinfusion");
@@ -149,5 +209,22 @@ static class ProfessionalEspressoTests
         Check(empty.Feedback == ProfessionalEspressoFeedback.NoBeverage && empty.TdsPercent == 0f && empty.Score == 0, "invalid or empty input yields a safe zero-result shot");
 
         Console.WriteLine("PROFESSIONAL_ESPRESSO_TESTS_PASSED " + count);
+    }
+
+    static void CheckCustomerOrder()
+    {
+        var order = new EspressoCustomerOrder("gesha", EspressoRoast.Dark);
+        Check(order.HasRequest && order.BeanId == "gesha" && order.Roast == EspressoRoast.Dark,
+            "order retains both selected requirements");
+        Check(order.Match("gesha", EspressoRoast.Dark) == EspressoOrderMatch.Match,
+            "matching bean and roast fulfills the order");
+        Check(order.Match("mundo_novo", EspressoRoast.Dark) == EspressoOrderMatch.WrongBean,
+            "matching roast alone does not fulfill the order");
+        Check(order.Match("gesha", EspressoRoast.Light) == EspressoOrderMatch.WrongRoast,
+            "matching bean alone does not fulfill the order");
+        Check(order.Match("mundo_novo", EspressoRoast.Light) == EspressoOrderMatch.WrongBeanAndRoast,
+            "both wrong requirements are reported together");
+        Check(default(EspressoCustomerOrder).Match("gesha", EspressoRoast.Dark) == EspressoOrderMatch.None,
+            "an empty order is not treated as served");
     }
 }
