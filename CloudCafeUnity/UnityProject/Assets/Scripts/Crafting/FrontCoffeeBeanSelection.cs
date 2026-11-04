@@ -50,7 +50,12 @@ namespace CloudCafe.Crafting
         private bool CanChangeCoffeeBeans()
         {
             return coffeeBeanCatalog != null && selectedCoffeeBean != null &&
-                !smoke && !latteActive && !paused && !Moving &&
+                !smoke && !professionalMenuOpen && StationReadyForSettings();
+        }
+
+        private bool StationReadyForSettings()
+        {
+            return !latteActive && !paused && !Moving &&
                 !held && !prepHeld && !prepContact && prepKind == 0 &&
                 !rotating && !pressing && !cupHeld && !brewTurning &&
                 !Model.Running && Model.Grounds <= .001f && Model.Flying <= .001f &&
@@ -107,10 +112,7 @@ namespace CloudCafe.Crafting
             }
             if (selectedCoffeeBean == null) return false;
             bool keyboard = Input.GetKeyDown(KeyCode.B);
-            Vector2 pointer = new Vector2(
-                (Input.mousePosition.x - frame.x) * 960f / frame.width,
-                (Screen.height - Input.mousePosition.y - frame.y) * 540f / frame.height);
-            bool button = Input.GetMouseButtonDown(0) && CoffeeBeanButton.Contains(pointer);
+            bool button = Input.GetMouseButtonDown(0) && CoffeeBeanButton.Contains(StationGuiPointer());
             if (!keyboard && !button) return false;
             if (CanChangeCoffeeBeans()) OpenCoffeeBeanBrowser();
             else message = "원두는 분쇄 전 빈 바스켓 상태에서 고를 수 있어요. R로 새 잔을 준비하세요.";
