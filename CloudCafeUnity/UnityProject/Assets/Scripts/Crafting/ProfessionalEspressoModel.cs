@@ -1,4 +1,5 @@
 using System;
+using CloudCafe.Coffee;
 
 namespace CloudCafe.Crafting
 {
@@ -68,14 +69,14 @@ namespace CloudCafe.Crafting
         public const float PreinfusionSeconds = 3f;
         public const float ShotLimitSeconds = 60f;
 
-        const float MinTargetRatio = 1.8f;
-        const float MaxTargetRatio = 2.2f;
-        const float MinTargetExtraction = 18f;
-        const float MaxTargetExtraction = 22f;
+        const float RatioTolerance = .2f;
+        const float ExtractionTolerance = 2f;
+        const float TimeTolerance = 2.5f;
         const float NominalFlow = 1.54f;
 
         readonly float coarseness;
         readonly float steadyFlow;
+        readonly float roastExtractionFactor;
 
         public float DoseGrams { get; }
         public int GrindSetting { get; }
@@ -83,9 +84,14 @@ namespace CloudCafe.Crafting
         public float TemperatureCelsius { get; }
         public float PressureBar { get; }
         public float ChannelingRisk { get; }
+        public float TargetBrewRatio { get; }
+        public float RecommendedTimeMinSeconds { get; }
+        public float RecommendedTimeMaxSeconds { get; }
+        public float RecommendedExtractionYieldPercent { get; }
 
         public ProfessionalEspressoModel(float doseGrams, int grindSetting, float puckUniformity,
-            float temperatureCelsius = TargetTemperatureCelsius, float pressureBar = TargetPressureBar)
+            float temperatureCelsius = TargetTemperatureCelsius, float pressureBar = TargetPressureBar,
+            EspressoBeanProfile? beanProfile = null)
         {
             DoseGrams = Clamp(FiniteOr(doseGrams, TargetDoseGrams), MinDoseGrams, MaxDoseGrams);
             GrindSetting = Math.Max(MinGrindSetting, Math.Min(MaxGrindSetting, grindSetting));
@@ -94,18 +100,57 @@ namespace CloudCafe.Crafting
                 MinTemperatureCelsius, MaxTemperatureCelsius);
             PressureBar = Clamp(FiniteOr(pressureBar, TargetPressureBar), MinPressureBar, MaxPressureBar);
 
-            coarseness = (GrindSetting - NominalGrindSetting) / (float)(MaxGrindSetting - NominalGrindSetting);
+            coarseness = RelativeCoarseness(GrindSetting);
             float unevenPrep = 1f - PuckUniformity;
-            float veryFine = Math.Max(0f, (-coarseness - .35f) / .65f);
-            float extraPressure = Math.Max(0f, PressureBar - TargetPressureBar);
 
             // Cameron et al. (2020), doi:10.1016/j.matt.2019.12.019, found that extraction
             // dropped at both grind extremes. These coefficients model that pattern for play.
-            ChannelingRisk = Clamp(.78f * unevenPrep + veryFine * veryFine * (.57f + .08f * extraPressure), 0f, .95f);
-            float resistanceChange = .85f * coarseness + .055f * (TargetDoseGrams - DoseGrams);
-            float pressureAndTemperature = .13f * (PressureBar - TargetPressureBar)
-                + .008f * (TemperatureCelsius - TargetTemperatureCelsius);
-            steadyFlow = NominalFlow * (float)Math.Exp(resistanceChange + pressureAndTemperature) * (1f + .32f * unevenPrep);
+            ChannelingRisk = PuckChannelingRisk(coarseness, unevenPrep, PressureBar);
+            steadyFlow = SteadyFlow(coarseness, DoseGrams, TemperatureCelsius, PressureBar, unevenPrep);
+            EspressoBeanProfile profile = beanProfile.GetValueOrDefault();
+            if (profile.BeanId == null)
+            {
+                TargetBrewRatio = 2f;
+                roastExtractionFactor = 1f;
+                RecommendedTimeMinSeconds = TargetMinSeconds;
+                RecommendedTimeMaxSeconds = TargetMaxSeconds;
+                RecommendedExtractionYieldPercent = 20f;
+                return;
+            }
+
+            TargetBrewRatio = profile.BrewRatio;
+            roastExtractionFactor = profile.RoastExtractionFactor;
+            float referenceCoarseness = RelativeCoarseness(profile.GrindSetting);
+            float referenceMass = TargetDoseGrams * TargetBrewRatio;
+            float referenceFlow = SteadyFlow(referenceCoarseness, TargetDoseGrams,
+                profile.TemperatureCelsius, TargetPressureBar, 0f);
+            // At the recipe's target mass the ramp has finished. Its 1s ramp contributes
+            // half a second of steady flow, so only the other half adds to the shot time.
+            float referenceTime = PreinfusionSeconds + .5f + referenceMass / referenceFlow;
+            RecommendedTimeMinSeconds = referenceTime - TimeTolerance;
+            RecommendedTimeMaxSeconds = referenceTime + TimeTolerance;
+            RecommendedExtractionYieldPercent = DissolvedMass(referenceMass, referenceTime, TargetDoseGrams,
+                referenceCoarseness, profile.TemperatureCelsius,
+                PuckChannelingRisk(referenceCoarseness, 0f, TargetPressureBar), roastExtractionFactor)
+                / TargetDoseGrams * 100f;
+        }
+
+        static float RelativeCoarseness(int grind) =>
+            (grind - NominalGrindSetting) / (float)(MaxGrindSetting - NominalGrindSetting);
+
+        static float PuckChannelingRisk(float coarseness, float unevenPrep, float pressureBar)
+        {
+            float veryFine = Math.Max(0f, (-coarseness - .35f) / .65f);
+            float extraPressure = Math.Max(0f, pressureBar - TargetPressureBar);
+            return Clamp(.78f * unevenPrep + veryFine * veryFine * (.57f + .08f * extraPressure), 0f, .95f);
+        }
+
+        static float SteadyFlow(float coarseness, float dose, float temperature, float pressure, float unevenPrep)
+        {
+            float resistanceChange = .85f * coarseness + .055f * (TargetDoseGrams - dose);
+            float pressureAndTemperature = .13f * (pressure - TargetPressureBar)
+                + .008f * (temperature - TargetTemperatureCelsius);
+            return NominalFlow * (float)Math.Exp(resistanceChange + pressureAndTemperature) * (1f + .32f * unevenPrep);
         }
 
         public float FlowGramsPerSecond(float elapsedSeconds)
@@ -122,19 +167,26 @@ namespace CloudCafe.Crafting
         public float DissolvedGrams(float beverageGrams, float elapsedSeconds)
         {
             beverageGrams = Math.Max(0f, FiniteOr(beverageGrams, 0f));
-            float wetSeconds = Math.Max(0f, FiniteOr(elapsedSeconds, 0f) - PreinfusionSeconds);
+            return DissolvedMass(beverageGrams, FiniteOr(elapsedSeconds, 0f), DoseGrams,
+                coarseness, TemperatureCelsius, ChannelingRisk, roastExtractionFactor);
+        }
+
+        static float DissolvedMass(float beverageGrams, float elapsedSeconds, float doseGrams,
+            float coarseness, float temperature, float channelingRisk, float roastFactor)
+        {
+            float wetSeconds = Math.Max(0f, elapsedSeconds - PreinfusionSeconds);
             if (wetSeconds <= 0f)
                 return 0f;
-            float ratio = beverageGrams / DoseGrams;
+            float ratio = beverageGrams / doseGrams;
 
             // A saturating extraction approximation with less available surface at coarse
             // settings and less evenly wetted coffee when channels form. Preinfusion
             // primes the first drops, and continued flow progressively dilutes the cup.
             float contact = .65f + .35f * Clamp(wetSeconds / (10f + 7f * ratio), 0f, 1.35f);
-            float temperatureFactor = 1f + .025f * (TemperatureCelsius - TargetTemperatureCelsius);
+            float temperatureFactor = 1f + .025f * (temperature - TargetTemperatureCelsius);
             float surfaceFactor = 1f - .32f * coarseness;
             float exposure = .69f * temperatureFactor * surfaceFactor * contact * ratio;
-            float availableSolids = .28f * DoseGrams * (1f - .68f * ChannelingRisk);
+            float availableSolids = .28f * roastFactor * doseGrams * (1f - .68f * channelingRisk);
             float dissolved = availableSolids * (1f - (float)Math.Exp(-exposure));
             return Math.Min(beverageGrams, dissolved);
         }
@@ -152,9 +204,10 @@ namespace CloudCafe.Crafting
             float extractionYieldPercent = beverageGrams * tdsPercent / DoseGrams;
             float ratio = beverageGrams / DoseGrams;
             float penalty = 5f * DistanceOutside(DoseGrams, TargetDoseGrams - 1f, TargetDoseGrams + 1f)
-                + 22f * DistanceOutside(ratio, MinTargetRatio, MaxTargetRatio)
-                + 1.5f * DistanceOutside(elapsedSeconds, TargetMinSeconds, TargetMaxSeconds)
-                + 4f * DistanceOutside(extractionYieldPercent, MinTargetExtraction, MaxTargetExtraction)
+                + 22f * DistanceOutside(ratio, TargetBrewRatio - RatioTolerance, TargetBrewRatio + RatioTolerance)
+                + 1.5f * DistanceOutside(elapsedSeconds, RecommendedTimeMinSeconds, RecommendedTimeMaxSeconds)
+                + 4f * DistanceOutside(extractionYieldPercent, RecommendedExtractionYieldPercent - ExtractionTolerance,
+                    RecommendedExtractionYieldPercent + ExtractionTolerance)
                 + 48f * ChannelingRisk;
             int score = (int)Math.Round(Clamp(100f - penalty, 0f, 100f));
             ProfessionalEspressoFeedback feedback = Diagnose(ratio, elapsedSeconds, extractionYieldPercent);
@@ -169,17 +222,17 @@ namespace CloudCafe.Crafting
                 return ProfessionalEspressoFeedback.UnevenPuck;
             if (Math.Abs(DoseGrams - TargetDoseGrams) > 1f)
                 return ProfessionalEspressoFeedback.DoseOffTarget;
-            if (ratio < MinTargetRatio)
+            if (ratio < TargetBrewRatio - RatioTolerance)
                 return ProfessionalEspressoFeedback.RatioTooShort;
-            if (ratio > MaxTargetRatio)
+            if (ratio > TargetBrewRatio + RatioTolerance)
                 return ProfessionalEspressoFeedback.RatioTooLong;
-            if (elapsedSeconds < TargetMinSeconds)
+            if (elapsedSeconds < RecommendedTimeMinSeconds)
                 return ProfessionalEspressoFeedback.FlowTooFast;
-            if (elapsedSeconds > TargetMaxSeconds)
+            if (elapsedSeconds > RecommendedTimeMaxSeconds)
                 return ProfessionalEspressoFeedback.FlowTooSlow;
-            if (extractionYieldPercent < MinTargetExtraction)
+            if (extractionYieldPercent < RecommendedExtractionYieldPercent - ExtractionTolerance)
                 return ProfessionalEspressoFeedback.UnderExtracted;
-            if (extractionYieldPercent > MaxTargetExtraction)
+            if (extractionYieldPercent > RecommendedExtractionYieldPercent + ExtractionTolerance)
                 return ProfessionalEspressoFeedback.OverExtracted;
             return ProfessionalEspressoFeedback.OnTarget;
         }

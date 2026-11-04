@@ -17,6 +17,7 @@ $coffeeReferences = @(Get-ChildItem -LiteralPath (Join-Path $coffeeRefPack.FullN
 $coffeeCsc = Join-Path $coffeeSdk.FullName 'Roslyn/bincore/csc.dll'
 if (!(Test-Path -LiteralPath $coffeeCsc) -or $coffeeReferences.Count -eq 0) { throw 'The installed .NET SDK/reference pack is incomplete.' }
 $coffeeModels = @(Get-ChildItem -LiteralPath (Join-Path $coffeeRoot 'CloudCafeUnity/UnityProject/Assets/Scripts/Crafting') -Filter '*Model.cs')
+$coffeeModels += Get-Item -LiteralPath (Join-Path $coffeeRoot 'CloudCafeUnity/UnityProject/Assets/Scripts/Coffee/EspressoBeanProfiles.cs')
 $coffeeTests = @(Get-ChildItem -LiteralPath (Join-Path $coffeeRoot 'CloudCafeUnity/Tests') -Filter '*.cs' | Sort-Object Name)
 $coffeeResults = @()
 foreach ($coffeeTest in $coffeeTests) {

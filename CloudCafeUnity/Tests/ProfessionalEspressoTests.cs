@@ -1,9 +1,18 @@
 using System;
+using System.Collections.Generic;
+using CloudCafe.Coffee;
 using CloudCafe.Crafting;
 
 static class ProfessionalEspressoTests
 {
     static int count;
+
+    static readonly string[] CatalogBeanIds =
+    {
+        "batian", "bourbon", "catuai", "caturra", "gesha", "kilimanjaro_bourbon",
+        "maragogipe", "marsellesa", "mundo_novo", "pacamara", "pache", "parainema",
+        "ruiru_11", "sl28", "sl34", "typica", "villa_sarchi", "yirgacheffe_kurume"
+    };
 
     static void Check(bool condition, string description)
     {
@@ -12,7 +21,8 @@ static class ProfessionalEspressoTests
             throw new Exception(description);
     }
 
-    static float TimeToTarget(ProfessionalEspressoModel model)
+    static float TimeToTarget(ProfessionalEspressoModel model,
+        float beverageTarget = ProfessionalEspressoModel.TargetBeverageGrams)
     {
         const float step = .02f;
         float beverage = 0f;
@@ -20,14 +30,78 @@ static class ProfessionalEspressoTests
         {
             float time = tick * step;
             beverage += model.FlowGramsPerSecond(time - step / 2f) * step;
-            if (beverage >= ProfessionalEspressoModel.TargetBeverageGrams)
+            if (beverage >= beverageTarget)
                 return time;
         }
         return ProfessionalEspressoModel.ShotLimitSeconds;
     }
 
+    static void CheckBeanProfiles()
+    {
+        var recommendations = new HashSet<(int, float, float)>();
+        foreach (string id in CatalogBeanIds)
+        {
+            EspressoBeanProfile profile = EspressoBeanProfiles.ForBean(id);
+            Check(profile.BeanId == id, id + " has a dedicated recommendation");
+            Check(recommendations.Add((profile.GrindSetting, profile.TemperatureCelsius, profile.BrewRatio)),
+                id + " has a distinct combination of grind, temperature and ratio");
+            Check(profile.GrindSetting >= ProfessionalEspressoModel.MinGrindSetting &&
+                profile.GrindSetting <= ProfessionalEspressoModel.MaxGrindSetting &&
+                profile.TemperatureCelsius >= ProfessionalEspressoModel.MinTemperatureCelsius &&
+                profile.TemperatureCelsius <= ProfessionalEspressoModel.MaxTemperatureCelsius &&
+                profile.BrewRatio > 0f && profile.BrewRatio * ProfessionalEspressoModel.MaxDoseGrams < 60f,
+                id + " recommendation fits the machine and cup");
+            Check(!string.IsNullOrWhiteSpace(profile.GrindReasonKo) &&
+                !string.IsNullOrWhiteSpace(profile.TemperatureReasonKo) &&
+                !string.IsNullOrWhiteSpace(profile.RatioReasonKo),
+                id + " explains all three recommendations");
+
+            var model = RecommendedModel(profile);
+            float targetMass = ProfessionalEspressoModel.TargetDoseGrams * profile.BrewRatio;
+            float time = TimeToTarget(model, targetMass);
+            ProfessionalEspressoResult shot = model.Evaluate(targetMass, time);
+            Check(model.TargetBrewRatio == profile.BrewRatio &&
+                time >= model.RecommendedTimeMinSeconds && time <= model.RecommendedTimeMaxSeconds,
+                id + " recommended grind reaches its target ratio within the modeled time window");
+            Check(shot.Score >= 98 && shot.Feedback == ProfessionalEspressoFeedback.OnTarget,
+                id + " receives full or near-full credit for its own calibrated recipe");
+        }
+
+        EspressoBeanProfile light = EspressoBeanProfiles.ForBean("yirgacheffe_kurume");
+        EspressoBeanProfile medium = EspressoBeanProfiles.ForBean("mundo_novo");
+        Check(light.RoastKo != medium.RoastKo && light.RoastExtractionFactor < medium.RoastExtractionFactor,
+            "roast levels differ in modeled extractability");
+        Check(light.TemperatureCelsius > medium.TemperatureCelsius && light.BrewRatio > medium.BrewRatio,
+            "the lighter floral profile starts hotter and longer than the medium roast");
+        var lightRecipe = RecommendedModel(light);
+        var mediumRecipe = RecommendedModel(medium);
+        float longerMass = ProfessionalEspressoModel.TargetDoseGrams * light.BrewRatio;
+        float longerTime = TimeToTarget(lightRecipe, longerMass);
+        Check(lightRecipe.Evaluate(longerMass, longerTime).Feedback == ProfessionalEspressoFeedback.OnTarget &&
+            mediumRecipe.Evaluate(longerMass, longerTime).Feedback == ProfessionalEspressoFeedback.RatioTooLong,
+            "the same long output is on target for the floral profile and too long for the medium roast");
+
+        var cooler = new ProfessionalEspressoModel(18f, light.GrindSetting, 1f, light.TemperatureCelsius - 1f,
+            beanProfile: light);
+        Check(cooler.TemperatureCelsius < lightRecipe.TemperatureCelsius &&
+            cooler.Evaluate(longerMass, longerTime).TdsPercent < lightRecipe.Evaluate(longerMass, longerTime).TdsPercent,
+            "a manual temperature override affects extraction despite the selected recommendation");
+
+        EspressoBeanProfile fallback = EspressoBeanProfiles.ForBean("unknown_test_bean");
+        Check(fallback.BeanId == null && fallback.GrindSetting == ProfessionalEspressoModel.NominalGrindSetting &&
+            fallback.TemperatureCelsius == ProfessionalEspressoModel.TargetTemperatureCelsius && fallback.BrewRatio == 2f,
+            "missing IDs preserve the neutral reference recipe");
+    }
+
+    static ProfessionalEspressoModel RecommendedModel(EspressoBeanProfile profile)
+    {
+        return new ProfessionalEspressoModel(ProfessionalEspressoModel.TargetDoseGrams, profile.GrindSetting, 1f,
+            profile.TemperatureCelsius, beanProfile: profile);
+    }
+
     static void Main()
     {
+        CheckBeanProfiles();
         var nominal = new ProfessionalEspressoModel(18f, 5, 1f);
         Check(nominal.FlowGramsPerSecond(0f) == 0f && nominal.FlowGramsPerSecond(3f) == 0f, "preinfusion produces no cup flow");
         Check(nominal.FlowGramsPerSecond(3.5f) > 0f && nominal.FlowGramsPerSecond(3.5f) < nominal.FlowGramsPerSecond(4f), "flow ramps after preinfusion");

@@ -30,8 +30,7 @@ namespace CloudCafe.Crafting
 
         private void InitializeCoffeeBeans()
         {
-            // Automated brewing and latte checks retain their original input path.
-            if (smoke) return;
+            if (smoke && !professionalSmoke) return;
             coffeeBeanCatalog = CoffeeBeanCatalog.Load();
             if (coffeeBeanCatalog == null || coffeeBeanCatalog.Beans == null) return;
             selectedCoffeeBean = coffeeBeanCatalog.Find("yirgacheffe_kurume");
@@ -45,12 +44,13 @@ namespace CloudCafe.Crafting
                 }
             }
             previewCoffeeBean = selectedCoffeeBean;
+            ApplyRecommendedBeanRecipe();
         }
 
         private bool CanChangeCoffeeBeans()
         {
             return coffeeBeanCatalog != null && selectedCoffeeBean != null &&
-                !smoke && !professionalMenuOpen && StationReadyForSettings();
+                (!smoke || professionalSmoke) && !professionalMenuOpen && StationReadyForSettings();
         }
 
         private bool StationReadyForSettings()
@@ -88,8 +88,12 @@ namespace CloudCafe.Crafting
             if (!CanChangeCoffeeBeans()) return false;
             CoffeeBeanDefinition bean = coffeeBeanCatalog.Find(id);
             if (bean == null) return false;
+            bool changed = selectedCoffeeBean != bean;
             selectedCoffeeBean = previewCoffeeBean = bean;
-            message = OriginName(bean) + " 원두를 골랐어요. 손잡이를 잡아 분쇄를 시작하세요.";
+            if (changed) ApplyRecommendedBeanRecipe();
+            message = OriginName(bean) + (professionalMode && changed
+                ? " 원두의 추천 분쇄도와 온도를 적용했어요. D에서 조정할 수 있어요."
+                : " 원두를 골랐어요. 손잡이를 잡아 분쇄를 시작하세요.");
             CloseCoffeeBeanBrowser();
             return true;
         }
@@ -279,6 +283,14 @@ namespace CloudCafe.Crafting
             DrawCoffeeTaste(new Rect(741, 309, 172, 23), "산미", bean.Acidity, ink, accent);
             DrawCoffeeTaste(new Rect(741, 341, 172, 23), "단맛", bean.Sweetness, ink, accent);
             DrawCoffeeTaste(new Rect(741, 373, 172, 23), "바디", bean.Body, ink, accent);
+            if (professionalMode)
+            {
+                EspressoBeanProfile profile = EspressoBeanProfiles.ForBean(bean.Id);
+                GUI.Label(new Rect(741, 398, 172, 17), "에스프레소 추천", BeanText(11, accent, true));
+                GUI.Label(new Rect(741, 413, 172, 17),
+                    $"{profile.GrindSetting}/9 · {profile.TemperatureCelsius:0.0}°C · 1:{profile.BrewRatio:0.00}",
+                    BeanText(11, ink));
+            }
             GUI.Label(new Rect(565, 434, 350, 39), bean.Description, BeanText(12, quiet, false, true));
             bool oldEnabled = GUI.enabled;
             GUI.enabled = CanChangeCoffeeBeans();
