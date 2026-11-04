@@ -10,12 +10,15 @@ namespace CloudCafe.Crafting
         private static readonly Color OrderMismatchInk = new Color(1f, .72f, .66f);
         private static readonly EspressoRoast[] OrderRoasts =
             { EspressoRoast.Light, EspressoRoast.Medium, EspressoRoast.Dark };
+        private static readonly CoffeeDrink[] OrderDrinks =
+            { CoffeeDrink.Espresso, CoffeeDrink.Americano, CoffeeDrink.Latte };
 
         private bool espressoOrderMenuOpen, espressoOrderSubmitted, espressoOrderServed;
         private EspressoCustomerOrder espressoOrder, espressoShotOrder;
         private EspressoOrderMatch espressoOrderMatch;
         private string draftOrderBeanId;
         private EspressoRoast draftOrderRoast;
+        private CoffeeDrink draftOrderDrink;
         private Vector2 orderMenuScroll;
         private int espressoOrderNumber, nextEspressoOrderIndex;
         private bool EspressoShotServed => espressoOrderSubmitted && espressoOrderServed;
@@ -25,13 +28,14 @@ namespace CloudCafe.Crafting
             if (!espressoOrder.HasRequest) TryAdvanceEspressoOrder();
         }
 
-        private bool TrySetEspressoOrder(string beanId, EspressoRoast roast)
+        private bool TrySetEspressoOrder(string beanId, EspressoRoast roast, CoffeeDrink drink = CoffeeDrink.Espresso)
         {
             if (!professionalMode || !StationReadyForSettings() || coffeeBeanCatalog?.Find(beanId) == null ||
-                (roast != EspressoRoast.Light && roast != EspressoRoast.Medium && roast != EspressoRoast.Dark))
+                (roast != EspressoRoast.Light && roast != EspressoRoast.Medium && roast != EspressoRoast.Dark) ||
+                (drink != CoffeeDrink.Espresso && drink != CoffeeDrink.Americano && drink != CoffeeDrink.Latte))
                 return false;
 
-            ApplyEspressoOrder(new EspressoCustomerOrder(beanId, roast));
+            ApplyEspressoOrder(new EspressoCustomerOrder(beanId, roast, drink));
             return true;
         }
 
@@ -41,7 +45,7 @@ namespace CloudCafe.Crafting
             espressoOrderServed = false;
             espressoOrderNumber++;
             ClearEspressoOrderShot();
-            message = "손님 주문을 받았어요. 주문표의 원두와 로스팅을 맞춰 준비하세요.";
+            message = "손님 주문을 받았어요. 주문표에 적힌 음료, 원두, 로스팅을 맞춰 준비하세요.";
         }
 
         private bool TryAdvanceEspressoOrder()
@@ -51,20 +55,22 @@ namespace CloudCafe.Crafting
             bool afterCompletedShot = Brew.Complete && espressoOrderServed;
             if (!afterCompletedShot && !StationReadyForSettings()) return false;
 
-            int recipeCount = beans.Length * OrderRoasts.Length;
+            int recipeCount = beans.Length * OrderRoasts.Length * OrderDrinks.Length;
             for (int offset = 0; offset < recipeCount; offset++)
             {
                 int index = (nextEspressoOrderIndex + offset) % recipeCount;
                 int beanIndex = index % beans.Length;
                 CoffeeBeanDefinition bean = beans[beanIndex];
-                EspressoRoast roast = OrderRoasts[(index / beans.Length + beanIndex) % OrderRoasts.Length];
+                int recipeIndex = index / beans.Length;
+                EspressoRoast roast = OrderRoasts[(recipeIndex + beanIndex) % OrderRoasts.Length];
+                CoffeeDrink drink = OrderDrinks[(recipeIndex / OrderRoasts.Length + beanIndex) % OrderDrinks.Length];
                 if (bean == null || string.IsNullOrEmpty(bean.Id) ||
-                    espressoOrder.Match(bean.Id, roast) == EspressoOrderMatch.Match)
+                    espressoOrder.Match(bean.Id, roast, drink) == EspressoOrderMatch.Match)
                     continue;
 
                 if (afterCompletedShot) ResetStation();
                 nextEspressoOrderIndex = (index + 1) % recipeCount;
-                ApplyEspressoOrder(new EspressoCustomerOrder(bean.Id, roast));
+                ApplyEspressoOrder(new EspressoCustomerOrder(bean.Id, roast, drink));
                 return true;
             }
             return false;
@@ -74,7 +80,7 @@ namespace CloudCafe.Crafting
         {
             // Keep the order as it stood when the pump was set up for this shot.
             espressoShotOrder = espressoOrderServed ? default : espressoOrder;
-            espressoOrderMatch = espressoShotOrder.Match(beanId, roast);
+            espressoOrderMatch = espressoShotOrder.Match(beanId, roast, espressoShotOrder.Drink);
             espressoOrderSubmitted = false;
         }
 
@@ -86,13 +92,15 @@ namespace CloudCafe.Crafting
             if (espressoOrderMenuOpen) CloseEspressoOrderMenu();
         }
 
-        private bool TryServeEspressoOrder()
+        private bool TryServeEspressoOrder(CoffeeDrink drink = CoffeeDrink.Espresso)
         {
-            if (!professionalMode || !Brew.Complete || !espressoShotOrder.HasRequest || espressoOrderSubmitted)
+            if (!professionalMode || !IsDrinkReadyToServe(drink) || !espressoShotOrder.HasRequest || espressoOrderSubmitted)
                 return false;
+            espressoOrderMatch = espressoShotOrder.Match(professionalShotBeanRecipe.BeanId,
+                professionalShotBeanRecipe.Roast, drink);
             espressoOrderSubmitted = true;
             espressoOrderServed = espressoOrderMatch == EspressoOrderMatch.Match;
-            message = espressoOrderServed ? "손님이 주문한 원두와 로스팅을 맞췄어요." : "손님이 주문과 다른 항목을 알려 줬어요.";
+            message = espressoOrderServed ? "손님이 주문한 음료를 완성했어요." : "손님이 주문과 다른 항목을 알려 줬어요.";
             return espressoOrderServed;
         }
 
@@ -108,6 +116,7 @@ namespace CloudCafe.Crafting
 
             draftOrderBeanId = espressoOrder.HasRequest ? espressoOrder.BeanId : selectedCoffeeBean?.Id;
             draftOrderRoast = espressoOrder.HasRequest ? espressoOrder.Roast : EspressoRoast.Light;
+            draftOrderDrink = espressoOrder.HasRequest ? espressoOrder.Drink : CoffeeDrink.Espresso;
             orderMenuScroll = Vector2.zero;
             SaveProfessionalCursor();
             espressoOrderMenuOpen = true;
@@ -128,7 +137,7 @@ namespace CloudCafe.Crafting
                     CloseEspressoOrderMenu();
                 return true;
             }
-            if (!professionalMode || smoke || latteActive || paused || professionalReleaseGuard ||
+            if (!professionalMode || smoke || latteActive || AmericanoView || paused || professionalReleaseGuard ||
                 professionalMenuOpen || professionalReportOpen || CoffeeBeanSelectionOpen)
                 return false;
 
@@ -142,7 +151,7 @@ namespace CloudCafe.Crafting
         {
             if (espressoOrderMenuOpen)
                 Cursor.lockState = CursorLockMode.None;
-            else if (!professionalMode || latteActive || professionalMenuOpen || professionalReportOpen || CoffeeBeanSelectionOpen ||
+            else if (!professionalMode || latteActive || AmericanoView || professionalMenuOpen || professionalReportOpen || CoffeeBeanSelectionOpen ||
                 !StationReadyForSettings() || !EspressoOrderButton.Contains(StationGuiPointer()))
                 return false;
 
@@ -153,7 +162,7 @@ namespace CloudCafe.Crafting
 
         private void DrawEspressoOrderTicket()
         {
-            BeanPanel(new Rect(649, 52, 293, 78), new Color(.07f, .09f, .14f, .94f));
+            BeanPanel(new Rect(649, 52, 293, 99), new Color(.07f, .09f, .14f, .94f));
             string title = espressoOrderServed ? $"주문 #{espressoOrderNumber} 완료" : $"손님 주문 #{espressoOrderNumber}";
             if (!espressoOrder.HasRequest) title = "손님 주문";
             GUI.Label(new Rect(661, 57, 148, 24), title, BeanText(14, EspressoAccent, true));
@@ -163,11 +172,13 @@ namespace CloudCafe.Crafting
             GUI.enabled = wasEnabled;
 
             if (!espressoOrder.HasRequest) return;
-            GUI.Label(new Rect(661, 82, 267, 22), EspressoOrderBeanName(espressoOrder.BeanId),
-                BeanText(14, EspressoInk, true));
+            GUI.Label(new Rect(661, 82, 267, 22), CoffeeDrinkName(espressoOrder.Drink), BeanText(14, EspressoInk, true));
+            GUI.Label(new Rect(661, 103, 267, 22),
+                $"{EspressoOrderBeanName(espressoOrder.BeanId)} · {EspressoBeanProfiles.RoastNameKo(espressoOrder.Roast)}",
+                BeanText(13, EspressoInk));
             EspressoBeanProfile profile = EspressoBeanProfiles.ForBean(espressoOrder.BeanId, espressoOrder.Roast);
-            GUI.Label(new Rect(661, 105, 267, 21),
-                $"{EspressoBeanProfiles.RoastNameKo(espressoOrder.Roast)} · 추천 {profile.GrindSetting}/9 · "
+            GUI.Label(new Rect(661, 126, 267, 21),
+                $"추천 {profile.GrindSetting}/9 · "
                 + $"{profile.TemperatureCelsius:0.0}°C · 1:{profile.BrewRatio:0.00}",
                 BeanText(12, EspressoMuted));
         }
@@ -195,13 +206,21 @@ namespace CloudCafe.Crafting
         private void DrawEspressoOrderEditor()
         {
             GUI.Label(new Rect(167, 51, 530, 34), "손님 주문 지정", BeanText(24, EspressoInk, true));
-            GUI.Label(new Rect(167, 91, 626, 22), "손님이 요구할 원두와 로스팅을 고르세요.", BeanText(14, EspressoMuted));
+            GUI.Label(new Rect(167, 91, 626, 22), "손님이 주문할 음료, 원두, 로스팅을 고르세요.", BeanText(14, EspressoMuted));
+            for (int i = 0; i < OrderDrinks.Length; i++)
+            {
+                CoffeeDrink drink = OrderDrinks[i];
+                string label = CoffeeDrinkName(drink);
+                if (drink == draftOrderDrink) label = "● " + label;
+                if (GUI.Button(new Rect(167 + i * 208, 119, 201, 31), label, BeanActionStyle()))
+                    draftOrderDrink = drink;
+            }
             for (int i = 0; i < OrderRoasts.Length; i++)
             {
                 EspressoRoast roast = OrderRoasts[i];
                 string label = EspressoBeanProfiles.RoastNameKo(roast);
                 if (roast == draftOrderRoast) label = "● " + label;
-                if (GUI.Button(new Rect(167 + i * 208, 119, 201, 31), label, BeanActionStyle()))
+                if (GUI.Button(new Rect(167 + i * 208, 158, 201, 31), label, BeanActionStyle()))
                     draftOrderRoast = roast;
             }
 
@@ -211,7 +230,7 @@ namespace CloudCafe.Crafting
             {
                 EspressoBeanProfile profile = EspressoBeanProfiles.ForBean(draftOrderBeanId, draftOrderRoast);
                 GUI.Label(new Rect(167, 414, 626, 27),
-                    $"요청 · {EspressoOrderBeanName(draftOrderBeanId)} · {EspressoBeanProfiles.RoastNameKo(draftOrderRoast)}"
+                    $"요청 · {CoffeeDrinkName(draftOrderDrink)} · {EspressoOrderBeanName(draftOrderBeanId)} · {EspressoBeanProfiles.RoastNameKo(draftOrderRoast)}"
                     + $"   |   추천 {profile.GrindSetting}/9 · {profile.TemperatureCelsius:0.0}°C · 1:{profile.BrewRatio:0.00}",
                     BeanText(14, EspressoAccent, true));
             }
@@ -221,7 +240,7 @@ namespace CloudCafe.Crafting
                 TryAdvanceEspressoOrder())
                 CloseEspressoOrderMenu();
             if (GUI.Button(new Rect(655, 452, 133, 34), "이 주문 받기", BeanActionStyle()) &&
-                TrySetEspressoOrder(draftOrderBeanId, draftOrderRoast))
+                TrySetEspressoOrder(draftOrderBeanId, draftOrderRoast, draftOrderDrink))
                 CloseEspressoOrderMenu();
         }
 
@@ -230,8 +249,8 @@ namespace CloudCafe.Crafting
             const int columns = 3;
             const int rowHeight = 40;
             int rows = (beans.Length + columns - 1) / columns;
-            orderMenuScroll = GUI.BeginScrollView(new Rect(167, 159, 625, 244), orderMenuScroll,
-                new Rect(0, 0, 606, Mathf.Max(240, rows * rowHeight)));
+            orderMenuScroll = GUI.BeginScrollView(new Rect(167, 198, 625, 205), orderMenuScroll,
+                new Rect(0, 0, 606, Mathf.Max(200, rows * rowHeight)));
             try
             {
                 for (int i = 0; i < beans.Length; i++)
@@ -250,7 +269,7 @@ namespace CloudCafe.Crafting
             }
         }
 
-        private void DrawEspressoOrderReport(Rect statusRect, Rect actionButtonRect)
+        private void DrawEspressoOrderReport(Rect statusRect, Rect actionButtonRect, CoffeeDrink drink = CoffeeDrink.Espresso)
         {
             if (!espressoShotOrder.HasRequest)
             {
@@ -259,30 +278,48 @@ namespace CloudCafe.Crafting
                 return;
             }
 
-            string requested = $"{EspressoOrderBeanName(espressoShotOrder.BeanId)} · {EspressoBeanProfiles.RoastNameKo(espressoShotOrder.Roast)}";
+            string requested = $"{CoffeeDrinkName(espressoShotOrder.Drink)} · {EspressoOrderBeanName(espressoShotOrder.BeanId)} · {EspressoBeanProfiles.RoastNameKo(espressoShotOrder.Roast)}";
             string response = "손님 요청 · " + requested;
             Color color = EspressoMuted;
             if (espressoOrderSubmitted)
             {
-                response += espressoOrderMatch switch
-                {
-                    EspressoOrderMatch.Match => "  |  손님: 주문대로 나왔어요!",
-                    EspressoOrderMatch.WrongBean => "  |  손님: 다른 원두가 나왔어요.",
-                    EspressoOrderMatch.WrongRoast => "  |  손님: 요청한 로스팅과 달라요.",
-                    _ => "  |  손님: 원두와 로스팅이 둘 다 달라요."
-                };
+                response += espressoOrderServed
+                    ? "  |  주문대로 나왔어요!"
+                    : "  |  주문과 다른 항목 · " + EspressoOrderMismatches(espressoOrderMatch);
                 color = espressoOrderServed ? OrderSuccessInk : OrderMismatchInk;
             }
             GUI.Label(statusRect, response, BeanText(13, color, true, true));
             if (!espressoOrderSubmitted)
             {
-                if (GUI.Button(actionButtonRect, "손님에게 내기", BeanActionStyle()))
-                    TryServeEspressoOrder();
+                bool wasEnabled = GUI.enabled;
+                bool drinkReady = IsDrinkReadyToServe(drink);
+                GUI.enabled = wasEnabled && drinkReady;
+                if (GUI.Button(actionButtonRect, drinkReady ? "손님에게 내기" : "음료 완성 후 제공", BeanActionStyle()))
+                    TryServeEspressoOrder(drink);
+                GUI.enabled = wasEnabled;
             }
             else if (espressoOrderServed && GUI.Button(actionButtonRect, "다음 주문", BeanActionStyle()))
             {
                 TryAdvanceEspressoOrder();
             }
+        }
+
+        private static string CoffeeDrinkName(CoffeeDrink drink)
+        {
+            return drink switch
+            {
+                CoffeeDrink.Americano => "아메리카노",
+                CoffeeDrink.Latte => "라떼",
+                _ => "에스프레소"
+            };
+        }
+
+        private static string EspressoOrderMismatches(EspressoOrderMatch match)
+        {
+            string fields = (match & EspressoOrderMatch.WrongDrink) != 0 ? "음료 · " : "";
+            if ((match & EspressoOrderMatch.WrongBean) != 0) fields += "원두 · ";
+            if ((match & EspressoOrderMatch.WrongRoast) != 0) fields += "로스팅";
+            return fields.TrimEnd(' ', '·');
         }
 
         private string EspressoOrderBeanName(string beanId)

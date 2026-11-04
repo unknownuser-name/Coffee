@@ -109,7 +109,7 @@ namespace CloudCafe.Crafting
 
         private bool HandleCoffeeBeanInput()
         {
-            if (smoke || latteActive || espressoOrderMenuOpen) return false;
+            if (smoke || latteActive || AmericanoView || espressoOrderMenuOpen) return false;
             if (coffeeBeanInputReleaseGuard)
             {
                 if (!Input.GetMouseButton(0)) coffeeBeanInputReleaseGuard = false;
