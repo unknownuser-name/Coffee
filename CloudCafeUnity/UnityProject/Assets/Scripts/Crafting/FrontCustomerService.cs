@@ -114,7 +114,7 @@ namespace CloudCafe.Crafting
                 ApplyEspressoOrder(new EspressoCustomerOrder(bean.Id, roast, drink));
                 int customerIndex = customerProgress.TotalServed % CustomerNames.Length;
                 customerVisit = new CustomerVisitModel(customerIndex, customerProgress.NextVisitId, drink,
-                    customerIndex == 0 ? 180f : customerIndex == 4 ? 240f : 210f);
+                    customerIndex == 0 ? 360f : customerIndex == 4 ? 480f : 420f);
                 BeginCounterVisit();
                 return true;
             }
@@ -347,7 +347,7 @@ namespace CloudCafe.Crafting
             BeanPanel(new Rect(661, 181, 267 * customerVisit.Patience01, 8), new Color(.50f, .75f, .56f));
             GUI.Label(new Rect(661, 194, 267, 20),
                 customerVisit.Phase == CustomerVisitPhase.Reaction ? "응대 완료 · O로 손님 반응 보기" :
-                    $"기다림 {customerVisit.Patience01:P0} · 오늘 {customerProgress.CustomersToday}/5명",
+                    $"남은 시간 {CustomerTimeRemaining()} · 기다림 {customerVisit.Patience01:P0}",
                 BeanText(12, EspressoMuted));
         }
     }

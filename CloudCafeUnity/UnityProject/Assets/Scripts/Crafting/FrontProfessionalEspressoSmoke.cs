@@ -110,16 +110,18 @@ namespace CloudCafe.Crafting
             Drop();
             yield return Settle();
             Check(!CommitProfessionalDose(), "cannot commit an empty basket");
-            Switch();
+            Check(HandleWorkshopAction() && Model.Running, "visible grinder action starts the docked grinder");
             float deadline = Time.realtimeSinceStartup + 25f;
             while (Model.DoseInBasketOrFlight < 18 && Time.realtimeSinceStartup < deadline) yield return null;
             Check(Model.Running && Model.DoseInBasketOrFlight >= 18,
                 $"manual grinder reaches 18g without automatic cutoff; dose={Model.DoseInBasketOrFlight:0.00}, "
                 + $"counter={counterView}, dialogue={customerDialogueOpen}, paused={paused}");
-            Switch();
+            Check(HandleWorkshopAction() && !Model.Running, "visible grinder action stops manual dosing");
             deadline = Time.realtimeSinceStartup + 5f;
             while (!Model.Ready && Time.realtimeSinceStartup < deadline) yield return null;
-            Check(Model.Ready && Model.Grounds >= 18 && Model.Grounds < 19, "manual dose settles");
+            Check(Model.Ready && Model.Grounds >= 17.99f && Model.Grounds < 18.25f,
+                $"manual dose settles within one grinder step; grounds={Model.Grounds:R}, "
+                + $"flying={Model.Flying:R}, ready={Model.Ready}, running={Model.Running}, paused={paused}");
             Check(!TryApplyDifficulty(false, 5, 93, 9), "cannot change difficulty mid-shot");
             Check(!TrySelectCoffeeBean("mundo_novo"), "cannot change bean recipe after dosing");
             Check(!TrySelectCoffeeBean("gesha", EspressoRoast.Light) && SelectedCoffeeRoast == EspressoRoast.Dark,
@@ -150,6 +152,8 @@ namespace CloudCafe.Crafting
             yield return Settle();
             Check(Prep.BeginTamp(), "tamp prepared dose");
             for (int i = 0; i < 6; i++) PressPrep(1, .05f);
+            Check(Prep.TampHoldProgress == 1 && !Prep.Complete,
+                "tamping UI reaches full hold while completion still waits for release");
             EndPress();
             yield return Settle();
             Check(Prep.Complete && brewView, "tamp completes before brewing");
@@ -167,7 +171,7 @@ namespace CloudCafe.Crafting
             ReachCup(art.CupSeat);
             DropCup();
             yield return Settle();
-            SwitchBrew();
+            Check(HandleWorkshopAction() && Brew.Running, "visible brew action starts a locked machine with a cup");
             Check(Brew.Running && Brew.IsProfessional, "start professional pump");
             Check(professionalShot.TargetBrewRatio == shotProfile.BrewRatio &&
                 professionalShotBeanRecipe.BeanId == "gesha" && professionalShotBeanRecipe.Roast == EspressoRoast.Dark &&

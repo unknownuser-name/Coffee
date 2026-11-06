@@ -286,17 +286,17 @@ namespace CloudCafe.Crafting
                 BeanText(14, EspressoMuted));
             bool wasEnabled = GUI.enabled;
             GUI.enabled = wasEnabled && customerVisit.Phase == CustomerVisitPhase.Talking && !customerVisit.Clarified;
-            if (GUI.Button(new Rect(24, 484, 165, 34), "자세히 물어보기", BeanActionStyle())) ClarifyCustomerOrder();
+            if (GUI.Button(new Rect(24, 480, 165, 44), "자세히 물어보기", BeanActionStyle())) ClarifyCustomerOrder();
             GUI.enabled = wasEnabled && customerVisit.Phase == CustomerVisitPhase.Talking && !customerVisit.Hinted;
-            if (GUI.Button(new Rect(201, 484, 139, 34), "레시피 힌트", BeanActionStyle())) HintCustomerOrder();
+            if (GUI.Button(new Rect(201, 480, 139, 44), "레시피 힌트", BeanActionStyle())) HintCustomerOrder();
             GUI.enabled = wasEnabled;
             if (StationReadyForSettings() &&
-                GUI.Button(new Rect(352, 484, 161, 34), "연습 주문 지정", BeanActionStyle()))
+                GUI.Button(new Rect(352, 480, 161, 44), "연습 주문 지정", BeanActionStyle()))
             {
                 CloseCustomerDialogue();
                 OpenEspressoOrderEditor();
             }
-            if (GUI.Button(new Rect(709, 482, 227, 38),
+            if (GUI.Button(new Rect(709, 480, 227, 44),
                 customerVisit.Phase == CustomerVisitPhase.Talking ? "알겠습니다 [Enter]" : "작업대로 돌아가기", BeanActionStyle()))
             {
                 if (customerVisit.Phase == CustomerVisitPhase.Talking) AcceptCustomerOrder();
@@ -312,7 +312,7 @@ namespace CloudCafe.Crafting
                 CounterCustomerPhase.Arriving => "손님이 카운터로 걸어오고 있어요.",
                 CounterCustomerPhase.Waiting => carryingFinishedDrink
                     ? "완성 컵을 잡아 손님 앞의 전달 구역으로 끌어 놓으세요."
-                    : $"손님이 기다리고 있어요 · 기다림 {customerVisit.Patience01:P0}",
+                    : $"손님이 기다리고 있어요 · 남은 시간 {CustomerTimeRemaining()}",
                 CounterCustomerPhase.Receiving => $"음료를 건넸어요 · 받은 돈 {customerVisit.Payment}코인 · 팁 {customerVisit.Tip}코인",
                 CounterCustomerPhase.Leaving => "손님이 음료를 들고 나가고 있어요.",
                 _ => "손님이 나갔어요. 다음 손님을 맞이하세요."
@@ -320,20 +320,20 @@ namespace CloudCafe.Crafting
             GUI.Label(new Rect(22, 459, 912, 27), paused ? "잠시 쉬는 중 · Esc로 계속" : hint,
                 BeanText(16, EspressoInk));
             if (counterCustomer.Phase == CounterCustomerPhase.Waiting &&
-                GUI.Button(new Rect(22, 496, 174, 28), "작업대로 [C]", BeanActionStyle()))
+                GUI.Button(new Rect(22, 490, 174, 40), "작업대로 [C]", BeanActionStyle()))
                 LeaveCounterView();
             if (counterCustomer.Phase == CounterCustomerPhase.Waiting && finishedDrink.HasValue &&
                 !carryingFinishedDrink &&
-                GUI.Button(new Rect(213, 493, 184, 33), "완성 컵 가져오기", BeanActionStyle()))
+                GUI.Button(new Rect(213, 490, 184, 40), "완성 컵 가져오기", BeanActionStyle()))
                 BeginCounterHandoff();
             if (counterCustomer.Phase == CounterCustomerPhase.Gone)
             {
-                if (GUI.Button(new Rect(22, 496, 174, 28), "음료 리포트", BeanActionStyle()))
+                if (GUI.Button(new Rect(22, 490, 174, 40), "음료 리포트", BeanActionStyle()))
                 {
                     LeaveCounterView();
                     TryOpenDrinkReport();
                 }
-                if (GUI.Button(new Rect(705, 490, 231, 35),
+                if (GUI.Button(new Rect(705, 490, 231, 40),
                     customerProgress.DayComplete ? "오늘 영업 정산" : "다음 손님", BeanActionStyle()))
                     AdvanceCustomerVisit();
             }

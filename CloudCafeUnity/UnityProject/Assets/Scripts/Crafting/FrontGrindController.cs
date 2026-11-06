@@ -48,7 +48,32 @@ namespace CloudCafe.Crafting {
   }
   void OnApplicationFocus(bool focused){if(!focused&&!smoke){ReleaseLattePointer();Americano.Step(0,false);if(servingCupHeld){servingCupHeld=false;art.CounterCup.position=art.CounterCupHome;}Cursor.visible=true;if(!professionalMode)Model.Running=false;StopBrewForFocus();if(held){Kill();held=false;Model.Drop(CraftSlot.Invalid);Seat(Model.Slot);}if(!customerDialogueOpen&&(latteActive||Americano.Active||(professionalMode&&!professionalMenuOpen&&!professionalReportOpen&&!espressoOrderMenuOpen&&!CoffeeBeanSelectionOpen))&&!paused)TogglePause();}}
   void OnDisable(){if(!smoke)ReleaseLattePointer();}
-  void OnGUI(){Layout();if(DrawEspressoOrderOverlay()||DrawCoffeeBeanBrowser()||DrawProfessionalOverlay())return;if(counterView){DrawCounterGUI();return;}if(AmericanoView){DrawAmericanoGUI();return;}if(latteActive){DrawLatteGUI();return;}GUI.DrawTexture(frame,art.Pixels,ScaleMode.StretchToFill,false);var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(new Vector3(frame.x,frame.y),Quaternion.identity,Vector3.one*frame.width/960);var label=new GUIStyle(GUI.skin.label){font=font,fontSize=18,normal={textColor=new Color(1,.92f,.78f)}};var bg=GUI.color;GUI.color=new Color(.07f,.09f,.14f,.95f);GUI.DrawTexture(new Rect(0,0,960,42),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(0,477,960,63),Texture2D.whiteTexture);GUI.color=bg;GUI.Label(new Rect(18,9,326,30),"직접 커피 만들기 · 분쇄부터 추출까지",label);GUI.Label(new Rect(685,9,270,30),professionalMode?ProfessionalReadout():brewView?"추출 "+Brew.InCup.ToString("0.0")+" / 36g":"바스켓 "+Model.Grounds.ToString("0.0")+" / 18g",label);GUI.Label(new Rect(18,482,925,30),paused?"잠시 쉬는 중 · Esc로 계속":message,label);label.fontSize=13;GUI.Label(new Rect(18,514,925,23),professionalMode?ProfessionalControls():brewView?"머신 밑에 끼우기 → 손잡이를 오른쪽으로 돌리기 → 컵 놓기 → 금색 버튼  |  R 다시 · Esc 쉬기":"손잡이 드래그 → 왼쪽 출구 밑 받침 → 금색 버튼 → 오른쪽 매트 → 표면 정리 → 탬핑  |  R 다시 · Esc 쉬기",label);DrawProfessionalToolbar();GUI.matrix=old;DrawCoffeeBeanBadge();}
+  void OnGUI()
+  {
+   Layout();
+   if(DrawEspressoOrderOverlay()||DrawCoffeeBeanBrowser()||DrawProfessionalOverlay())return;
+   if(counterView){DrawCounterGUI();return;}
+   if(AmericanoView){DrawAmericanoGUI();return;}
+   if(latteActive){DrawLatteGUI();return;}
+   GUI.DrawTexture(frame,art.Pixels,ScaleMode.StretchToFill,false);
+   Matrix4x4 previous=GUI.matrix;
+   GUI.matrix=Matrix4x4.TRS(new Vector3(frame.x,frame.y),Quaternion.identity,Vector3.one*frame.width/960);
+   BeanPanel(new Rect(0,0,960,48),new Color(.07f,.09f,.14f,.97f));
+   BeanPanel(new Rect(0,477,960,63),new Color(.07f,.09f,.14f,.97f));
+   GUI.Label(new Rect(18,12,320,30),"커피 제작 · 분쇄 → 추출",BeanText(19,EspressoInk,true));
+   string readout=professionalMode?ProfessionalReadout():brewView
+    ?$"추출 {Brew.InCup:0.0} / 36g":$"바스켓 {Model.Grounds:0.0} / 18g";
+   GUI.Label(new Rect(685,12,270,30),readout,BeanText(17,EspressoInk,true));
+   GUI.Label(new Rect(18,482,925,30),paused?"잠시 쉬는 중 · Esc로 계속":message,BeanText(17,EspressoInk));
+   string controls=professionalMode?ProfessionalControls():brewView
+    ?"머신 장착 → 손잡이 잠금 → 컵 놓기 → 금색 버튼  |  R 다시 · Esc 쉬기"
+    :"그라인더 받침 → 금색 버튼 → 매트 → 표면 정리 → 탬핑  |  R 다시 · Esc 쉬기";
+   GUI.Label(new Rect(18,514,925,23),controls,BeanText(13,EspressoMuted));
+   DrawProfessionalToolbar();
+   DrawPreparationHUD();
+   GUI.matrix=previous;
+   DrawCoffeeBeanBadge();
+  }
   IEnumerator Start(){if(professionalSmoke)yield return ProfessionalEspressoSmoke();else if(Array.IndexOf(Environment.GetCommandLineArgs(),"-coffeeBeanSmoke")>=0)yield return CoffeeBeanSmoke();else if(latteSmoke){SeedLattePractice();yield return LatteSmoke();File.WriteAllText(Path.Combine(review,"result.json"),"{\"passed\":true,\"mode\":\"latte practice\",\"spaceRelease\":true,\"whitePattern\":true}");Debug.Log("LATTE_PRACTICE_PASSED");Application.Quit(0);}else if(smoke)yield return Smoke();else if(Array.IndexOf(Environment.GetCommandLineArgs(),"-latteDemo")>=0)SeedLattePractice();}
   void Failure(string text,string stack,LogType type){if(type==LogType.Exception){File.WriteAllText(Path.Combine(review,"failure.txt"),text+"\n"+stack);Application.Quit(2);}}
   bool HitToolAt(Transform tool,Vector3 world){RaycastHit hit;return Physics.Raycast(art.Camera.ViewportPointToRay(art.Camera.WorldToViewportPoint(world)),out hit,20)&&hit.transform.IsChildOf(tool);}
@@ -62,6 +87,6 @@ namespace CloudCafe.Crafting {
    Check(Grab(),"grab again");yield return Settle();Reach(new Vector3(1.7f,.72f,.2f));Drop();yield return Settle();Check(Model.Complete,"invalid drop restores filled basket");Check(Grab(),"lift tamped basket for machine");yield return Settle();pointerOffset=Vector3.zero;var approach=art.Camera.WorldToViewportPoint(art.GroupSeat+new Vector3(.38f,-.1f,-.59f));DragHeld(new Vector2(approach.x,approach.y));Check(NearMachine(),"visual approach within broad dock area");yield return Shot("dock_00-assisted-approach");Drop();yield return Settle();Check(Vector3.Distance(art.Tool.position,art.GroupSeat)<.001f,"assisted insertion meets group head");Check(Brew.Inserted&&!Brew.Locked,"insert before locking");yield return Shot("brew_00-inserted");SwitchBrew();Check(!Brew.Running,"unlocked pump blocked");
    for(int i=0;i<8;i++){TurnBrew(5);yield return Shot("brew_01-turn-"+i);}Check(Brew.Locked,"handle locked");SwitchBrew();Check(!Brew.Running,"no cup pump blocked");Check(HitToolAt(art.Cup,art.Cup.position+new Vector3(.27f,.13f,0)),"cup handle can be grabbed");Check(GrabCup(),"pick cup");yield return Settle();ReachCup(art.CupHome);DropCup();yield return Settle();Check(!Brew.CupDocked,"rack drop does not count as cup seat");SwitchBrew();Check(!Brew.Running,"rack cup cannot start extraction");Check(GrabCup(),"pick cup for assisted placement");yield return Settle();ReachCup(art.CupSeat+new Vector3(.45f,0,-.5f));yield return Shot("cup_00-assisted-approach");DropCup();yield return Settle();Check(Brew.CupDocked&&Vector3.Distance(art.Cup.position,art.CupSeat)<.001f,"offset cup snaps exactly under spouts");yield return Shot("brew_02-cup");SwitchBrew();Check(Brew.Running,"pump begins");limit=Time.realtimeSinceStartup+15;int brewFrame=0;
    while(!Brew.Complete&&Time.realtimeSinceStartup<limit){yield return new WaitForSeconds(.22f);Check(Mathf.Abs(Brew.Pumped-Brew.InFlight-Brew.InCup-Brew.Spilled)<.01f,"espresso conservation");yield return Shot("brew_03-flow-"+(brewFrame++).ToString("D3"));}Check(Brew.Complete,"36 grams in cup");Check(!Grab(),"locked basket cannot be lifted");yield return Shot("brew_04-finished");yield return LatteSmoke();ResetStation();yield return new WaitForSeconds(.4f);Check(!Moving&&!held&&Model.Grounds==0&&art.Tool.position==art.Mat&&!Brew.Inserted&&Brew.InCup==0&&!cupHeld,"reset cancels pose");File.WriteAllText(Path.Combine(review,"result.json"),"{\"passed\":true,\"render\":\"actual 480x270 play camera\",\"scope\":\"scripted controller inputs; not OS mouse\",\"steps\":\"lift, seat, switch, grains, withdraw, set down, level, tamp, insert, turn lock, cup, espresso, easy latte\"}");Debug.Log("FRONT_GRIND_SMOKE_PASSED");Application.Quit(0);}
-  void OnDestroy(){supportHand?.Dispose();handCursor?.Dispose();Kill();if(cameraMotion!=null&&cameraMotion.IsActive())cameraMotion.Kill();if(art!=null){art.Pixels.Release();Destroy(art.Pixels);}if(font)Destroy(font);}
+  void OnDestroy(){DisposeButtonStyles();supportHand?.Dispose();handCursor?.Dispose();Kill();if(cameraMotion!=null&&cameraMotion.IsActive())cameraMotion.Kill();if(art!=null){art.Pixels.Release();Destroy(art.Pixels);}if(font)Destroy(font);}
  }
 }

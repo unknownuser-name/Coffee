@@ -5,8 +5,8 @@ namespace CloudCafe.Crafting
     public sealed partial class FrontGrindController
     {
         public readonly AmericanoModel Americano = new AmericanoModel();
-        private static readonly Rect WaterButton = new Rect(619, 467, 142, 36);
-        private static readonly Rect FinishWaterButton = new Rect(776, 467, 151, 36);
+        private static readonly Rect WaterButton = new Rect(619, 465, 142, 42);
+        private static readonly Rect FinishWaterButton = new Rect(776, 465, 151, 42);
         private CoffeeDrink? finishedDrink;
         private bool latteDrinkSelected;
         private bool AmericanoView => Americano.Active || Americano.Complete;
@@ -192,9 +192,9 @@ namespace CloudCafe.Crafting
 
         private void DrawDrinkReportNavigation(float y)
         {
-            if (GUI.Button(new Rect(134, y, 126, 34), "닫기 [Esc]", BeanActionStyle()))
+            if (GUI.Button(new Rect(134, y, 126, 40), "닫기 [Esc]", BeanActionStyle()))
                 CloseProfessionalOverlay();
-            if (GUI.Button(new Rect(702, y, 124, 34), "새 샷 [R]", BeanActionStyle()))
+            if (GUI.Button(new Rect(702, y, 124, 40), "새 샷 [R]", BeanActionStyle()))
                 ResetStation();
         }
     }

@@ -5,7 +5,7 @@ namespace CloudCafe.Crafting
 {
     public sealed partial class FrontGrindController
     {
-        private static readonly Rect EspressoOrderButton = new Rect(809, 57, 122, 25);
+        private static readonly Rect EspressoOrderButton = new Rect(809, 54, 122, 32);
         private static readonly Color OrderSuccessInk = new Color(.70f, .89f, .74f);
         private static readonly Color OrderMismatchInk = new Color(1f, .72f, .66f);
         private static readonly EspressoRoast[] OrderRoasts =
@@ -259,12 +259,12 @@ namespace CloudCafe.Crafting
                     + $"   |   추천 {profile.GrindSetting}/9 · {profile.TemperatureCelsius:0.0}°C · 1:{profile.BrewRatio:0.00}",
                     BeanText(14, EspressoAccent, true));
             }
-            if (GUI.Button(new Rect(167, 452, 116, 34), "닫기 [Esc]", BeanActionStyle()))
+            if (GUI.Button(new Rect(167, 452, 116, 40), "닫기 [Esc]", BeanActionStyle()))
                 CloseEspressoOrderMenu();
-            if (GUI.Button(new Rect(518, 452, 129, 34), "다음 손님", BeanActionStyle()) &&
+            if (GUI.Button(new Rect(518, 452, 129, 40), "다음 손님", BeanActionStyle()) &&
                 TryAdvanceEspressoOrder())
                 CloseEspressoOrderMenu();
-            if (GUI.Button(new Rect(655, 452, 133, 34), "이 주문 받기", BeanActionStyle()) &&
+            if (GUI.Button(new Rect(655, 452, 133, 40), "이 주문 받기", BeanActionStyle()) &&
                 TrySetEspressoOrder(draftOrderBeanId, draftOrderRoast, draftOrderDrink))
                 CloseEspressoOrderMenu();
         }

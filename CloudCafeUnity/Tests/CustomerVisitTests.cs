@@ -25,7 +25,7 @@ internal static class CustomerVisitTests
         Check(visit.Phase == CustomerVisitPhase.Talking && visit.Patience01 == 1f,
             "a new customer starts in conversation with full patience");
         visit.Tick(50f);
-        Check(visit.PatienceRemainingSeconds == 210f, "conversation time does not spend preparation patience");
+        Check(visit.PatienceRemainingSeconds == 420f, "conversation time does not spend preparation patience");
         Check(!visit.Resolve(true, 100), "cannot serve before accepting an order");
         Check(visit.Clarify() && !visit.Clarify() && visit.Clarified, "clarification is shown once");
         Check(visit.ShowHint() && !visit.ShowHint() && visit.Hinted, "recipe hint is shown once");
@@ -36,13 +36,13 @@ internal static class CustomerVisitTests
         visit.Tick(-2f);
         Check(visit.Patience01 == 1f, "invalid time does not change patience");
         visit.Tick(30f);
-        Check(visit.PatienceRemainingSeconds == 180f, "patience counts the full elapsed preparation time");
+        Check(visit.PatienceRemainingSeconds == 390f, "patience counts the full elapsed preparation time");
         Check(visit.Resolve(true, 100) && visit.Reaction == CustomerVisitReaction.Positive &&
             visit.Payment == visit.BasePrice + visit.Tip && visit.Tip > 0,
             "a timely accurate drink receives its price and a tip");
         int payment = visit.Payment;
         visit.Tick(600f);
-        Check(!visit.Resolve(false, 0) && visit.Payment == payment && visit.PatienceRemainingSeconds == 180f,
+        Check(!visit.Resolve(false, 0) && visit.Payment == payment && visit.PatienceRemainingSeconds == 390f,
             "a resolved visit is immutable");
 
         var progress = new CustomerCafeProgress();
@@ -57,7 +57,7 @@ internal static class CustomerVisitTests
             progress.CorrectToday == 1 && progress.TotalServed == 2,
             "an incorrect order still counts as a completed customer visit");
 
-        var slow = new CustomerVisitModel(2, progress.NextVisitId, CoffeeDrink.Americano, 180f);
+        var slow = new CustomerVisitModel(2, progress.NextVisitId, CoffeeDrink.Americano, 360f);
         slow.Accept();
         slow.Tick(1000f);
         Check(slow.Patience01 == 0 && slow.Resolve(true, 100) && slow.Tip == 0 &&
@@ -94,10 +94,10 @@ internal static class CustomerVisitTests
         Check(legacy.TryCredit(Resolved(0, 1, true)) && legacy.Coins == int.MaxValue,
             "large saved balances do not wrap negative on payment");
         var bounded = new CustomerVisitModel(0, 1, CoffeeDrink.Espresso, float.NaN);
-        Check(bounded.PatienceRemainingSeconds == 210f, "invalid patience budgets use a stable default");
+        Check(bounded.PatienceRemainingSeconds == 420f, "invalid patience budgets use a stable default");
         var shortBudget = new CustomerVisitModel(0, 1, CoffeeDrink.Espresso, 0f);
         var longBudget = new CustomerVisitModel(0, 1, CoffeeDrink.Espresso, 900f);
-        Check(shortBudget.PatienceRemainingSeconds == 180f && longBudget.PatienceRemainingSeconds == 240f,
+        Check(shortBudget.PatienceRemainingSeconds == 360f && longBudget.PatienceRemainingSeconds == 480f,
             "customer patience stays within the intended real-time range");
         var poor = Resolved(0, 1, true, -10);
         Check(poor.QualityScore == 0 && poor.Reaction == CustomerVisitReaction.Negative && poor.Tip == 0,

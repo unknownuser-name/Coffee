@@ -5,8 +5,8 @@ namespace CloudCafe.Crafting
 {
     public sealed partial class FrontGrindController
     {
-        private static readonly Rect DifficultyButton = new Rect(350, 7, 146, 28);
-        private static readonly Rect EspressoActionButton = new Rect(30, 119, 144, 30);
+        private static readonly Rect DifficultyButton = new Rect(350, 6, 146, 36);
+        private static readonly Rect EspressoActionButton = new Rect(26, 128, 232, 40);
         private static readonly Color EspressoInk = new Color(.98f, .92f, .81f);
         private static readonly Color EspressoMuted = new Color(.78f, .75f, .69f);
         private static readonly Color EspressoAccent = new Color(.99f, .75f, .46f);
@@ -18,7 +18,7 @@ namespace CloudCafe.Crafting
         private int professionalGrind = ProfessionalEspressoModel.NominalGrindSetting, draftGrind;
         private float professionalTemperature = ProfessionalEspressoModel.TargetTemperatureCelsius, draftTemperature;
         private float professionalPressure = ProfessionalEspressoModel.TargetPressureBar, draftPressure;
-        private float tampStartX, tampTiltIntegral, tampFirmSeconds, professionalPuckUniformity = 1;
+        private float tampStartX, tampTiltIntegral, tampFirmSeconds, professionalLiveTampTilt, professionalPuckUniformity = 1;
         private EspressoBeanProfile professionalBeanRecipe = EspressoBeanProfiles.ForBean(null, EspressoRoast.Medium);
         private EspressoBeanProfile professionalShotBeanRecipe;
         private ProfessionalEspressoModel professionalShot;
@@ -109,8 +109,9 @@ namespace CloudCafe.Crafting
         {
             if (professionalMenuOpen || professionalReportOpen)
                 Cursor.lockState = CursorLockMode.None;
-            else if (counterView || latteActive || AmericanoView || (!Brew.Complete && (!professionalMode || !ShowDoseButton)) ||
-                !EspressoActionButton.Contains(StationGuiPointer()))
+            else if (counterView || latteActive || AmericanoView ||
+                !EspressoActionButton.Contains(StationGuiPointer()) ||
+                !(Brew.Complete || HasGrinderAction || HasBrewAction || (professionalMode && ShowDoseButton)))
                 return false;
             Cursor.visible = true;
             handCursor?.Set(HandPose.Open, Vector2.zero, false);
@@ -148,6 +149,8 @@ namespace CloudCafe.Crafting
                 return true;
             }
             if (paused) return false;
+            if (click && EspressoActionButton.Contains(pointer) && HandleWorkshopAction())
+                return true;
             if (Brew.Complete && (Input.GetKeyDown(KeyCode.Return) ||
                 (click && EspressoActionButton.Contains(pointer))))
             {
@@ -179,7 +182,8 @@ namespace CloudCafe.Crafting
         private void RecordProfessionalTamp(float depth, float dt, float tilt)
         {
             if (!professionalMode) return;
-            if (depth < .85f)
+            professionalLiveTampTilt = Mathf.Clamp01(tilt);
+            if (depth < PuckPrepModel.RequiredTampDepth)
             {
                 tampTiltIntegral = tampFirmSeconds = 0;
                 return;
@@ -193,7 +197,7 @@ namespace CloudCafe.Crafting
         {
             if (professionalMode && Prep.Complete && tampFirmSeconds > 0)
                 professionalPuckUniformity = 1 - tampTiltIntegral / tampFirmSeconds;
-            tampTiltIntegral = tampFirmSeconds = 0;
+            tampTiltIntegral = tampFirmSeconds = professionalLiveTampTilt = 0;
         }
 
         private void ResetProfessionalShot()
@@ -204,7 +208,7 @@ namespace CloudCafe.Crafting
             professionalShot = null;
             professionalShotBeanRecipe = default;
             professionalReportShown = false;
-            tampTiltIntegral = tampFirmSeconds = 0;
+            tampTiltIntegral = tampFirmSeconds = professionalLiveTampTilt = 0;
             professionalPuckUniformity = 1;
             ClearEspressoOrderShot();
         }
@@ -248,8 +252,7 @@ namespace CloudCafe.Crafting
                 GUI.Button(DifficultyButton, professionalMode ? "프로페셔널 [D]" : "난이도 · 기본 [D]", BeanActionStyle());
             if (!professionalMode)
             {
-                if (Brew.Complete)
-                    GUI.Button(EspressoActionButton, finishedDrink.HasValue ? "음료 리포트" : "음료 선택", BeanActionStyle());
+                DrawWorkshopAction();
                 return;
             }
 
@@ -263,10 +266,7 @@ namespace CloudCafe.Crafting
             GUI.Label(new Rect(29, 84, 272, 23),
                 $"분쇄도 {professionalGrind}/9  ·  {professionalTemperature:0.0}°C  ·  {professionalPressure:0.0} bar",
                 BeanText(13, EspressoInk));
-            if (Brew.Complete)
-                GUI.Button(EspressoActionButton, finishedDrink.HasValue ? "음료 리포트" : "음료 선택 · 샷 리포트", BeanActionStyle());
-            else if (ShowDoseButton)
-                GUI.Button(EspressoActionButton, "도징 확정 [Enter]", BeanActionStyle());
+            DrawWorkshopAction();
             DrawEspressoOrderTicket();
         }
 
@@ -329,9 +329,9 @@ namespace CloudCafe.Crafting
                 if (GUI.Button(new Rect(594, 395, 130, 27), "추천값 불러오기", BeanActionStyle()))
                     SetDraftBeanRecommendation();
             }
-            if (GUI.Button(new Rect(474, 440, 109, 34), "취소 [Esc]", BeanActionStyle()))
+            if (GUI.Button(new Rect(474, 440, 109, 40), "취소 [Esc]", BeanActionStyle()))
                 CloseProfessionalOverlay();
-            if (GUI.Button(new Rect(594, 440, 130, 34), "선택 적용", BeanActionStyle()) &&
+            if (GUI.Button(new Rect(594, 440, 130, 40), "선택 적용", BeanActionStyle()) &&
                 TryApplyDifficulty(draftProfessional, draftGrind, draftTemperature, draftPressure))
                 CloseProfessionalOverlay();
         }
@@ -380,7 +380,7 @@ namespace CloudCafe.Crafting
             DrawDrinkChoiceOrSummary(409);
             Rect orderStatus = new Rect(134, 448, 692, 25);
             if (finishedDrink.HasValue)
-                DrawEspressoOrderReport(orderStatus, new Rect(273, 475, 254, 34), finishedDrink.Value);
+                DrawEspressoOrderReport(orderStatus, new Rect(273, 475, 254, 40), finishedDrink.Value);
             else if (espressoShotOrder.HasRequest)
                 GUI.Label(orderStatus, "손님 주문 · " + CoffeeDrinkName(espressoShotOrder.Drink), BeanText(13, EspressoMuted));
             DrawDrinkReportNavigation(475);

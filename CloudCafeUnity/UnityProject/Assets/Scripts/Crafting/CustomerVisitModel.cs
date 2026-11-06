@@ -19,8 +19,8 @@ namespace CloudCafe.Crafting
     public sealed class CustomerVisitModel
     {
         public const int CustomerCount = 6;
-        public const float MinPatienceSeconds = 180f;
-        public const float MaxPatienceSeconds = 240f;
+        public const float MinPatienceSeconds = 360f;
+        public const float MaxPatienceSeconds = 480f;
 
         private readonly float patienceBudgetSeconds;
 
@@ -42,7 +42,7 @@ namespace CloudCafe.Crafting
         public bool Credited { get; private set; }
 
         public CustomerVisitModel(int customerIndex, int visitId, CoffeeDrink drink,
-            float patienceBudgetSeconds = 210f)
+            float patienceBudgetSeconds = 420f)
         {
             if (customerIndex < 0 || customerIndex >= CustomerCount)
                 throw new ArgumentOutOfRangeException(nameof(customerIndex));
@@ -59,7 +59,7 @@ namespace CloudCafe.Crafting
                 _ => throw new ArgumentOutOfRangeException(nameof(drink))
             };
             if (float.IsNaN(patienceBudgetSeconds) || float.IsInfinity(patienceBudgetSeconds))
-                patienceBudgetSeconds = 210f;
+                patienceBudgetSeconds = 420f;
             this.patienceBudgetSeconds = Math.Max(MinPatienceSeconds,
                 Math.Min(MaxPatienceSeconds, patienceBudgetSeconds));
             PatienceRemainingSeconds = this.patienceBudgetSeconds;
