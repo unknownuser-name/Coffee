@@ -227,7 +227,7 @@ namespace CloudCafe.Crafting
         private void StepStationBrew(float dt)
         {
             Brew.Step(dt);
-            if ((!smoke || professionalSmoke) && !professionalReportShown && Brew.Complete)
+            if ((!smoke || professionalSmoke || stepGuidanceSmoke) && !professionalReportShown && Brew.Complete)
             {
                 professionalReportShown = true;
                 TryOpenDrinkReport();

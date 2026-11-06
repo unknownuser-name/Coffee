@@ -9,6 +9,8 @@ namespace CloudCafe.Crafting
         private static readonly Color DilutedColor = new Color32(125, 72, 43, 255);
 
         private Transform americanoStation;
+        public Vector3? AmericanoGuidePoint => americanoStation == null ? (Vector3?)null :
+            americanoStation.position + Vector3.up * .35f;
         private Transform americanoSurface;
         private Transform americanoStream;
         private Transform americanoRipple;

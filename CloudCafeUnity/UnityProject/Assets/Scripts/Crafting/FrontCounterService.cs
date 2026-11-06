@@ -69,7 +69,7 @@ namespace CloudCafe.Crafting
 
         private void UpdateCounterService(float dt)
         {
-            if (!professionalMode || paused || (!Application.isFocused && !professionalSmoke)) return;
+            if (!professionalMode || paused || (!Application.isFocused && !professionalSmoke && !stepGuidanceSmoke)) return;
             CounterCustomerPhase before = counterCustomer.Phase;
             counterCustomer.Step(dt);
             RefreshCounterArt();

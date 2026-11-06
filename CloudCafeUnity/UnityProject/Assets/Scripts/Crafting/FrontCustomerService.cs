@@ -78,7 +78,7 @@ namespace CloudCafe.Crafting
 
         private void UpdateCustomerVisit(float dt)
         {
-            if (!professionalMode || paused || (!Application.isFocused && !professionalSmoke)) return;
+            if (!professionalMode || paused || (!Application.isFocused && !professionalSmoke && !stepGuidanceSmoke)) return;
             customerVisit?.Tick(dt);
         }
 

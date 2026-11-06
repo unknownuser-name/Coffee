@@ -33,7 +33,7 @@ namespace CloudCafe.Crafting
 
         private void InitializeCoffeeBeans()
         {
-            if (smoke && !professionalSmoke) return;
+            if (smoke && !professionalSmoke && !stepGuidanceSmoke) return;
             coffeeBeanCatalog = CoffeeBeanCatalog.Load();
             if (coffeeBeanCatalog == null || coffeeBeanCatalog.Beans == null) return;
             selectedCoffeeBean = coffeeBeanCatalog.Find("yirgacheffe_kurume");
@@ -53,7 +53,7 @@ namespace CloudCafe.Crafting
         private bool CanChangeCoffeeBeans()
         {
             return coffeeBeanCatalog != null && selectedCoffeeBean != null &&
-                (!smoke || professionalSmoke) && !counterView && !professionalMenuOpen && !espressoOrderMenuOpen && !customerDialogueOpen &&
+                (!smoke || professionalSmoke || stepGuidanceSmoke) && !counterView && !professionalMenuOpen && !espressoOrderMenuOpen && !customerDialogueOpen &&
                 StationReadyForSettings();
         }
 
