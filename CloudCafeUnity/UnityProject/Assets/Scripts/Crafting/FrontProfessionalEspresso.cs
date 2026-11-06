@@ -58,6 +58,7 @@ namespace CloudCafe.Crafting
             professionalTemperature = temperature;
             professionalPressure = pressure;
             if (professionalMode) EnsureEspressoOrder();
+            else CloseCustomerDialogue();
             message = professionalMode
                 ? "프로페셔널 모드. 저울을 보며 분쇄를 멈추고 도징을 확정하세요."
                 : "기본 모드. 손잡이를 잡아 들어 올려 보세요.";
@@ -192,6 +193,7 @@ namespace CloudCafe.Crafting
 
         private void ResetProfessionalShot()
         {
+            if (customerVisit?.Phase != CustomerVisitPhase.Talking) CloseCustomerDialogue();
             if (professionalMenuOpen || professionalReportOpen) CloseProfessionalOverlay();
             professionalShot = null;
             professionalShotBeanRecipe = default;

@@ -27,6 +27,27 @@ namespace CloudCafe.Crafting
             Check(TryApplyDifficulty(true, draftGrind, draftTemperature, draftPressure),
                 "apply professional difficulty with recommended settings");
             CloseProfessionalOverlay();
+            Check(customerDialogueOpen && customerVisit != null && customerVisit.Phase == CustomerVisitPhase.Talking,
+                "professional mode greets the first customer before preparation");
+            CustomerVisitModel greetedVisit = customerVisit;
+            CloseCustomerDialogue();
+            OpenEspressoOrderEditor();
+            Check(espressoOrderMenuOpen && !customerDialogueOpen,
+                "the training editor can be opened from a pending customer greeting");
+            CloseEspressoOrderMenu();
+            Check(customerDialogueOpen && customerVisit == greetedVisit &&
+                customerVisit.Phase == CustomerVisitPhase.Talking,
+                "canceling the training editor returns to the same unaccepted customer greeting");
+            float greetingPatience = customerVisit.PatienceRemainingSeconds;
+            UpdateCustomerVisit(5f);
+            Check(customerVisit.PatienceRemainingSeconds == greetingPatience,
+                "reading the customer's greeting does not consume preparation time");
+            Check(ClarifyCustomerOrder() && !ClarifyCustomerOrder() && customerVisit.Clarified,
+                "customer can clarify the spoken request once");
+            Check(HintCustomerOrder() && !HintCustomerOrder() && customerVisit.Hinted,
+                "the recipe hint can be requested once");
+            Check(AcceptCustomerOrder() && !customerDialogueOpen && customerVisit.Phase == CustomerVisitPhase.Preparing,
+                "accepting the order begins the preparation stage");
             Check(professionalMode && Model.ManualDose, "manual grinder selected");
             Check(espressoOrder.HasRequest, "professional station starts with a customer request");
             Check(SelectedCoffeeRoast == EspressoRoast.Medium, "station starts at medium roast");
@@ -184,8 +205,10 @@ namespace CloudCafe.Crafting
             Check(TryAdvanceEspressoOrder() && espressoOrder.HasRequest &&
                 (espressoOrder.BeanId != "gesha" || espressoOrder.Roast != EspressoRoast.Dark) && !espressoOrderServed,
                 "the next customer supplies a new bean and roast request");
+            Check(AcceptCustomerOrder(), "accept the next generated customer before returning to training");
             CheckOtherDrinkRoutes();
             ResetStation();
+            yield return CheckCustomerCampaign();
             Check(TryApplyDifficulty(false, 5, 93, 9) && !Model.ManualDose, "return to basic difficulty");
             SeedDrinkShot();
             Check(!Brew.IsProfessional && TryChooseDrink(CoffeeDrink.Americano) && Americano.Active &&
@@ -252,7 +275,106 @@ namespace CloudCafe.Crafting
                 "latte art still works and the completed latte satisfies its own order");
         }
 
-        private void SeedDrinkShot()
+        private IEnumerator CheckCustomerCampaign()
+        {
+            Check(customerProgress.TotalServed == 0 && customerProgress.Coins == 0,
+                "custom training orders do not change customer progress");
+            int beginningDay = customerProgress.Day;
+            for (int visit = 0; visit < 5; visit++)
+            {
+                Check(TryAdvanceEspressoOrder() && customerDialogueOpen &&
+                    customerVisit.Phase == CustomerVisitPhase.Talking,
+                    "a generated visit opens its customer dialogue");
+                Check(AcceptCustomerOrder(), "accept generated request");
+                CustomerVisitModel acceptedVisit = customerVisit;
+                float beforeTick = acceptedVisit.PatienceRemainingSeconds;
+                yield return new WaitForSeconds(.12f);
+                Check(acceptedVisit.PatienceRemainingSeconds < beforeTick,
+                    "accepted customer waits while the espresso workstation is active");
+                TogglePause();
+                float pausedPatience = acceptedVisit.PatienceRemainingSeconds;
+                yield return new WaitForSeconds(.12f);
+                Check(acceptedVisit.PatienceRemainingSeconds == pausedPatience,
+                    "pause freezes the customer's patience");
+                TogglePause();
+                float beforeRetry = acceptedVisit.PatienceRemainingSeconds;
+                ResetStation();
+                Check(customerVisit == acceptedVisit && acceptedVisit.Phase == CustomerVisitPhase.Preparing &&
+                    acceptedVisit.PatienceRemainingSeconds == beforeRetry,
+                    "a new shot preserves the accepted customer and elapsed patience");
+                Check(TrySelectCoffeeBean(espressoOrder.BeanId, espressoOrder.Roast),
+                    "prepare the generated customer's bean and roast");
+                SeedDrinkShot(18f * professionalBeanRecipe.BrewRatio);
+
+                CoffeeDrink actualDrink = visit == 0
+                    ? (espressoOrder.Drink == CoffeeDrink.Espresso ? CoffeeDrink.Americano : CoffeeDrink.Espresso)
+                    : espressoOrder.Drink;
+                Check(TryChooseDrink(actualDrink), "choose the prepared drink for this visit");
+                if (actualDrink == CoffeeDrink.Americano || actualDrink == CoffeeDrink.Latte)
+                {
+                    float beforeDrink = acceptedVisit.PatienceRemainingSeconds;
+                    yield return new WaitForSeconds(.12f);
+                    Check(acceptedVisit.PatienceRemainingSeconds < beforeDrink,
+                        "the customer also waits while water or milk is being prepared");
+                    TogglePause();
+                    float drinkPausedPatience = acceptedVisit.PatienceRemainingSeconds;
+                    yield return new WaitForSeconds(.12f);
+                    Check(acceptedVisit.PatienceRemainingSeconds == drinkPausedPatience,
+                        "pause freezes patience during water or milk preparation");
+                    TogglePause();
+                }
+                FinishCustomerDrink(actualDrink);
+                int priorCoins = customerProgress.Coins;
+                int priorServed = customerProgress.TotalServed;
+                bool matched = TryServeEspressoOrder(actualDrink);
+                Check(matched == (visit != 0) && customerVisit.Phase == CustomerVisitPhase.Reaction &&
+                    customerVisit.OrderMatched == matched && customerVisit.Credited &&
+                    customerProgress.TotalServed == priorServed + 1,
+                    "offering the drink resolves and records the customer once");
+                Check(visit == 0
+                    ? customerVisit.Reaction == CustomerVisitReaction.Negative &&
+                        customerProgress.Coins == priorCoins && customerVisit.Payment == 0
+                    : customerVisit.Payment > 0 && customerProgress.Coins == priorCoins + customerVisit.Payment,
+                    "wrong drinks earn no payment and matching drinks credit their receipt");
+                int paidCoins = customerProgress.Coins;
+                Check(!TryServeEspressoOrder(actualDrink) && customerProgress.Coins == paidCoins &&
+                    customerProgress.TotalServed == priorServed + 1,
+                    "the same customer cannot pay for a served drink again");
+                CloseProfessionalOverlay();
+                ResetStation();
+                Check(customerVisit == acceptedVisit && customerVisit.Phase == CustomerVisitPhase.Reaction &&
+                    customerProgress.Coins == paidCoins,
+                    "resetting after a reaction does not duplicate its payment");
+            }
+            Check(customerProgress.DayComplete && customerProgress.CustomersToday == 5 &&
+                customerProgress.CorrectToday == 4,
+                "five resolved visits complete the day, including the disappointed customer");
+            Check(StartNextCustomerDay() && customerProgress.Day == beginningDay + 1 &&
+                customerProgress.CustomersToday == 0 && !customerProgress.DayComplete,
+                "the next business day resets its counters while retaining earnings");
+            Check(customerVisit != null && customerVisit.CustomerIndex == 5 && customerDialogueOpen &&
+                customerVisit.Phase == CustomerVisitPhase.Talking,
+                "the sixth customer arrives at the start of the second business day");
+            if (customerDialogueOpen) Check(AcceptCustomerOrder(), "accept the new day's first customer");
+            ResetStation();
+        }
+
+        private void FinishCustomerDrink(CoffeeDrink drink)
+        {
+            if (drink == CoffeeDrink.Americano)
+            {
+                for (int i = 0; i < 400 && Americano.WaterGrams < Americano.TargetWaterGrams; i++)
+                    Americano.Step(.05f, true);
+                Check(TryFinishAmericano(), "finish the generated customer's Americano");
+            }
+            else if (drink == CoffeeDrink.Latte)
+            {
+                for (int i = 0; i < 240 && !Latte.Complete; i++) Latte.Step(.05f, true, 0, 0, -1f);
+                Check(TryFinishLatteDrink(), "finish the generated customer's latte");
+            }
+        }
+
+        private void SeedDrinkShot(float? targetGrams = null)
         {
             // The first shot exercises the complete workstation. Use the same pump and
             // report callbacks here to reach the other drink choices without replaying prep.
@@ -261,11 +383,12 @@ namespace CloudCafe.Crafting
             Brew.Turn(40);
             Brew.CupDocked = true;
             SwitchBrew();
-            for (int i = 0; i < 1200 && Brew.Running && (!Brew.IsProfessional || Brew.InCup < 30f); i++)
+            float target = targetGrams ?? 30f;
+            for (int i = 0; i < 1200 && Brew.Running && (!Brew.IsProfessional || Brew.InCup < target); i++)
                 StepStationBrew(.05f);
             if (Brew.IsProfessional)
             {
-                Check(Brew.Running && Brew.InCup >= 30f, "seed a stable shot using the selected recipe");
+                Check(Brew.Running && Brew.InCup >= target, "seed a stable shot using the selected recipe");
                 SwitchBrew();
             }
             for (int i = 0; i < 8; i++) StepStationBrew(.05f);

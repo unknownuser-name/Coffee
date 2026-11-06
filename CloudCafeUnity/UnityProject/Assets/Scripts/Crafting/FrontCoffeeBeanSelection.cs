@@ -53,7 +53,7 @@ namespace CloudCafe.Crafting
         private bool CanChangeCoffeeBeans()
         {
             return coffeeBeanCatalog != null && selectedCoffeeBean != null &&
-                (!smoke || professionalSmoke) && !professionalMenuOpen && !espressoOrderMenuOpen &&
+                (!smoke || professionalSmoke) && !professionalMenuOpen && !espressoOrderMenuOpen && !customerDialogueOpen &&
                 StationReadyForSettings();
         }
 
