@@ -69,7 +69,7 @@ namespace CloudCafe.Crafting
 
         private void UpdateCounterService(float dt)
         {
-            if (!professionalMode || paused || (!Application.isFocused && !professionalSmoke && !stepGuidanceSmoke)) return;
+            if (!professionalMode || paused || (!Application.isFocused && !professionalSmoke && !stepGuidanceSmoke && !firstOrderTutorialSmoke)) return;
             CounterCustomerPhase before = counterCustomer.Phase;
             counterCustomer.Step(dt);
             RefreshCounterArt();
@@ -103,6 +103,7 @@ namespace CloudCafe.Crafting
                 case CounterCustomerPhase.Arriving:
                     return customerProgress.CustomerVisits[customerVisit.CustomerIndex] > 0 ? "안녕하세요, 또 들렀어요!" : "안녕하세요! 커피 한 잔 주문할게요.";
                 case CounterCustomerPhase.Ordering:
+                    if (TutorialActive) return "첫 잔은 함께 만들어 봐요. 예가체프 미디엄 에스프레소 한 잔 부탁해요. 천천히 하셔도 괜찮아요!";
                     return SpokenCustomerOrder(customerVisit.Clarified);
                 case CounterCustomerPhase.Waiting:
                     if (carryingFinishedDrink) return "제 커피인가요? 이쪽으로 건네 주세요.";
@@ -122,6 +123,7 @@ namespace CloudCafe.Crafting
 
         private bool BeginCounterHandoff()
         {
+            if (!TutorialAllows("counter.carry")) return false;
             if (!professionalMode || customerVisit?.Phase != CustomerVisitPhase.Preparing ||
                 counterCustomer.Phase != CounterCustomerPhase.Waiting || !finishedDrink.HasValue ||
                 !IsDrinkReadyToServe(finishedDrink.Value) || espressoOrderSubmitted || paused) return false;
@@ -136,16 +138,19 @@ namespace CloudCafe.Crafting
             art.CounterCup.position = art.CounterCupHome;
             art.ShowCounterDrink(true);
             RefreshCounterArt();
+            TutorialDid(FirstOrderTutorialStep.CarryToCounter);
             return true;
         }
 
         private bool GrabServingCup()
         {
+            if (!TutorialAllows("serve.pick")) return false;
             if (!counterView || paused || servingCupHeld || !carryingFinishedDrink ||
                 counterCustomer.Phase != CounterCustomerPhase.Waiting) return false;
             servingCupHeld = true;
             servingCupOffset = art.CounterCup.position - CounterPointerPoint();
             servingCupOffset.y = 0;
+            TutorialDid(FirstOrderTutorialStep.PickServingCup);
             return true;
         }
 
@@ -173,7 +178,9 @@ namespace CloudCafe.Crafting
 
         private bool DropServingCup()
         {
+            if (!TutorialAllows("serve.drop")) return false;
             if (!servingCupHeld || paused) return false;
+            TutorialDid(FirstOrderTutorialStep.PlaceServingCup, ServingCupNearCustomer());
             servingCupHeld = false;
             if (!ServingCupNearCustomer() || counterCustomer.Phase != CounterCustomerPhase.Waiting)
             {
@@ -192,6 +199,7 @@ namespace CloudCafe.Crafting
             carryingFinishedDrink = false;
             art.ShowCounterDrink(false);
             RefreshCounterArt();
+            TutorialDid(FirstOrderTutorialStep.ReleaseServingCup, espressoOrderServed);
             return true;
         }
 
@@ -201,6 +209,7 @@ namespace CloudCafe.Crafting
                 professionalReportOpen || professionalMenuOpen || CoffeeBeanSelectionOpen || espressoOrderMenuOpen)
                 return false;
             if (!Input.GetKeyDown(KeyCode.C)) return false;
+            if (!TutorialAllows("counter.toggle")) return true;
             if (counterView && (counterCustomer.Phase == CounterCustomerPhase.Arriving ||
                 counterCustomer.Phase == CounterCustomerPhase.Ordering)) return true;
             if (counterView) LeaveCounterView();
@@ -281,16 +290,19 @@ namespace CloudCafe.Crafting
                 var recipe = CloudCafe.Coffee.EspressoBeanProfiles.ForBean(espressoOrder.BeanId, espressoOrder.Roast);
                 role += $" · 추천 {recipe.GrindSetting}/9 · {recipe.TemperatureCelsius:0.0}°C · 샷 비율 1:{recipe.BrewRatio:0.00}";
             }
+            if (!TutorialVisible)
+            {
             GUI.Label(new Rect(24, 382, 912, 33), role, BeanText(16, EspressoAccent, true));
             GUI.Label(new Rect(24, 421, 912, 30), "주문을 받은 뒤 제작을 시작합니다. 모호한 주문은 먼저 물어보세요.",
                 BeanText(14, EspressoMuted));
+            }
             bool wasEnabled = GUI.enabled;
             GUI.enabled = wasEnabled && customerVisit.Phase == CustomerVisitPhase.Talking && !customerVisit.Clarified;
             if (GUI.Button(new Rect(24, 480, 165, 44), "자세히 물어보기", BeanActionStyle())) ClarifyCustomerOrder();
             GUI.enabled = wasEnabled && customerVisit.Phase == CustomerVisitPhase.Talking && !customerVisit.Hinted;
             if (GUI.Button(new Rect(201, 480, 139, 44), "레시피 힌트", BeanActionStyle())) HintCustomerOrder();
             GUI.enabled = wasEnabled;
-            if (StationReadyForSettings() &&
+            if (!TutorialActive && StationReadyForSettings() &&
                 GUI.Button(new Rect(352, 480, 161, 44), "연습 주문 지정", BeanActionStyle()))
             {
                 CloseCustomerDialogue();
@@ -319,7 +331,7 @@ namespace CloudCafe.Crafting
             };
             GUI.Label(new Rect(22, 459, 912, 27), paused ? "잠시 쉬는 중 · Esc로 계속" : hint,
                 BeanText(16, EspressoInk));
-            if (counterCustomer.Phase == CounterCustomerPhase.Waiting &&
+            if (!TutorialActive && counterCustomer.Phase == CounterCustomerPhase.Waiting &&
                 GUI.Button(new Rect(22, 490, 174, 40), "작업대로 [C]", BeanActionStyle()))
                 LeaveCounterView();
             if (counterCustomer.Phase == CounterCustomerPhase.Waiting && finishedDrink.HasValue &&

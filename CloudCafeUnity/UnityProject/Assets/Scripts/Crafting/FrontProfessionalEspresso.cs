@@ -52,6 +52,7 @@ namespace CloudCafe.Crafting
 
         private bool TryApplyDifficulty(bool professional, int grind, float temperature, float pressure)
         {
+            if (!TutorialAllows("settings")) return false;
             if (!StationReadyForSettings() || !Model.SetManualDose(professional)) return false;
             professionalMode = professional;
             professionalGrind = grind;
@@ -72,6 +73,7 @@ namespace CloudCafe.Crafting
 
         private void OpenDifficultyMenu()
         {
+            if (!TutorialAllows("settings")) return;
             if (!StationReadyForSettings())
             {
                 message = "난이도와 레시피는 분쇄 전 설정할 수 있어요. R로 새 잔을 준비하세요.";
@@ -170,12 +172,14 @@ namespace CloudCafe.Crafting
 
         private bool CommitProfessionalDose()
         {
+            if (!TutorialAllows("dose.confirm")) return false;
             if (Moving || !Model.CommitDose())
             {
                 message = "분쇄를 멈추고 가루가 다 떨어지면 바스켓을 매트에 놓으세요. 최소 12g이 필요해요.";
                 return false;
             }
             message = $"도징 {Model.Grounds:0.0}g 확정. 분배 도구로 표면을 고르게 펴 주세요.";
+            TutorialDid(FirstOrderTutorialStep.CommitDose);
             return true;
         }
 
@@ -227,7 +231,7 @@ namespace CloudCafe.Crafting
         private void StepStationBrew(float dt)
         {
             Brew.Step(dt);
-            if ((!smoke || professionalSmoke || stepGuidanceSmoke) && !professionalReportShown && Brew.Complete)
+            if ((!smoke || professionalSmoke || stepGuidanceSmoke || firstOrderTutorialSmoke) && !professionalReportShown && Brew.Complete)
             {
                 professionalReportShown = true;
                 TryOpenDrinkReport();

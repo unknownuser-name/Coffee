@@ -63,12 +63,14 @@ namespace CloudCafe.Crafting
 
         private bool AcceptCustomerOrder()
         {
+            if (!TutorialAllows("accept")) return false;
             if (customerVisit == null || customerVisit.Phase != CustomerVisitPhase.Talking ||
                 counterCustomer.Phase != CounterCustomerPhase.Ordering) return false;
             customerVisit.Accept();
             counterCustomer.AcceptOrder();
             CloseCustomerDialogue();
             LeaveCounterView();
+            TutorialDid(FirstOrderTutorialStep.AcceptOrder);
             message = CustomerNames[customerVisit.CustomerIndex] + "의 주문을 받았어요. B로 원두와 로스팅을 골라 주세요.";
             return true;
         }
@@ -78,12 +80,14 @@ namespace CloudCafe.Crafting
 
         private void UpdateCustomerVisit(float dt)
         {
+            if (TutorialActive) return;
             if (!professionalMode || paused || (!Application.isFocused && !professionalSmoke && !stepGuidanceSmoke)) return;
             customerVisit?.Tick(dt);
         }
 
         private bool AdvanceCustomerVisit()
         {
+            if (TutorialActive) return false;
             CoffeeBeanDefinition[] beans = coffeeBeanCatalog?.Beans;
             if (!professionalMode || beans == null || beans.Length == 0) return false;
             InitializeCustomerProgress();
@@ -96,6 +100,9 @@ namespace CloudCafe.Crafting
                 OpenCustomerDialogue(true);
                 return true;
             }
+
+            if (!customerProgress.FirstOrderTutorialCompleted && (!smoke || firstOrderTutorialSmoke))
+                return BeginFirstOrderTutorial();
 
             int recipeCount = beans.Length * OrderRoasts.Length * OrderDrinks.Length;
             for (int offset = 0; offset < recipeCount; offset++)

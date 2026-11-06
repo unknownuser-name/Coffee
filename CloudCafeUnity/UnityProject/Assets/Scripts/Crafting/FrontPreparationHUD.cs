@@ -65,6 +65,7 @@ namespace CloudCafe.Crafting
 
         private void DrawPreparationHUD()
         {
+            if (TutorialVisible) return;
             if (Brew.Inserted) return;
             const float left = 18;
             const float top = 265;

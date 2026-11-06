@@ -35,6 +35,11 @@ namespace CloudCafe.Crafting
 
         private StepHint CurrentStepHint()
         {
+            return TutorialActive ? TutorialStepHint() : DefaultStepHint();
+        }
+
+        private StepHint DefaultStepHint()
+        {
             if (customerDaySummaryOpen)
                 return new StepHint("serve.next", 8, "오늘 영업을 마쳤어요. 다음 영업일을 여세요.",
                     button: new Rect(601, 431, 224, 43));
@@ -225,6 +230,7 @@ namespace CloudCafe.Crafting
                 if (hint.Button.HasValue && !Moving) DrawGuideButtonFrame(hint.Button.Value);
                 if (professionalReportOpen)
                 {
+                    if (TutorialVisible) return;
                     BeanPanel(new Rect(134, 5, 692, 26), new Color(.04f, .065f, .09f, .97f));
                     GUI.Label(new Rect(145, 6, 670, 24), "다음 · " + hint.Instruction, BeanText(13, GuideGold, true));
                     return;
@@ -232,7 +238,9 @@ namespace CloudCafe.Crafting
                 Rect card = counterView ? new Rect(18, 345, 300, 92) :
                     latteActive || AmericanoView ? new Rect(18, 60, 300, 92) : new Rect(18, 176, 266, 79);
                 // The order dialogue already explains the request beside its highlighted accept button.
-                if (counterView && (customerDialogueOpen || counterCustomer.Phase == CounterCustomerPhase.Arriving)) return;
+                if (!TutorialVisible && counterView && (customerDialogueOpen || counterCustomer.Phase == CounterCustomerPhase.Arriving)) return;
+                if (!TutorialVisible)
+                {
                 BeanPanel(card, new Color(.04f, .065f, .09f, .96f));
                 BeanPanel(new Rect(card.x, card.y, 4, card.height), GuideGold);
                 GUI.Label(new Rect(card.x + 12, card.y + 5, card.width - 24, 23),
@@ -242,6 +250,7 @@ namespace CloudCafe.Crafting
                     BeanText(13, EspressoInk, true, true));
                 GUI.Label(new Rect(card.x + 12, card.y + card.height - 19, card.width - 24, 17),
                     "금색: 잡기·누르기   청록: 놓을 곳", BeanText(11, EspressoMuted));
+                }
                 if (!StepGlowAllowed) return;
                 if (hint.Target != null)
                 {

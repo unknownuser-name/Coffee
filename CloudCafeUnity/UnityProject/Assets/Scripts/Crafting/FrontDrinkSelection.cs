@@ -21,6 +21,7 @@ namespace CloudCafe.Crafting
 
         private bool TryChooseDrink(CoffeeDrink drink)
         {
+            if (!TutorialAllows("drink.choose") || (TutorialActive && drink != CoffeeDrink.Espresso)) return false;
             if (paused || !Brew.Complete || finishedDrink.HasValue || AmericanoView || latteActive ||
                 EspressoShotServed) return false;
 
@@ -28,6 +29,7 @@ namespace CloudCafe.Crafting
             {
                 case CoffeeDrink.Espresso:
                     finishedDrink = drink;
+                    TutorialDid(FirstOrderTutorialStep.ChooseEspresso);
                     TryOpenDrinkReport();
                     return true;
                 case CoffeeDrink.Americano:
@@ -186,8 +188,11 @@ namespace CloudCafe.Crafting
 
         private void DrawDrinkChoice(CoffeeDrink drink, string text, float x, float y)
         {
+            bool wasEnabled = GUI.enabled;
+            GUI.enabled = wasEnabled && (!TutorialActive || drink == CoffeeDrink.Espresso);
             if (GUI.Button(new Rect(x, y, 226, 36), text, BeanActionStyle()))
                 TryChooseDrink(drink);
+            GUI.enabled = wasEnabled;
         }
 
         private void DrawDrinkReportNavigation(float y)

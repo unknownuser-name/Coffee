@@ -128,6 +128,7 @@ namespace CloudCafe.Crafting
         public int EarnedToday;
         public int CorrectToday;
         public int TotalServed;
+        public bool FirstOrderTutorialCompleted;
         public int[] CustomerVisits = new int[CustomerVisitModel.CustomerCount];
 
         public bool DayComplete => CustomersToday >= CustomersPerDay;

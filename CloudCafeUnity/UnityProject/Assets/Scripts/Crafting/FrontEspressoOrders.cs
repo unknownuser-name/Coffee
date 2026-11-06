@@ -35,6 +35,7 @@ namespace CloudCafe.Crafting
 
         private bool TrySetEspressoOrder(string beanId, EspressoRoast roast, CoffeeDrink drink = CoffeeDrink.Espresso)
         {
+            if (!TutorialAllows("settings")) return false;
             if (!professionalMode || !StationReadyForSettings() || coffeeBeanCatalog?.Find(beanId) == null ||
                 (roast != EspressoRoast.Light && roast != EspressoRoast.Medium && roast != EspressoRoast.Dark) ||
                 (drink != CoffeeDrink.Espresso && drink != CoffeeDrink.Americano && drink != CoffeeDrink.Latte))
@@ -91,6 +92,7 @@ namespace CloudCafe.Crafting
 
         private void OpenEspressoOrderMenu()
         {
+            if (!TutorialAllows("order.view")) return;
             if (customerVisit != null)
             {
                 if (counterCustomer.Active)
@@ -111,6 +113,7 @@ namespace CloudCafe.Crafting
 
         private void OpenEspressoOrderEditor()
         {
+            if (!TutorialAllows("settings")) return;
             if (!professionalMode || espressoOrderMenuOpen || professionalReportOpen || CoffeeBeanSelectionOpen) return;
             if (!StationReadyForSettings())
             {
