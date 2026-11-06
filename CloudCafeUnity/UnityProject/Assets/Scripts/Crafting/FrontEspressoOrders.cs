@@ -26,7 +26,11 @@ namespace CloudCafe.Crafting
         private void EnsureEspressoOrder()
         {
             if (!espressoOrder.HasRequest) TryAdvanceEspressoOrder();
-            else if (customerVisit?.Phase == CustomerVisitPhase.Talking) OpenCustomerDialogue();
+            else if (customerVisit?.Phase == CustomerVisitPhase.Talking)
+            {
+                EnterCounterView();
+                if (counterCustomer.Phase == CounterCustomerPhase.Ordering) OpenCustomerDialogue();
+            }
         }
 
         private bool TrySetEspressoOrder(string beanId, EspressoRoast roast, CoffeeDrink drink = CoffeeDrink.Espresso)
@@ -43,6 +47,7 @@ namespace CloudCafe.Crafting
         private void ApplyEspressoOrder(EspressoCustomerOrder order)
         {
             CloseCustomerDialogue();
+            ResetCounterVisit();
             customerVisit = null;
             espressoOrder = order;
             espressoOrderServed = false;
@@ -72,7 +77,8 @@ namespace CloudCafe.Crafting
         private bool TryServeEspressoOrder(CoffeeDrink drink = CoffeeDrink.Espresso)
         {
             if (!professionalMode || !IsDrinkReadyToServe(drink) || !espressoShotOrder.HasRequest || espressoOrderSubmitted ||
-                (customerVisit != null && customerVisit.Phase != CustomerVisitPhase.Preparing))
+                (customerVisit != null && (customerVisit.Phase != CustomerVisitPhase.Preparing ||
+                    !counterHandoffInProgress || counterCustomer.Phase != CounterCustomerPhase.Waiting)))
                 return false;
             espressoOrderMatch = espressoShotOrder.Match(professionalShotBeanRecipe.BeanId,
                 professionalShotBeanRecipe.Roast, drink);
@@ -87,7 +93,17 @@ namespace CloudCafe.Crafting
         {
             if (customerVisit != null)
             {
-                OpenCustomerDialogue(customerProgress.DayComplete && customerDaySummaryOpen);
+                if (counterCustomer.Active)
+                {
+                    EnterCounterView();
+                    if (counterCustomer.Phase == CounterCustomerPhase.Ordering ||
+                        counterCustomer.Phase == CounterCustomerPhase.Waiting) OpenCustomerDialogue();
+                }
+                else
+                {
+                    LeaveCounterView();
+                    OpenCustomerDialogue(customerProgress.DayComplete && customerDaySummaryOpen);
+                }
                 return;
             }
             OpenEspressoOrderEditor();
@@ -122,8 +138,9 @@ namespace CloudCafe.Crafting
         private bool HandleEspressoOrderInput()
         {
             if (professionalMode && customerVisit?.Phase == CustomerVisitPhase.Talking &&
+                counterCustomer.Phase == CounterCustomerPhase.Ordering &&
                 !espressoOrderMenuOpen && !customerDialogueOpen)
-                OpenCustomerDialogue();
+                OpenEspressoOrderMenu();
             if (HandleCustomerDialogueInput()) return true;
             if (espressoOrderMenuOpen)
             {
@@ -135,7 +152,7 @@ namespace CloudCafe.Crafting
                 !professionalMenuOpen && !professionalReportOpen && !CoffeeBeanSelectionOpen &&
                 Input.GetKeyDown(KeyCode.O))
             {
-                OpenCustomerDialogue();
+                OpenEspressoOrderMenu();
                 return true;
             }
             if (!professionalMode || smoke || latteActive || AmericanoView || paused || professionalReleaseGuard ||
@@ -153,7 +170,7 @@ namespace CloudCafe.Crafting
             if (UpdateCustomerDialogueCursor()) return true;
             if (espressoOrderMenuOpen)
                 Cursor.lockState = CursorLockMode.None;
-            else if (!professionalMode || latteActive || AmericanoView || professionalMenuOpen || professionalReportOpen || CoffeeBeanSelectionOpen ||
+            else if (!professionalMode || counterView || latteActive || AmericanoView || professionalMenuOpen || professionalReportOpen || CoffeeBeanSelectionOpen ||
                 !StationReadyForSettings() || !EspressoOrderButton.Contains(StationGuiPointer()))
                 return false;
 
@@ -283,8 +300,19 @@ namespace CloudCafe.Crafting
             {
                 GUI.Label(statusRect, $"{CustomerNames[customerVisit.CustomerIndex]} · 만족도 {customerVisit.SatisfactionScore}점"
                     + $" · 받은 돈 {customerVisit.Payment}코인 (팁 {customerVisit.Tip})", BeanText(13, EspressoAccent, true));
+                bool previousEnabled = GUI.enabled;
+                GUI.enabled = previousEnabled && counterCustomer.Phase == CounterCustomerPhase.Gone;
                 if (GUI.Button(actionButtonRect, customerProgress.DayComplete ? "영업 정산" : "다음 손님", BeanActionStyle()))
                     AdvanceCustomerVisit();
+                GUI.enabled = previousEnabled;
+                return;
+            }
+            if (customerVisit?.Phase == CustomerVisitPhase.Preparing)
+            {
+                GUI.Label(statusRect, "손님 주문 · " + CoffeeDrinkName(espressoShotOrder.Drink),
+                    BeanText(13, EspressoMuted, true));
+                if (GUI.Button(actionButtonRect, "카운터로 가져가기", BeanActionStyle()))
+                    BeginCounterHandoff();
                 return;
             }
             if (!espressoShotOrder.HasRequest)

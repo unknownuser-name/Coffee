@@ -10,7 +10,7 @@ namespace CloudCafe.Crafting {
   string PrepRequired(){if(professionalMode&&!Model.DoseCommitted)return "먼저 매트에서 원두 양을 확정해 주세요.";return !Model.Ready?"먼저 원두를 18g 받아 주세요.":!Prep.Leveled?"먼저 낮고 둥근 도구로 가루 표면을 고르게 돌려 주세요.":"먼저 탬퍼로 가루를 꾹 눌러 다져 주세요.";}
   public void TogglePause(){paused=!paused;if(paused){if(!professionalMode)Model.Running=Brew.Running=false;brewTurning=false;if(!smoke)ReleaseLattePointer();}if(motion!=null&&motion.IsActive()){if(paused)motion.Pause();else motion.Play();}if(cameraMotion!=null&&cameraMotion.IsActive()){if(paused)cameraMotion.Pause();else cameraMotion.Play();}}
   void EnterBrewView(){if(brewView)return;brewView=true;message="탬핑 완료. 손잡이를 잡고 오른쪽으로 옮기면 시야도 손을 따라갑니다.";}
-  void LateUpdate(){if(UpdateEspressoOrderCursor()||UpdateCoffeeBeanCursor()||UpdateProfessionalCursor())return;if(AmericanoView){Cursor.visible=true;handCursor?.Set(HandPose.Open,Vector2.zero,false);return;}if(latteActive){UpdateLatteCursor();return;}FollowHandCamera(Time.deltaTime);UpdateHandCursor();}
+  void LateUpdate(){if(UpdateEspressoOrderCursor()||UpdateCoffeeBeanCursor()||UpdateProfessionalCursor())return;if(counterView){UpdateCounterCursor();return;}if(AmericanoView){Cursor.visible=true;handCursor?.Set(HandPose.Open,Vector2.zero,false);return;}if(latteActive){UpdateLatteCursor();return;}FollowHandCamera(Time.deltaTime);UpdateHandCursor();}
   void FollowHandCamera(float dt){if(paused||(cameraMotion!=null&&cameraMotion.IsActive()))return;
    Transform handTarget=held?art.Tool:prepHeld?prepTool:cupHeld?art.Cup:null;
    if(handTarget==null&&art.Hand.gameObject.activeSelf&&motion!=null&&motion.IsActive())handTarget=art.Tool;

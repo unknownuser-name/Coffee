@@ -58,7 +58,12 @@ namespace CloudCafe.Crafting
             professionalTemperature = temperature;
             professionalPressure = pressure;
             if (professionalMode) EnsureEspressoOrder();
-            else CloseCustomerDialogue();
+            else
+            {
+                CloseCustomerDialogue();
+                LeaveCounterView();
+                art.SetCounterVisible(false);
+            }
             message = professionalMode
                 ? "프로페셔널 모드. 저울을 보며 분쇄를 멈추고 도징을 확정하세요."
                 : "기본 모드. 손잡이를 잡아 들어 올려 보세요.";
@@ -104,7 +109,7 @@ namespace CloudCafe.Crafting
         {
             if (professionalMenuOpen || professionalReportOpen)
                 Cursor.lockState = CursorLockMode.None;
-            else if (latteActive || AmericanoView || (!Brew.Complete && (!professionalMode || !ShowDoseButton)) ||
+            else if (counterView || latteActive || AmericanoView || (!Brew.Complete && (!professionalMode || !ShowDoseButton)) ||
                 !EspressoActionButton.Contains(StationGuiPointer()))
                 return false;
             Cursor.visible = true;
@@ -133,7 +138,7 @@ namespace CloudCafe.Crafting
                 }
                 return true;
             }
-            if (smoke || latteActive || AmericanoView || CoffeeBeanSelectionOpen) return false;
+            if (smoke || counterView || latteActive || AmericanoView || CoffeeBeanSelectionOpen) return false;
 
             bool click = Input.GetMouseButtonDown(0);
             Vector2 pointer = StationGuiPointer();
@@ -193,6 +198,7 @@ namespace CloudCafe.Crafting
 
         private void ResetProfessionalShot()
         {
+            ResetCounterShot();
             if (customerVisit?.Phase != CustomerVisitPhase.Talking) CloseCustomerDialogue();
             if (professionalMenuOpen || professionalReportOpen) CloseProfessionalOverlay();
             professionalShot = null;

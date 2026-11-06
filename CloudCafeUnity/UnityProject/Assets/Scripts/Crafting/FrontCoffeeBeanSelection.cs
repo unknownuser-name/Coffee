@@ -53,7 +53,7 @@ namespace CloudCafe.Crafting
         private bool CanChangeCoffeeBeans()
         {
             return coffeeBeanCatalog != null && selectedCoffeeBean != null &&
-                (!smoke || professionalSmoke) && !professionalMenuOpen && !espressoOrderMenuOpen && !customerDialogueOpen &&
+                (!smoke || professionalSmoke) && !counterView && !professionalMenuOpen && !espressoOrderMenuOpen && !customerDialogueOpen &&
                 StationReadyForSettings();
         }
 
@@ -109,7 +109,7 @@ namespace CloudCafe.Crafting
 
         private bool HandleCoffeeBeanInput()
         {
-            if (smoke || latteActive || AmericanoView || espressoOrderMenuOpen) return false;
+            if (smoke || counterView || latteActive || AmericanoView || espressoOrderMenuOpen) return false;
             if (coffeeBeanInputReleaseGuard)
             {
                 if (!Input.GetMouseButton(0)) coffeeBeanInputReleaseGuard = false;

@@ -27,8 +27,14 @@ namespace CloudCafe.Crafting
             Check(TryApplyDifficulty(true, draftGrind, draftTemperature, draftPressure),
                 "apply professional difficulty with recommended settings");
             CloseProfessionalOverlay();
-            Check(customerDialogueOpen && customerVisit != null && customerVisit.Phase == CustomerVisitPhase.Talking,
-                "professional mode greets the first customer before preparation");
+            Check(counterView && counterCustomer.Phase == CounterCustomerPhase.Arriving &&
+                !customerDialogueOpen && !AcceptCustomerOrder(),
+                "the first customer walks toward the counter before ordering");
+            UpdateCounterService(2.1f);
+            Check(customerDialogueOpen && customerVisit != null && customerVisit.Phase == CustomerVisitPhase.Talking &&
+                counterCustomer.Phase == CounterCustomerPhase.Ordering,
+                "the first customer opens the order dialogue after reaching the counter");
+            yield return Shot("customer_00-arrived");
             CustomerVisitModel greetedVisit = customerVisit;
             CloseCustomerDialogue();
             OpenEspressoOrderEditor();
@@ -46,8 +52,9 @@ namespace CloudCafe.Crafting
                 "customer can clarify the spoken request once");
             Check(HintCustomerOrder() && !HintCustomerOrder() && customerVisit.Hinted,
                 "the recipe hint can be requested once");
-            Check(AcceptCustomerOrder() && !customerDialogueOpen && customerVisit.Phase == CustomerVisitPhase.Preparing,
-                "accepting the order begins the preparation stage");
+            Check(AcceptCustomerOrder() && !customerDialogueOpen && customerVisit.Phase == CustomerVisitPhase.Preparing &&
+                counterCustomer.Phase == CounterCustomerPhase.Waiting && !counterView,
+                "accepting the order leaves the customer waiting while preparation begins");
             Check(professionalMode && Model.ManualDose, "manual grinder selected");
             Check(espressoOrder.HasRequest, "professional station starts with a customer request");
             Check(SelectedCoffeeRoast == EspressoRoast.Medium, "station starts at medium roast");
@@ -104,11 +111,13 @@ namespace CloudCafe.Crafting
             yield return Settle();
             Check(!CommitProfessionalDose(), "cannot commit an empty basket");
             Switch();
-            float deadline = Time.realtimeSinceStartup + 8f;
+            float deadline = Time.realtimeSinceStartup + 25f;
             while (Model.DoseInBasketOrFlight < 18 && Time.realtimeSinceStartup < deadline) yield return null;
-            Check(Model.Running, "grinder has no automatic 18g cutoff");
+            Check(Model.Running && Model.DoseInBasketOrFlight >= 18,
+                $"manual grinder reaches 18g without automatic cutoff; dose={Model.DoseInBasketOrFlight:0.00}, "
+                + $"counter={counterView}, dialogue={customerDialogueOpen}, paused={paused}");
             Switch();
-            deadline = Time.realtimeSinceStartup + 2f;
+            deadline = Time.realtimeSinceStartup + 5f;
             while (!Model.Ready && Time.realtimeSinceStartup < deadline) yield return null;
             Check(Model.Ready && Model.Grounds >= 18 && Model.Grounds < 19, "manual dose settles");
             Check(!TryApplyDifficulty(false, 5, 93, 9), "cannot change difficulty mid-shot");
@@ -205,6 +214,7 @@ namespace CloudCafe.Crafting
             Check(TryAdvanceEspressoOrder() && espressoOrder.HasRequest &&
                 (espressoOrder.BeanId != "gesha" || espressoOrder.Roast != EspressoRoast.Dark) && !espressoOrderServed,
                 "the next customer supplies a new bean and roast request");
+            UpdateCounterService(2.1f);
             Check(AcceptCustomerOrder(), "accept the next generated customer before returning to training");
             CheckOtherDrinkRoutes();
             ResetStation();
@@ -282,11 +292,25 @@ namespace CloudCafe.Crafting
             int beginningDay = customerProgress.Day;
             for (int visit = 0; visit < 5; visit++)
             {
-                Check(TryAdvanceEspressoOrder() && customerDialogueOpen &&
-                    customerVisit.Phase == CustomerVisitPhase.Talking,
-                    "a generated visit opens its customer dialogue");
+                Check(TryAdvanceEspressoOrder() && counterView && !customerDialogueOpen &&
+                    customerVisit.Phase == CustomerVisitPhase.Talking &&
+                    counterCustomer.Phase == CounterCustomerPhase.Arriving && !AcceptCustomerOrder(),
+                    "a generated customer approaches before the order can be accepted");
+                UpdateCounterService(2.1f);
+                Check(counterCustomer.Phase == CounterCustomerPhase.Ordering && customerDialogueOpen,
+                    "reaching the counter starts the order dialogue");
                 Check(AcceptCustomerOrder(), "accept generated request");
+                Check(counterCustomer.Phase == CounterCustomerPhase.Waiting && !counterView,
+                    "accepted customer waits at the counter");
                 CustomerVisitModel acceptedVisit = customerVisit;
+                string calmWaitingSpeech = CounterSpeech();
+                Check(!string.IsNullOrEmpty(calmWaitingSpeech), "waiting customer has a speech bubble");
+                if (visit == 0)
+                {
+                    UpdateCustomerVisit(acceptedVisit.PatienceRemainingSeconds * .75f);
+                    Check(CounterExpression() < 0 && CounterSpeech() != calmWaitingSpeech,
+                        "long waiting changes the customer's expression and speech");
+                }
                 float beforeTick = acceptedVisit.PatienceRemainingSeconds;
                 yield return new WaitForSeconds(.12f);
                 Check(acceptedVisit.PatienceRemainingSeconds < beforeTick,
@@ -326,11 +350,33 @@ namespace CloudCafe.Crafting
                 FinishCustomerDrink(actualDrink);
                 int priorCoins = customerProgress.Coins;
                 int priorServed = customerProgress.TotalServed;
-                bool matched = TryServeEspressoOrder(actualDrink);
+                Check(BeginCounterHandoff() && counterView && !customerDialogueOpen &&
+                    !espressoOrderSubmitted && customerProgress.TotalServed == priorServed,
+                    "the finished drink is carried to the counter before it is served");
+                Check(GrabServingCup(), "grab the finished serving cup");
+                MoveServingCup(art.CounterCupHome);
+                Check(!DropServingCup() && !espressoOrderSubmitted &&
+                    Vector3.Distance(art.CounterCup.position, art.CounterCupHome) < .01f,
+                    "releasing away from the customer's hand returns the unserved cup");
+                Check(GrabServingCup(), "pick up the cup again for handoff");
+                MoveServingCup(art.CounterReceivePoint);
+                Check(!espressoOrderSubmitted && customerProgress.TotalServed == priorServed,
+                    "moving the cup toward the customer does not serve it before release");
+                Check(DropServingCup() && counterCustomer.Phase == CounterCustomerPhase.Receiving &&
+                    counterCustomer.HoldingDrink,
+                    "releasing the cup at the customer's hand begins receiving");
+                bool matched = espressoOrderServed;
                 Check(matched == (visit != 0) && customerVisit.Phase == CustomerVisitPhase.Reaction &&
                     customerVisit.OrderMatched == matched && customerVisit.Credited &&
                     customerProgress.TotalServed == priorServed + 1,
-                    "offering the drink resolves and records the customer once");
+                    "the physical handoff resolves and records the customer once");
+                Check(!customerDialogueOpen && !string.IsNullOrEmpty(CounterSpeech()) &&
+                    (visit == 0 ? CounterExpression() < 0 : CounterExpression() >= 0),
+                    "the customer reacts through expression and speech while holding the drink");
+                OpenEspressoOrderMenu();
+                Check(counterView && !customerDialogueOpen &&
+                    counterCustomer.Phase == CounterCustomerPhase.Receiving,
+                    "recalling the customer keeps the receipt animation visible");
                 Check(visit == 0
                     ? customerVisit.Reaction == CustomerVisitReaction.Negative &&
                         customerProgress.Coins == priorCoins && customerVisit.Payment == 0
@@ -340,11 +386,38 @@ namespace CloudCafe.Crafting
                 Check(!TryServeEspressoOrder(actualDrink) && customerProgress.Coins == paidCoins &&
                     customerProgress.TotalServed == priorServed + 1,
                     "the same customer cannot pay for a served drink again");
+                Check(!GrabServingCup() && !TryAdvanceEspressoOrder(),
+                    "a received cup cannot be served again or replaced by a new customer");
+                TogglePause();
+                if (visit == 0) yield return Shot("customer_01-received");
+                CounterCustomerPhase pausedCounterPhase = counterCustomer.Phase;
+                float pausedCounterProgress = counterCustomer.PhaseProgress;
+                UpdateCounterService(1f);
+                Check(counterCustomer.Phase == pausedCounterPhase &&
+                    counterCustomer.PhaseProgress == pausedCounterProgress,
+                    "pausing freezes the customer's receiving animation");
+                TogglePause();
                 CloseProfessionalOverlay();
+                float progressBeforeReset = counterCustomer.PhaseProgress;
                 ResetStation();
                 Check(customerVisit == acceptedVisit && customerVisit.Phase == CustomerVisitPhase.Reaction &&
-                    customerProgress.Coins == paidCoins,
-                    "resetting after a reaction does not duplicate its payment");
+                    customerProgress.Coins == paidCoins &&
+                    counterCustomer.Phase == CounterCustomerPhase.Receiving &&
+                    counterCustomer.PhaseProgress == progressBeforeReset,
+                    "resetting a served shot preserves the customer's receipt and departure");
+                UpdateCounterService(2.1f);
+                Check(counterCustomer.Phase == CounterCustomerPhase.Leaving && counterCustomer.HoldingDrink &&
+                    !TryAdvanceEspressoOrder(), "the customer leaves with the drink before the next arrival");
+                if (visit == 0)
+                {
+                    EnterCounterView();
+                    TogglePause();
+                    yield return Shot("customer_02-leaving");
+                    TogglePause();
+                }
+                UpdateCounterService(2.1f);
+                Check(counterCustomer.Phase == CounterCustomerPhase.Gone,
+                    "the customer finishes leaving the cafe");
             }
             Check(customerProgress.DayComplete && customerProgress.CustomersToday == 5 &&
                 customerProgress.CorrectToday == 4,
@@ -352,9 +425,11 @@ namespace CloudCafe.Crafting
             Check(StartNextCustomerDay() && customerProgress.Day == beginningDay + 1 &&
                 customerProgress.CustomersToday == 0 && !customerProgress.DayComplete,
                 "the next business day resets its counters while retaining earnings");
-            Check(customerVisit != null && customerVisit.CustomerIndex == 5 && customerDialogueOpen &&
+            Check(customerVisit != null && customerVisit.CustomerIndex == 5 && counterView &&
+                counterCustomer.Phase == CounterCustomerPhase.Arriving && !customerDialogueOpen &&
                 customerVisit.Phase == CustomerVisitPhase.Talking,
-                "the sixth customer arrives at the start of the second business day");
+                "the sixth customer walks in at the start of the second business day");
+            UpdateCounterService(2.1f);
             if (customerDialogueOpen) Check(AcceptCustomerOrder(), "accept the new day's first customer");
             ResetStation();
         }

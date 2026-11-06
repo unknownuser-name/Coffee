@@ -38,6 +38,8 @@ namespace CloudCafe.Crafting
 
         private void OpenCustomerDialogue(bool daySummary = false)
         {
+            if (!daySummary && customerVisit?.Phase == CustomerVisitPhase.Talking &&
+                counterCustomer.Phase != CounterCustomerPhase.Ordering) return;
             if (!customerDialogueOpen)
             {
                 customerPriorCursorLock = Cursor.lockState;
@@ -61,8 +63,12 @@ namespace CloudCafe.Crafting
 
         private bool AcceptCustomerOrder()
         {
-            if (customerVisit == null || !customerVisit.Accept()) return false;
+            if (customerVisit == null || customerVisit.Phase != CustomerVisitPhase.Talking ||
+                counterCustomer.Phase != CounterCustomerPhase.Ordering) return false;
+            customerVisit.Accept();
+            counterCustomer.AcceptOrder();
             CloseCustomerDialogue();
+            LeaveCounterView();
             message = CustomerNames[customerVisit.CustomerIndex] + "의 주문을 받았어요. B로 원두와 로스팅을 골라 주세요.";
             return true;
         }
@@ -82,6 +88,7 @@ namespace CloudCafe.Crafting
             if (!professionalMode || beans == null || beans.Length == 0) return false;
             InitializeCustomerProgress();
             bool resolved = customerVisit?.Phase == CustomerVisitPhase.Reaction;
+            if (resolved && counterCustomer.Phase != CounterCustomerPhase.Gone) return false;
             bool completedTrainingShot = customerVisit == null && espressoOrderServed && Brew.Complete;
             if (!StationReadyForSettings() && !resolved && !completedTrainingShot) return false;
             if (customerProgress.DayComplete)
@@ -108,7 +115,7 @@ namespace CloudCafe.Crafting
                 int customerIndex = customerProgress.TotalServed % CustomerNames.Length;
                 customerVisit = new CustomerVisitModel(customerIndex, customerProgress.NextVisitId, drink,
                     customerIndex == 0 ? 180f : customerIndex == 4 ? 240f : 210f);
-                OpenCustomerDialogue();
+                BeginCounterVisit();
                 return true;
             }
             return false;
@@ -117,6 +124,7 @@ namespace CloudCafe.Crafting
         private bool StartNextCustomerDay()
         {
             InitializeCustomerProgress();
+            if (counterCustomer.Active) return false;
             if (!customerProgress.NextDay()) return false;
             CloseCustomerDialogue();
             ResetStation();
@@ -137,7 +145,7 @@ namespace CloudCafe.Crafting
             if (!customerVisit.Resolve(espressoOrderServed, quality)) return;
             customerProgress.TryCredit(customerVisit);
             SaveCustomerProgress();
-            OpenCustomerDialogue();
+            if (!counterHandoffInProgress) OpenCustomerDialogue();
         }
 
         private bool HandleCustomerDialogueInput()
@@ -214,6 +222,11 @@ namespace CloudCafe.Crafting
         private bool DrawCustomerConversation()
         {
             if (!customerDialogueOpen) return false;
+            if (counterView && !customerDaySummaryOpen)
+            {
+                DrawCounterScreen(true);
+                return true;
+            }
             GUI.DrawTexture(frame, art.Pixels, ScaleMode.StretchToFill, false);
             Matrix4x4 previous = GUI.matrix;
             GUI.matrix = Matrix4x4.TRS(new Vector3(frame.x, frame.y), Quaternion.identity,
@@ -255,9 +268,12 @@ namespace CloudCafe.Crafting
                     BeanText(14, EspressoMuted));
                 if (GUI.Button(new Rect(119, 440, 177, 35), "음료 리포트 보기", BeanActionStyle()))
                     CloseCustomerDialogue();
+                bool reactionButtonsEnabled = GUI.enabled;
+                GUI.enabled = reactionButtonsEnabled && counterCustomer.Phase == CounterCustomerPhase.Gone;
                 if (GUI.Button(new Rect(637, 440, 202, 35),
                     customerProgress.DayComplete ? "오늘 영업 정산" : "다음 손님", BeanActionStyle()))
                     AdvanceCustomerVisit();
+                GUI.enabled = reactionButtonsEnabled;
                 return;
             }
 
